@@ -145,7 +145,7 @@ def main():
         print(__doc__); sys.exit(1)
     if not KEY:
         print("OPENAI_API_KEY missing"); sys.exit(1)
-    chapters = sorted(glob.glob(os.path.join(ROOT, "content/ar/*.json")))
+    chapters = sorted(glob.glob(os.path.join(ROOT, "content/ar/[0-9]*.json")))
     for lang in langs:
         if lang not in LANGS:
             print(f"unknown lang {lang}"); continue

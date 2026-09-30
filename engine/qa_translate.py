@@ -97,7 +97,7 @@ def main():
     lang = args[0]; fix = "--fix" in sys.argv
     chapter = sys.argv[sys.argv.index("--chapter") + 1] if "--chapter" in sys.argv else None
     report = []
-    for ar_path in sorted(glob.glob(os.path.join(ROOT, "content/ar/*.json"))):
+    for ar_path in sorted(glob.glob(os.path.join(ROOT, "content/ar/[0-9]*.json"))):
         if chapter and not os.path.basename(ar_path).startswith(chapter): continue
         print(f"QA {os.path.basename(ar_path)} -> {lang} ...", flush=True)
         r = qa_chapter(lang, ar_path, fix)
