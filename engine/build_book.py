@@ -34,6 +34,23 @@ FONT_STACK = {
     "bn": "'Noto Sans Bengali','Vrinda',system-ui,sans-serif",
     "hi": "'Noto Sans Devanagari','Mangal',system-ui,sans-serif",
 }
+FONT_FILES = {  # خطوط تُضمَّن داخل الكتاب حسب اللغة (WOFF2 base64)
+    "ar": ("Noto Naskh Arabic", "book/fonts/NotoNaskhArabic.woff2"),
+    "am": ("Noto Sans Ethiopic", "book/fonts/NotoSansEthiopic.woff2"),
+}
+
+
+def font_face_css(langs):
+    css = ""
+    for lg in langs:
+        if lg in FONT_FILES:
+            fam, path = FONT_FILES[lg]; fp = os.path.join(ROOT, path)
+            if os.path.exists(fp):
+                b64 = base64.b64encode(open(fp, "rb").read()).decode()
+                css += f"@font-face{{font-family:'{fam}';src:url(data:font/woff2;base64,{b64}) format('woff2');font-display:swap}}\n"
+    return css
+
+
 ICON_SVG = "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23f8c8d8'/%3E%3Ctext x='50' y='66' font-size='52' text-anchor='middle'%3E%F0%9F%8F%A0%3C/text%3E%3C/svg%3E"
 
 
@@ -106,6 +123,7 @@ def build(lang, with_audio=True, pwa=False):
         "{{READ_ALL}}": UI.get(lang, UI["en"])["read_all"], "{{FOOTER}}": UI.get(lang, UI["en"])["footer"] + " · غيداء",
         "{{FONT_STACK}}": FONT_STACK.get(lang, "system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans Arabic','Noto Naskh Arabic',sans-serif"),
         "{{DATA_JSON}}": json.dumps(data, ensure_ascii=False).replace("</", "<\\/"),
+        "{{FONT_FACES}}": font_face_css(["ar", lang]),
     }
     for k, v in rep.items(): html = html.replace(k, v)
     os.makedirs(os.path.join(ROOT, "dist"), exist_ok=True)
