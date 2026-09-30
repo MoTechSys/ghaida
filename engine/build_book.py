@@ -46,6 +46,8 @@ def load_chapters(lang):
         ar = json.load(open(f, encoding="utf-8"))
         lf = os.path.join(ROOT, "content", lang, os.path.basename(f))
         if not os.path.exists(lf):
+            if "--partial" in sys.argv:
+                print(f"   (partial) skipping {os.path.basename(f)} — no translation yet"); continue
             print(f"!! missing translation {lf} — run engine/translate.py {lang}"); sys.exit(1)
         l = json.load(open(lf, encoding="utf-8"))
         out.append({"id": ar["id"], "icon": ar["icon"], "ar": ar, "l": l})
@@ -77,6 +79,7 @@ def audio_map(lang, texts):
 
 
 def build(lang, with_audio=True, pwa=False):
+    L = LANGS[lang]
     ch = load_chapters(lang)
     texts = all_texts(ch)
     hashes = {t: h(t) for t in texts}
@@ -87,16 +90,15 @@ def build(lang, with_audio=True, pwa=False):
             m, miss, size = audio_map(lg, texts)
             audio[lg] = m; report[lg] = (len(m), miss, size)
     data = {
-        "id": f"ghaida-{lang}", "lang": lang, "hash": hashes, "audio": audio,
+        "id": f"ghaida-{lang}", "lang": lang, "flag": L["flag"], "hash": hashes, "audio": audio,
         "ui": UI.get(lang, UI["en"]),
         "chapters": [{"id": c["id"], "icon": c["icon"],
                       "ar": {k: c["ar"][k] for k in ("title", "subtitle", "sections") if k in c["ar"]},
                       "l": {k: c["l"][k] for k in ("title", "subtitle", "sections") if k in c["l"]}} for c in ch],
     }
-    L = LANGS[lang]
     html = TPL
     rep = {
-        "{{LANG}}": lang, "{{DIR}}": L["dir"], "{{START}}": "right" if L["dir"] == "rtl" else "left",
+        "{{LANG}}": lang, "{{DIR}}": L["dir"], "{{START}}": "right" if L["dir"] == "rtl" else "left", "{{END}}": "left" if L["dir"] == "rtl" else "right",
         "{{TITLE}}": ch[0]["l"]["title"] if False else "Ghaida · " + L["native"],
         "{{SUBTITLE}}": "دليل العاملة المنزلية · " + L["name"],
         "{{ICON}}": "🏠", "{{ICON_SVG}}": ICON_SVG,

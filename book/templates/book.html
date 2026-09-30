@@ -17,7 +17,15 @@
   --r:18px; --sh:0 6px 24px rgba(194,24,91,.10);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:{{FONT_STACK}};font-size:18px;line-height:1.7}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:{{FONT_STACK}};font-size:18px;line-height:1.8}
+[dir=rtl],[lang=ar]{text-align:right;font-family:'Noto Naskh Arabic','Noto Sans Arabic','Segoe UI',Tahoma,sans-serif}
+.tx .b[lang=ar],.para p[lang=ar],.sub[dir=rtl]{text-align:right;direction:rtl;display:block}
+.tx .a{font-size:19px;line-height:1.85;letter-spacing:.1px}
+.item.danger .ic::after{content:"✕";position:absolute;bottom:-2px;{{END}}:-2px;background:var(--danger-ink);color:#fff;font-size:11px;font-weight:900;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center}
+.item.ok .ic::after{content:"✓";position:absolute;bottom:-2px;{{END}}:-2px;background:#2e9e5b;color:#fff;font-size:11px;font-weight:900;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center}
+.item .ic{position:relative}
+.call{display:flex;align-items:center;gap:10px;background:var(--danger-ink);color:#fff;text-decoration:none;border-radius:14px;padding:12px 16px;font-weight:800;font-size:20px;margin:6px 0}
+.call small{font-weight:400;font-size:13px;opacity:.9}
 body{padding-bottom:90px}
 .top{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--pink) 0%,var(--pink-2) 100%);padding:14px 16px 10px;box-shadow:var(--sh)}
 .top h1{margin:0;font-size:20px;display:flex;align-items:center;gap:10px}
@@ -55,13 +63,14 @@ body{padding-bottom:90px}
 .item.warn{background:var(--warn)} .item.warn .tx .a{color:var(--warn-ink)}
 .type-steps .item .ic{background:var(--pink-2);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--rose)}
 /* زر الصوت */
-.play{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--pink);color:var(--rose);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(194,24,91,.18)}
-.play.playing{background:var(--rose);color:#fff;animation:pulse 1s infinite}
-.play.na{opacity:.25;pointer-events:none}
+.play{flex:none;min-width:48px;height:48px;border-radius:14px;border:0;background:var(--rose);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 3px 10px rgba(194,24,91,.25);padding:0 10px;font-family:inherit;font-weight:700}
+.play .lb{font-size:12px}
+.play.playing{background:#2e9e5b;animation:pulse 1s infinite}
+.play.na{opacity:.3;pointer-events:none;background:#bbb}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 .pair{display:flex;gap:6px;flex-direction:column}
-.pair .play{width:38px;height:38px;font-size:14px}
-.pair .play.two{background:#e8f0fe;color:#1a4fb4}
+.pair .play{min-width:52px;height:40px;font-size:15px}
+.pair .play.two{background:#1a4fb4}
 /* شريط سفلي */
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #f1dbe4;padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:space-between;align-items:center;z-index:20}
 .bottom button{border:0;background:var(--pink-2);border-radius:999px;padding:10px 16px;font-family:inherit;font-size:15px;cursor:pointer}
@@ -119,7 +128,8 @@ function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>'
 
 function playBtn(text, lang, cls){
   const s = src(text,lang);
-  return `<button class="play ${cls||''} ${s?'':'na'}" data-l="${lang}" data-t="${esc(text)}" title="${lang}">${lang==='ar'?'🔊':'🔉'}</button>`;
+  const flag = lang==='ar' ? '🇸🇦' : D.flag;
+  return `<button class="play ${cls||''} ${s?'':'na'}" data-l="${lang}" data-t="${esc(text)}" title="${lang}">🔊<span class="lb">${flag}</span></button>`;
 }
 function pairBtns(tL, tA){
   if(mode==='ar') return playBtn(tA,'ar');
@@ -129,6 +139,7 @@ function pairBtns(tL, tA){
 function bi(tL, tA, cls){
   const a = mode==='ar' ? '' : `<div class="a ${cls||''}">${esc(tL)}</div>`;
   const b = mode==='l' ? '' : `<div class="${mode==='ar'?'a':'b'}" dir="rtl" lang="ar">${esc(tA)}</div>`;
+  
   return a+b;
 }
 
@@ -151,10 +162,11 @@ function renderChapter(i){
     if(s.text) html+=`<div class="para"><div>${bi(s.text,sa.text)}</div>${pairBtns(s.text,sa.text)}</div>`;
     (s.items||[]).forEach((it,ii)=>{
       const ia=sa.items[ii]; const key=c.id+'/'+s.id+'/'+ii;
-      const lvl=it.level?` ${it.level}`:'';
+      const lvl=it.level?` ${it.level}`:(s.type==='donts'?' danger':(s.type==='rules'||s.type==='steps')?' ok':'');
+      const tel = /\b(911|19911)\b/.exec(it.text||'') || /\b(911|19911)\b/.exec(ia.text||'');
       const icon = s.type==='steps' ? (ii+1) : (it.icon||'•');
       const chk = (s.type==='checklist'||s.type==='steps') ? `<div class="check ${done[key]?'done':''}" data-k="${key}">✓</div>` : '';
-      html+=`<div class="item${lvl}"><div class="ic">${icon}</div><div class="tx">${bi(it.text,ia.text)}${it.why?`<div class="why">${esc(mode==='ar'?ia.why:it.why)}</div>`:''}</div>${chk}${pairBtns(it.text,ia.text)}</div>`;
+      html+=`<div class="item${lvl}"><div class="ic">${icon}</div><div class="tx">${bi(it.text,ia.text)}${it.why?`<div class="why">${esc(mode==='ar'?ia.why:it.why)}</div>`:''}${tel?`<a class="call" href="tel:${tel[1]}">📞 ${tel[1]} <small>${tel[1]==='911'?'Emergency · طوارئ':'HRSD · وزارة الموارد البشرية'}</small></a>`:''}</div>${chk}${pairBtns(it.text,ia.text)}</div>`;
     });
     html+=`</div>`;
   });
@@ -195,7 +207,7 @@ document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x.dataset.
 renderTOC(); updateProgress();
 const hid=location.hash.slice(1); const idx=D.chapters.findIndex(c=>c.id===hid); if(idx>=0) open(idx);
 // تسجيل service worker إن وُجد (للنسخة المستضافة)؛ النسخة المستقلة لا تحتاجه
-if('serviceWorker' in navigator && location.protocol.startsWith('http')){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+if('serviceWorker' in navigator && location.protocol.startsWith('http') && /(\/|\/index\.html)$/.test(location.pathname)){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 })();
 </script>
 </body>
