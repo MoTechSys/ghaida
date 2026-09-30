@@ -57,7 +57,8 @@ python3 engine/build_book.py am --pwa   # 4) بناء dist/ghaida-book-am.html +
 كل الخطوات **idempotent** (آمنة للتكرار، تستخدم كاش).
 
 ## 6. قواعد العمل الإلزامية
-1. **كل تعديل → commit فوري** على branch `genspark_ai_developer` ثم push ثم PR إلى `main`.
+1. **كل تعديل → commit فوري** على `genspark_ai_developer` → push → PR إلى `main` → **أنت تدمجه بنفسك فوراً** (squash) بعد التحقق (JSON صالح، Python syntax، بناء الكتاب يعمل). لا تنتظر أحداً ليقبل الـPR — معين طلب ذلك صراحة. الدمج عبر GitHub API:
+   `curl -X PUT -H "Authorization: token $TOKEN" https://api.github.com/repos/MoTechSys/ghaida/pulls/<N>/merge -d '{"merge_method":"squash"}'` (التوكن في `~/.git-credentials` بعد `setup_github_environment`). ثم أعد مزامنة الفرع: `git reset --hard origin/main && git push -f`.
 2. **لا تكتب أي ملف خارج** المستودع. لا ترفع `audio/` أو `dist/` أو `_analysis/chat` (خاصة).
 3. عند تعديل المحتوى العربي: أعد الترجمة بـ `--force` للفصل المتأثر، ثم TTS (الكاش سيولّد الجمل الجديدة فقط).
 4. **حدّث `docs/HANDOFF.md`** في نهاية كل جلسة عمل: ما أُنجز، ما المتبقي، أي مشاكل.
