@@ -59,7 +59,7 @@ def h(text): return hashlib.sha1(text.strip().encode("utf-8")).hexdigest()[:16]
 
 def load_chapters(lang):
     out = []
-    for f in sorted(glob.glob(os.path.join(ROOT, "content/ar/*.json"))):
+    for f in sorted(glob.glob(os.path.join(ROOT, "content/ar/[0-9]*.json"))):
         ar = json.load(open(f, encoding="utf-8"))
         lf = os.path.join(ROOT, "content", lang, os.path.basename(f))
         if not os.path.exists(lf):
