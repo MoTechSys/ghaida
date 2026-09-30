@@ -21,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LANGS = json.load(open(os.path.join(ROOT, "engine/languages.json"), encoding="utf-8"))
 BASE = os.environ.get("OPENAI_BASE_URL", "https://www.genspark.ai/api/llm_proxy/v1").rstrip("/")
 KEY = os.environ.get("OPENAI_API_KEY")
-MODEL = os.environ.get("TRANSLATE_MODEL", "gpt-5-mini")
+MODEL = os.environ.get("TRANSLATE_MODEL", "gpt-5")  # gpt-5-mini أعطى أخطاء معنى في الأمهرية (قلب النفي) — لا تستخدمه للترجمة
 
 SYSTEM = """You are an expert translator producing training material for migrant domestic workers (housemaids) employed in Saudi Arabia.
 Translate every Arabic string value in the JSON into {lang_name}.
@@ -30,8 +30,10 @@ RULES:
 2. Do NOT translate or change: "id", "order", "icon", "type", "level" values.
 3. Translate: "title", "subtitle", "text", and every item's "text" and "why".
 4. Register: simple, warm, respectful, everyday spoken language a woman with basic education understands when read aloud. Short sentences. Second person feminine where the language marks it.
-5. Saudi-specific words (دلة dallah, فنجال finjal, كبسة kabsa, عباية abaya, ثوب thobe, شماغ shemagh, بخور bakhoor, مجلس majlis, مبخرة, تميس, دقوس, لومي) → transliterate them in the target script and add a very short gloss in parentheses the first time in each chapter.
-6. Brand/product names (Clorox, Dettol, Flash) → keep the brand name in Latin script, add local generic word if helpful (e.g. bleach).
+5. Saudi-specific words (دلة dallah, فنجال finjal, كبسة kabsa, عباية abaya, ثوب thobe, شماغ shemagh, بخور bakhoor, مجلس majlis, مبخرة, تميس, دقوس, لومي) → transliterate them INTO THE TARGET SCRIPT (never Latin letters inside non-Latin text) and add a very short gloss the first time in each chapter.
+6. Brand/product names (Clorox, Dettol, Flash) → write them in the TARGET SCRIPT phonetically (e.g. Amharic ክሎሮክስ, ዲቶል, ፍላሽ; Bengali ক্লোরক্স) followed by the everyday generic word (bleach/disinfectant). NEVER leave Latin letters or English words inside Amharic/Bengali/Sinhala/Urdu text — the reader may not read Latin script.
+6b. Use the most common everyday word, not a dictionary/formal one (e.g. Amharic: ማጽጃ for cleaner, መስኮት for window, ጠርሙስ for bottle, ጓንት for gloves, ማንኪያ for spoon). Imperatives must be feminine singular where the language distinguishes (Amharic: ክፈቺ, ልበሺ, ዝጊ, አታስቀምጪ). Negative commands must be unambiguous.
+6c. CRITICAL: This is safety content. A reversed meaning (e.g. "when you use" → "when you do not use") can cause injury. Re-read every sentence for polarity (do / don't), objects and quantities before answering.
 7. Numbers, phone numbers (911, 19911) and times stay as digits.
 8. In the phrasebook chapter (id 07-phrasebook) the Arabic phrase itself must be preserved: write the translation as: "<meaning in target language> — <original Arabic phrase>". The worker needs to see what she will hear.
 """
@@ -52,6 +54,31 @@ def chat(messages, retries=3):
     raise RuntimeError("LLM failed")
 
 
+def parse_json(content):
+    """يتسامح مع ```json``` أو نص زائد حول JSON."""
+    c = content.strip()
+    if c.startswith("```"):
+        c = c.split("\n", 1)[1] if "\n" in c else c[3:]
+        c = c.rsplit("```", 1)[0]
+    a, b = c.find("{"), c.rfind("}")
+    return json.loads(c[a:b + 1])
+
+
+def translate_section(sec, lang, sysmsg):
+    """ترجمة قسم واحد (للفصول الكبيرة) — يعيد القسم مترجماً بنفس البنية."""
+    for attempt in range(3):
+        content, usage = chat([{"role": "system", "content": sysmsg},
+                               {"role": "user", "content": json.dumps({"sections": [sec]}, ensure_ascii=False)}])
+        try:
+            out = parse_json(content)["sections"][0]
+        except Exception as e:
+            print(f"      section {sec['id']} parse retry {attempt+1}: {e}", file=sys.stderr); continue
+        if len(out.get("items", [])) == len(sec.get("items", [])):
+            return out, usage.get("total_tokens", 0)
+        print(f"      section {sec['id']} count mismatch retry {attempt+1}", file=sys.stderr)
+    raise RuntimeError(f"section {sec['id']} failed")
+
+
 def shape(d):
     """توقيع بنية الفصل للتحقق من تطابق الترجمة."""
     return [(s["id"], s["type"], len(s.get("items", []))) for s in d["sections"]]
@@ -69,16 +96,31 @@ def translate_chapter(src_path, lang, force=False):
             return
     print(f"   translating {os.path.basename(src_path)} -> {lang} ...", flush=True)
     sysmsg = SYSTEM.format(lang_name=LANGS[lang]["tts_lang"].split(" (")[0])
-    content, usage = chat([{"role": "system", "content": sysmsg},
-                           {"role": "user", "content": json.dumps(src, ensure_ascii=False)}])
-    out = json.loads(content)
-    if shape(out) != shape(src):
-        # محاولة ثانية بتذكير صارم
+    n_items = sum(len(s.get("items", [])) for s in src["sections"])
+    usage = {"total_tokens": 0}
+    if n_items <= 30:
         content, usage = chat([{"role": "system", "content": sysmsg},
-                               {"role": "user", "content": json.dumps(src, ensure_ascii=False)},
-                               {"role": "assistant", "content": content},
-                               {"role": "user", "content": "Structure mismatch. Return the JSON again with EXACTLY the same sections, ids, types and item counts as the source."}])
-        out = json.loads(content)
+                               {"role": "user", "content": json.dumps(src, ensure_ascii=False)}])
+        try:
+            out = parse_json(content)
+        except Exception:
+            out = None
+        if out is None or shape(out) != shape(src):
+            out = None
+    else:
+        out = None
+    if out is None:
+        # الفصول الكبيرة أو الفاشلة: قسم بقسم (أبطأ لكن مضمون)
+        print(f"      chunking {len(src['sections'])} sections ...", flush=True)
+        head = {"sections": [{"title": src["title"], "subtitle": src.get("subtitle", ""), "id": "_head", "type": "intro", "items": []}]}
+        content, u = chat([{"role": "system", "content": sysmsg}, {"role": "user", "content": json.dumps(head, ensure_ascii=False)}])
+        hd = parse_json(content)["sections"][0]
+        out = {"id": src["id"], "order": src["order"], "title": hd.get("title", src["title"]), "subtitle": hd.get("subtitle", src.get("subtitle", "")), "icon": src["icon"], "sections": []}
+        tok = u.get("total_tokens", 0)
+        for sec in src["sections"]:
+            o, t = translate_section(sec, lang, sysmsg); out["sections"].append(o); tok += t
+            print(f"      ✓ {sec['id']}", flush=True)
+        usage = {"total_tokens": tok}
         if shape(out) != shape(src):
             raise RuntimeError(f"structure mismatch for {src_path} -> {lang}")
     # إعادة القيم غير القابلة للترجمة من المصدر (أمان)
