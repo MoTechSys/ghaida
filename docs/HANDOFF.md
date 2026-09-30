@@ -14,10 +14,16 @@ _آخر تحديث: 2026-09-30 — الجلسة 1 (الوكيل: Claude عبر G
 | محرك الصوت | ✅ | `engine/tts.py` — كاش، ضغط 32kbps، ~4KB/ث |
 | باني الكتاب | ✅ | `engine/build_book.py` — ملف واحد + خيار PWA |
 | قالب الواجهة pink | ✅ v1 (7/10) | `book/templates/book.html` |
-| صوت عربي (380 جملة) | 🔄 جارٍ | ~66/377 عند كتابة هذا — يكمل تلقائياً بـ `python3 engine/tts.py ar` |
-| ترجمة أمهرية | 🔄 جارٍ | أُعيدت بـ gpt-5 بعد فشل جودة gpt-5-mini (قلب نفي في السلامة!) |
+| صوت عربي (380 جملة) | 🔄 ~116/377 | الكاش في `audio/ar/` — **أكمله**: `python3 engine/tts.py ar` (الآن 4 workers متوازية) |
+| ترجمة أمهرية | 🔄 بدأت بـ gpt-5 | كانت تعمل في الخلفية عند انتهاء الجلسة — **تحقق**: `ls content/am/` ثم أعد `python3 engine/translate.py am` (يتخطى المكتمل) |
+| خطوط مضمّنة (Ethiopic + Naskh) | ✅ | `book/fonts/*.woff2` تُضمَّن تلقائياً |
 
 ## 🔴 المتبقي (بالترتيب)
+0. **أول أمر في الجلسة القادمة** (كل شيء idempotent):
+   ```bash
+   cd /home/user/webapp && python3 engine/translate.py am && python3 engine/tts.py ar && python3 engine/qa_translate.py am --fix && python3 engine/tts.py am && python3 engine/build_book.py am --pwa
+   ```
+   ملاحظة: ساندبوكس جديد = `audio/` فارغ (خارج git) → إعادة توليد الصوت العربي (~15 دقيقة بـ 4 workers). إن وُجد أرشيف في `/mnt/aidrive/ghaida_audio_*.tar.gz` فكّه أولاً.
 1. **إكمال الأمهرية**: `translate.py am` → `qa_translate.py am --fix` → `qa_translate.py am` (يجب PASS) → `tts.py am` → `build_book.py am --pwa`.
 2. **مراجعة سمعية**: فرّغ 5 مقاطع أمهرية عشوائية عكسياً وتأكد التطابق (كما فعلنا في الاختبار الأول).
 3. **معاينة لغيداء**: أرسل `dist/ghaida-book-am.html` (≈12MB) على واتساب + رابط PWA. اجمع ملاحظاتها على: الألوان، سهولة الاستخدام، المحتوى الناقص من واقع بيوت جدة.
@@ -32,6 +38,8 @@ _آخر تحديث: 2026-09-30 — الجلسة 1 (الوكيل: Claude عبر G
 - الفصل 04 (56 عنصراً) يفشل كـJSON واحد → التقسيم بالأقسام يعمل.
 - Playwright المحلي لا يعمل (مكتبات نظام ناقصة) → استخدم `gsk screenshot <url>` للقطات.
 - `audio/` و `dist/` خارج git (حجم). احفظ أرشيف الصوت في AI Drive: `tar -czf ghaida_audio_YYYY-MM-DD.tar.gz audio/ && cp ... /mnt/aidrive/`.
+- gpt-5 أبطأ ويعطي 524 أحياناً على الفصول الكبيرة → `TRANSLATE_WHOLE_MAX=12` يجعل معظم الفصول تُترجم قسماً بقسم (موثوق). لا تشغّل نسختين من translate.py معاً (تكتبان نفس الملفات).
+- `pkill -f translate.py` يقتل شِل الوكيل نفسه (النمط يطابق أمر الشِل) → استخدم `ps -eo pid,args | grep "[e]ngine/translate"` ثم kill بالـ PID.
 - الصوت العربي MSA لا خليجي — مقبول ومفهوم (تقييم 9/10)؛ إن أراد معين لهجة خليجية أقوى، جرّب صوت Gemini آخر أو ElevenLabs مع نص مشكول.
 
 ## 🔗 روابط مهمة

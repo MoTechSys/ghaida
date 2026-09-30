@@ -99,7 +99,7 @@ def translate_chapter(src_path, lang, force=False):
     sysmsg = SYSTEM.format(lang_name=LANGS[lang]["tts_lang"].split(" (")[0])
     n_items = sum(len(s.get("items", [])) for s in src["sections"])
     usage = {"total_tokens": 0}
-    if n_items <= 30:
+    if n_items <= int(os.environ.get("TRANSLATE_WHOLE_MAX", "12")):  # الفصول الصغيرة فقط دفعة واحدة؛ الباقي قسم بقسم (أكثر موثوقية)
         content, usage = chat([{"role": "system", "content": sysmsg},
                                {"role": "user", "content": json.dumps(src, ensure_ascii=False)}])
         try:
@@ -150,7 +150,7 @@ def main():
         if lang not in LANGS:
             print(f"unknown lang {lang}"); continue
         print(f"== {lang} ({LANGS[lang]['name']})")
-        workers = int(os.environ.get("TRANSLATE_WORKERS", "4"))
+        workers = int(os.environ.get("TRANSLATE_WORKERS", "3"))
         with ThreadPoolExecutor(max_workers=workers) as ex:
             futs = {ex.submit(translate_chapter, ch, lang, force): ch for ch in chapters}
             for f in as_completed(futs):
