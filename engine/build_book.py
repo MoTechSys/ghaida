@@ -10,7 +10,19 @@ build_book.py — يبني الكتاب الإلكتروني المستقل (م�
 الناتج ملف واحد يُرسل على واتساب أو يُفتح بأي متصفح، ولا يحتاج إنترنت أبداً.
 الصوت مضمّن base64 (mp3 32kbps mono). حجم متوقع: 8–14 MB للكتاب الكامل بلغتين.
 """
-import json, os, sys, glob, base64, hashlib, re, shutil
+import json, os, sys, glob, base64, hashlib, re, shutil, subprocess
+
+SHIP_BITRATE = os.environ.get("SHIP_BITRATE", "20k")   # الصوت داخل الكتاب (المصدر 32k في audio/ يبقى كما هو)
+SHIP_RATE = "16000"
+
+
+def shipped_mp3(src_path):
+    """نسخة مضغوطة أكثر للشحن داخل الكتاب، مع كاش في audio/_ship/<bitrate>/."""
+    d = os.path.join(ROOT, "audio", "_ship", SHIP_BITRATE); os.makedirs(d, exist_ok=True)
+    out = os.path.join(d, os.path.basename(os.path.dirname(src_path)) + "_" + os.path.basename(src_path))
+    if not os.path.exists(out) or os.path.getmtime(out) < os.path.getmtime(src_path):
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", src_path, "-ac", "1", "-ar", SHIP_RATE, "-b:a", SHIP_BITRATE, out], check=True)
+    return out
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LANGS = json.load(open(os.path.join(ROOT, "engine/languages.json"), encoding="utf-8"))
@@ -71,24 +83,31 @@ def load_chapters(lang):
     return out
 
 
-def all_texts(ch):
+def texts_of(d):
+    t = [d["title"], d.get("subtitle", "")]
+    for s in d["sections"]:
+        t += [s.get("title", ""), s.get("text", "")]
+        for it in s.get("items", []): t += [it["text"], it.get("why", "")]
+    return [x.strip() for x in t if x and x.strip()]
+
+
+def all_texts(ch, which=None):
+    """which: None=كل اللغتين، 'ar' أو 'l' للغة واحدة (لتقرير النواقص الصحيح)."""
     t = []
     for c in ch:
-        for d in (c["ar"], c["l"]):
-            t += [d["title"], d.get("subtitle", "")]
-            for s in d["sections"]:
-                t += [s.get("title", ""), s.get("text", "")]
-                for it in s.get("items", []): t += [it["text"], it.get("why", "")]
-    return [x.strip() for x in t if x and x.strip()]
+        for k in (("ar", "l") if which is None else (which,)):
+            t += texts_of(c[k])
+    return t
 
 
 def audio_map(lang, texts):
     d = os.path.join(ROOT, "audio", lang)
     m, missing, size = {}, 0, 0
     for t in texts:
+        if not isinstance(t, str): continue
         p = os.path.join(d, h(t) + ".mp3")
         if os.path.exists(p):
-            b = open(p, "rb").read(); size += len(b)
+            b = open(shipped_mp3(p), "rb").read(); size += len(b)
             m[h(t)] = "data:audio/mpeg;base64," + base64.b64encode(b).decode()
         else:
             missing += 1
@@ -103,8 +122,8 @@ def build(lang, with_audio=True, pwa=False):
     audio = {}
     report = {}
     if with_audio:
-        for lg in ("ar", lang):
-            m, miss, size = audio_map(lg, texts)
+        for lg, which in (("ar", "ar"), (lang, "l")):
+            m, miss, size = audio_map(lg, all_texts(ch, which))
             audio[lg] = m; report[lg] = (len(m), miss, size)
     data = {
         "id": f"ghaida-{lang}", "lang": lang, "flag": L["flag"], "hash": hashes, "audio": audio,
