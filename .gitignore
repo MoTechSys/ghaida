@@ -1,0 +1,11 @@
+# Private raw WhatsApp export (media/chat) - never commit personal data
+_analysis/chat/
+_analysis/audio/
+_analysis/tiktok/*.mp4
+_analysis/tiktok/*.html
+_analysis/tiktok/*.json
+node_modules/
+.wrangler/
+.dev.vars
+*.log
+.DS_Store
