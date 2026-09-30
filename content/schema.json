@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ghaida Book Content Schema",
+  "description": "كل فصل ملف JSON واحد بالعربي (المصدر الوحيد للحقيقة). الترجمات تُولَّد آلياً في content/<lang>/ بنفس المفاتيح.",
+  "type": "object",
+  "required": ["id", "order", "title", "icon", "sections"],
+  "properties": {
+    "id": {"type": "string", "description": "معرّف ثابت للفصل، مثال: 03-safety"},
+    "order": {"type": "integer"},
+    "title": {"type": "string"},
+    "subtitle": {"type": "string"},
+    "icon": {"type": "string", "description": "emoji أو اسم أيقونة"},
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": {"type": "string"},
+          "type": {"enum": ["intro", "steps", "rules", "donts", "phrases", "schedule", "checklist", "tip"]},
+          "title": {"type": "string"},
+          "text": {"type": "string", "description": "فقرة قصيرة تُقرأ صوتياً"},
+          "items": {
+            "type": "array",
+            "description": "خطوات/قواعد/عبارات. كل عنصر جملة واحدة قصيرة قابلة للنطق.",
+            "items": {
+              "type": "object",
+              "required": ["text"],
+              "properties": {
+                "text": {"type": "string"},
+                "icon": {"type": "string"},
+                "why": {"type": "string", "description": "السبب بجملة — يزيد الالتزام"},
+                "level": {"enum": ["danger", "warn", "info"]}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

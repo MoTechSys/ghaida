@@ -1,0 +1,12 @@
+{
+  "ar": {"name": "العربية", "native": "العربية", "dir": "rtl", "flag": "🇸🇦", "tts_lang": "Arabic (Saudi Gulf dialect, clear and slow)", "font": "Noto Naskh Arabic"},
+  "am": {"name": "الأمهرية (إثيوبيا)", "native": "አማርኛ", "dir": "ltr", "flag": "🇪🇹", "tts_lang": "Amharic", "font": "Noto Sans Ethiopic"},
+  "tl": {"name": "الفلبينية", "native": "Tagalog", "dir": "ltr", "flag": "🇵🇭", "tts_lang": "Tagalog (Filipino)", "font": "Noto Sans"},
+  "id": {"name": "الإندونيسية", "native": "Bahasa Indonesia", "dir": "ltr", "flag": "🇮🇩", "tts_lang": "Indonesian", "font": "Noto Sans"},
+  "ur": {"name": "الأردو (باكستان)", "native": "اردو", "dir": "rtl", "flag": "🇵🇰", "tts_lang": "Urdu", "font": "Noto Nastaliq Urdu"},
+  "en": {"name": "الإنجليزية", "native": "English", "dir": "ltr", "flag": "🇬🇧", "tts_lang": "English (simple, clear)", "font": "Noto Sans"},
+  "sw": {"name": "السواحلية (أوغندا/كينيا)", "native": "Kiswahili", "dir": "ltr", "flag": "🇺🇬", "tts_lang": "Swahili", "font": "Noto Sans"},
+  "si": {"name": "السنهالية (سيرلانكا)", "native": "සිංහල", "dir": "ltr", "flag": "🇱🇰", "tts_lang": "Sinhala", "font": "Noto Sans Sinhala"},
+  "bn": {"name": "البنغالية (بنغلاديش)", "native": "বাংলা", "dir": "ltr", "flag": "🇧🇩", "tts_lang": "Bengali", "font": "Noto Sans Bengali"},
+  "hi": {"name": "الهندية", "native": "हिन्दी", "dir": "ltr", "flag": "🇮🇳", "tts_lang": "Hindi", "font": "Noto Sans Devanagari"}
+}

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}" dir="{{DIR}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f8c8d8">
+<title>{{TITLE}}</title>
+<link rel="icon" href="data:image/svg+xml,{{ICON_SVG}}">
+<link rel="apple-touch-icon" href="data:image/svg+xml,{{ICON_SVG}}">
+<style>
+{{FONT_FACES}}
+:root{
+  --pink:#f8c8d8; --pink-2:#fde4ec; --pink-deep:#e08aa8; --rose:#c2185b;
+  --bg:#fff8fa; --ink:#3b2a33; --muted:#8a6b78; --card:#ffffff;
+  --danger:#ffe5e5; --danger-ink:#b3261e; --warn:#fff4d6; --warn-ink:#8a5a00; --ok:#e6f7ec;
+  --r:18px; --sh:0 6px 24px rgba(194,24,91,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:{{FONT_STACK}};font-size:18px;line-height:1.8}
+[dir=rtl],[lang=ar]{text-align:right;font-family:'Noto Naskh Arabic','Noto Sans Arabic','Segoe UI',Tahoma,sans-serif}
+.tx .b[lang=ar],.para p[lang=ar],.sub[dir=rtl]{text-align:right;direction:rtl;display:block}
+.tx .a{font-size:19px;line-height:1.85;letter-spacing:.1px}
+.item.danger .ic::after{content:"✕";position:absolute;bottom:-2px;{{END}}:-2px;background:var(--danger-ink);color:#fff;font-size:11px;font-weight:900;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center}
+.item.ok .ic::after{content:"✓";position:absolute;bottom:-2px;{{END}}:-2px;background:#2e9e5b;color:#fff;font-size:11px;font-weight:900;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center}
+.item .ic{position:relative}
+.call{display:flex;align-items:center;gap:10px;background:var(--danger-ink);color:#fff;text-decoration:none;border-radius:14px;padding:12px 16px;font-weight:800;font-size:20px;margin:6px 0}
+.call small{font-weight:400;font-size:13px;opacity:.9}
+body{padding-bottom:90px}
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--pink) 0%,var(--pink-2) 100%);padding:14px 16px 10px;box-shadow:var(--sh)}
+.top h1{margin:0;font-size:20px;display:flex;align-items:center;gap:10px}
+.top .sub{color:var(--muted);font-size:13px;margin-top:2px}
+.langbar{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.chip{border:0;background:#fff;border-radius:999px;padding:6px 14px;font-size:14px;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer}
+.chip.on{background:var(--rose);color:#fff}
+.wrap{max-width:720px;margin:0 auto;padding:14px}
+/* الفهرس */
+.toc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toc a{display:flex;flex-direction:column;gap:6px;background:var(--card);border-radius:var(--r);padding:16px 14px;text-decoration:none;color:var(--ink);box-shadow:var(--sh);min-height:110px;border:2px solid transparent}
+.toc a:active{border-color:var(--pink-deep)}
+.toc .ic{font-size:34px;line-height:1}
+.toc .t{font-weight:700;font-size:16px}
+.toc .n{color:var(--muted);font-size:12px}
+/* الفصل */
+.chapter{display:none}
+.chapter.on{display:block}
+.chead{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--sh);margin-bottom:14px;display:flex;gap:14px;align-items:center}
+.chead .ic{font-size:44px}
+.chead h2{margin:0;font-size:22px}
+.chead .sub{color:var(--muted);font-size:14px}
+.sec{background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:14px}
+.sec h3{margin:0 0 8px;font-size:18px;color:var(--rose);display:flex;align-items:center;gap:8px}
+.para{display:flex;gap:10px;align-items:flex-start}
+.para p{margin:0;flex:1}
+.item{display:flex;gap:10px;align-items:flex-start;padding:10px 8px;border-radius:12px;margin:4px 0}
+.item+.item{border-top:1px dashed #f1dbe4}
+.item .ic{font-size:26px;width:34px;text-align:center;flex:none;line-height:1.3}
+.item .tx{flex:1}
+.item .tx .a{font-weight:600}
+.item .tx .b{color:var(--muted);font-size:15px;margin-top:2px}
+.item .tx .why{font-size:14px;color:var(--muted);margin-top:4px;padding-{{START}}:10px;border-{{START}}:3px solid var(--pink)}
+.item.danger{background:var(--danger)} .item.danger .tx .a{color:var(--danger-ink)}
+.item.warn{background:var(--warn)} .item.warn .tx .a{color:var(--warn-ink)}
+.type-steps .item .ic{background:var(--pink-2);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--rose)}
+/* زر الصوت */
+.play{flex:none;min-width:48px;height:48px;border-radius:14px;border:0;background:var(--rose);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 3px 10px rgba(194,24,91,.25);padding:0 10px;font-family:inherit;font-weight:700}
+.play .lb{font-size:12px}
+.play.playing{background:#2e9e5b;animation:pulse 1s infinite}
+.play.na{opacity:.3;pointer-events:none;background:#bbb}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.pair{display:flex;gap:6px;flex-direction:column}
+.pair .play{min-width:52px;height:40px;font-size:15px}
+.pair .play.two{background:#1a4fb4}
+/* شريط سفلي */
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #f1dbe4;padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:space-between;align-items:center;z-index:20}
+.bottom button{border:0;background:var(--pink-2);border-radius:999px;padding:10px 16px;font-family:inherit;font-size:15px;cursor:pointer}
+.bottom .home{background:var(--rose);color:#fff}
+.bottom .readall{background:var(--pink)}
+.check{width:26px;height:26px;border-radius:8px;border:2px solid var(--pink-deep);flex:none;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;cursor:pointer;margin-top:6px}
+.check.done{background:#2e9e5b;border-color:#2e9e5b}
+.foot{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+.badge{display:inline-block;background:#fff;border-radius:999px;padding:2px 10px;font-size:12px;color:var(--rose)}
+.hidden{display:none!important}
+@media(min-width:600px){.toc{grid-template-columns:1fr 1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>{{ICON}} <span>{{TITLE}}</span></h1>
+  <div class="sub">{{SUBTITLE}}</div>
+  <div class="langbar">
+    <button class="chip on" data-mode="both">{{FLAG_L}} + 🇸🇦</button>
+    <button class="chip" data-mode="l">{{FLAG_L}} {{NATIVE_L}}</button>
+    <button class="chip" data-mode="ar">🇸🇦 عربي</button>
+    <span class="badge" id="progress"></span>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="toc" class="toc"></section>
+  <div id="chapters"></div>
+  <div class="foot">{{FOOTER}}</div>
+</main>
+
+<nav class="bottom">
+  <button class="home" id="btnHome">🏠</button>
+  <button class="readall" id="btnReadAll">🔊 {{READ_ALL}}</button>
+  <button id="btnPrev">‹</button>
+  <button id="btnNext">›</button>
+</nav>
+
+<script id="data" type="application/json">{{DATA_JSON}}</script>
+<script>
+(function(){
+const D = JSON.parse(document.getElementById('data').textContent);
+const L = D.lang, AUDIO = D.audio; // audio: {lang:{hash:dataURI}}
+const S = (k)=>D.ui[k]||k;
+let mode = localStorage.getItem('gh.mode') || 'both';
+let cur = null; let player = new Audio(); let queue=[]; let qi=0;
+const progressKey='gh.done.'+D.id;
+let done = JSON.parse(localStorage.getItem(progressKey)||'{}');
+
+function h(s){ // sha1-16 يجب أن يطابق engine/tts.py — نحمل جدول التحويل مسبقاً
+  return D.hash[s];
+}
+function src(text, lang){ const k=h(text); return k && AUDIO[lang] && AUDIO[lang][k] ? AUDIO[lang][k] : null; }
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function playBtn(text, lang, cls){
+  const s = src(text,lang);
+  const flag = lang==='ar' ? '🇸🇦' : D.flag;
+  return `<button class="play ${cls||''} ${s?'':'na'}" data-l="${lang}" data-t="${esc(text)}" title="${lang}">🔊<span class="lb">${flag}</span></button>`;
+}
+function pairBtns(tL, tA){
+  if(mode==='ar') return playBtn(tA,'ar');
+  if(mode==='l') return playBtn(tL,L);
+  return `<div class="pair">${playBtn(tL,L)}${playBtn(tA,'ar','two')}</div>`;
+}
+function bi(tL, tA, cls){
+  const a = mode==='ar' ? '' : `<div class="a ${cls||''}">${esc(tL)}</div>`;
+  const b = mode==='l' ? '' : `<div class="${mode==='ar'?'a':'b'}" dir="rtl" lang="ar">${esc(tA)}</div>`;
+  
+  return a+b;
+}
+
+function renderTOC(){
+  const el=document.getElementById('toc'); el.innerHTML='';
+  D.chapters.forEach((c,i)=>{
+    const a=document.createElement('a'); a.href='#'+c.id;
+    a.innerHTML=`<div class="ic">${c.icon}</div><div class="t">${esc(mode==='ar'?c.ar.title:c.l.title)}</div><div class="n">${mode==='l'?'':esc(mode==='ar'?'':c.ar.title)}</div>`;
+    a.onclick=(e)=>{e.preventDefault();open(i);};
+    el.appendChild(a);
+  });
+}
+function renderChapter(i){
+  const c=D.chapters[i];
+  let html=`<div class="chead"><div class="ic">${c.icon}</div><div><h2>${esc(mode==='ar'?c.ar.title:c.l.title)}</h2><div class="sub">${esc(mode==='ar'?(c.ar.subtitle||''):(c.l.subtitle||''))}</div>${mode!=='l'&&mode!=='ar'?`<div class="sub" dir="rtl">${esc(c.ar.title)}</div>`:''}</div>${pairBtns(c.l.title,c.ar.title)}</div>`;
+  c.l.sections.forEach((s,si)=>{
+    const sa=c.ar.sections[si];
+    html+=`<div class="sec type-${s.type}">`;
+    if(s.title) html+=`<h3>${esc(mode==='ar'?sa.title:s.title)}${mode==='both'?` <span class="b" style="font-weight:400;color:var(--muted);font-size:14px" dir="rtl">${esc(sa.title)}</span>`:''} ${pairBtns(s.title,sa.title)}</h3>`;
+    if(s.text) html+=`<div class="para"><div>${bi(s.text,sa.text)}</div>${pairBtns(s.text,sa.text)}</div>`;
+    (s.items||[]).forEach((it,ii)=>{
+      const ia=sa.items[ii]; const key=c.id+'/'+s.id+'/'+ii;
+      const lvl=it.level?` ${it.level}`:(s.type==='donts'?' danger':(s.type==='rules'||s.type==='steps')?' ok':'');
+      const tel = /\b(911|19911)\b/.exec(it.text||'') || /\b(911|19911)\b/.exec(ia.text||'');
+      const icon = s.type==='steps' ? (ii+1) : (it.icon||'•');
+      const chk = (s.type==='checklist'||s.type==='steps') ? `<div class="check ${done[key]?'done':''}" data-k="${key}">✓</div>` : '';
+      html+=`<div class="item${lvl}"><div class="ic">${icon}</div><div class="tx">${bi(it.text,ia.text)}${it.why?`<div class="why">${esc(mode==='ar'?ia.why:it.why)}</div>`:''}${tel?`<a class="call" href="tel:${tel[1]}">📞 ${tel[1]} <small>${tel[1]==='911'?'Emergency · طوارئ':'HRSD · وزارة الموارد البشرية'}</small></a>`:''}</div>${chk}${pairBtns(it.text,ia.text)}</div>`;
+    });
+    html+=`</div>`;
+  });
+  return html;
+}
+function open(i){
+  cur=i; document.getElementById('toc').classList.add('hidden');
+  const box=document.getElementById('chapters'); box.innerHTML=`<div class="chapter on" id="${D.chapters[i].id}">${renderChapter(i)}</div>`;
+  window.scrollTo(0,0); location.hash=D.chapters[i].id; updateProgress();
+}
+function home(){ cur=null; stopAll(); document.getElementById('chapters').innerHTML=''; document.getElementById('toc').classList.remove('hidden'); renderTOC(); location.hash=''; window.scrollTo(0,0); }
+function updateProgress(){ const n=Object.keys(done).length; document.getElementById('progress').textContent = n? `✓ ${n}`:''; }
+
+function stopAll(){ player.pause(); queue=[]; document.querySelectorAll('.play.playing').forEach(b=>b.classList.remove('playing')); }
+function play(text, lang, btn){
+  stopAll(); const s=src(text,lang); if(!s) return;
+  player.src=s; if(btn) btn.classList.add('playing');
+  player.onended=()=>{ if(btn) btn.classList.remove('playing'); next(); };
+  player.play().catch(()=>{});
+}
+function next(){ if(qi<queue.length){ const q=queue[qi++]; play(q.t,q.l,q.b); } }
+function readAll(){
+  if(cur===null) return; stopAll(); qi=0; queue=[];
+  document.querySelectorAll('#chapters .play:not(.na)').forEach(b=>{ if(mode==='both' && b.dataset.l==='ar') return; queue.push({t:b.dataset.t,l:b.dataset.l,b}); });
+  next();
+}
+
+document.addEventListener('click',e=>{
+  const p=e.target.closest('.play'); if(p){ if(p.classList.contains('playing')){stopAll();return;} queue=[]; play(p.dataset.t,p.dataset.l,p); return; }
+  const c=e.target.closest('.check'); if(c){ const k=c.dataset.k; if(done[k]) delete done[k]; else done[k]=1; c.classList.toggle('done'); localStorage.setItem(progressKey,JSON.stringify(done)); updateProgress(); return; }
+  const chip=e.target.closest('.chip'); if(chip){ mode=chip.dataset.mode; localStorage.setItem('gh.mode',mode); document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===chip)); if(cur===null) renderTOC(); else open(cur); }
+});
+document.getElementById('btnHome').onclick=home;
+document.getElementById('btnReadAll').onclick=readAll;
+document.getElementById('btnPrev').onclick=()=>{ if(cur>0) open(cur-1); else home(); };
+document.getElementById('btnNext').onclick=()=>{ if(cur===null) open(0); else if(cur<D.chapters.length-1) open(cur+1); };
+document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x.dataset.mode===mode));
+renderTOC(); updateProgress();
+const hid=location.hash.slice(1); const idx=D.chapters.findIndex(c=>c.id===hid); if(idx>=0) open(idx);
+// تسجيل service worker إن وُجد (للنسخة المستضافة)؛ النسخة المستقلة لا تحتاجه
+if('serviceWorker' in navigator && location.protocol.startsWith('http') && /(\/|\/index\.html)$/.test(location.pathname)){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+})();
+</script>
+</body>
+</html>
