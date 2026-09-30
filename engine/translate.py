@@ -16,6 +16,7 @@ translate.py — يترجم فصول content/ar/*.json إلى content/<lang>/*.j
 - الكلمات السعودية الخاصة (دلة، فنجال، كبسة، عباية، ثوب، شماغ، بخور، مجلس) تُنقل صوتياً + شرح بين قوسين أول مرة.
 """
 import json, os, sys, glob, time, urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LANGS = json.load(open(os.path.join(ROOT, "engine/languages.json"), encoding="utf-8"))
@@ -149,8 +150,12 @@ def main():
         if lang not in LANGS:
             print(f"unknown lang {lang}"); continue
         print(f"== {lang} ({LANGS[lang]['name']})")
-        for ch in chapters:
-            translate_chapter(ch, lang, force)
+        workers = int(os.environ.get("TRANSLATE_WORKERS", "4"))
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            futs = {ex.submit(translate_chapter, ch, lang, force): ch for ch in chapters}
+            for f in as_completed(futs):
+                try: f.result()
+                except Exception as e: print(f"!! {os.path.basename(futs[f])}: {e}", file=sys.stderr)
 
 
 if __name__ == "__main__":

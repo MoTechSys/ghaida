@@ -16,7 +16,8 @@ tts.py — يولّد ملف صوت لكل جملة في فصول لغة معي�
 المتطلبات: gsk CLI (مصادق تلقائياً في الساندبوكس) + ffmpeg.
 كل جملة = استدعاء واحد. الكاش يمنع إعادة التوليد. آمن للتشغيل المتكرر.
 """
-import json, os, sys, glob, hashlib, subprocess, tempfile, time
+import json, os, sys, glob, hashlib, subprocess, tempfile, time, threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LANGS = json.load(open(os.path.join(ROOT, "engine/languages.json"), encoding="utf-8"))
@@ -110,16 +111,27 @@ def main():
     print(f"[{lang}] sentences={len(sents)} cached={len(sents)-len(todo)} todo={len(todo)}")
     if dry: return
     total_bytes = sum(v["bytes"] for v in index.values())
-    for i, t in enumerate(todo, 1):
+    lock = threading.Lock(); done_n = [0]
+    workers = int(os.environ.get("TTS_WORKERS", "4"))
+
+    def work(t):
         out_mp3 = os.path.join(out_dir, h(t) + ".mp3")
-        try:
-            dur = gen_one(t, lang, out_mp3)
-        except Exception as e:
-            print(f"  !! {i}/{len(todo)} FAILED: {t[:50]} :: {e}", flush=True); continue
-        b = os.path.getsize(out_mp3); total_bytes += b
-        index[h(t)] = {"text": t, "duration_s": round(dur, 2), "bytes": b}
-        json.dump(index, open(idx_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-        print(f"  ok {i}/{len(todo)} {dur:.1f}s {b//1024}KB | {t[:60]}", flush=True)
+        dur = gen_one(t, lang, out_mp3)
+        return t, out_mp3, dur
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = [ex.submit(work, t) for t in todo]
+        for f in as_completed(futs):
+            try:
+                t, out_mp3, dur = f.result()
+            except Exception as e:
+                print(f"  !! FAILED :: {str(e)[:120]}", flush=True); continue
+            b = os.path.getsize(out_mp3)
+            with lock:
+                total_bytes += b; done_n[0] += 1
+                index[h(t)] = {"text": t, "duration_s": round(dur, 2), "bytes": b}
+                json.dump(index, open(idx_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+                print(f"  ok {done_n[0]}/{len(todo)} {dur:.1f}s {b//1024}KB | {t[:60]}", flush=True)
     print(f"[{lang}] done. total audio = {total_bytes/1024/1024:.2f} MB for {len(index)} clips")
 
 
