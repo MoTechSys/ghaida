@@ -84,6 +84,13 @@ D.crown = [poly([[4.2, 17.4], [3, 7.6], [8.1, 11.6], [12, 5.4], [15.9, 11.6], [2
 // 10) بيت
 D.house = [P(['M', 4, 10.6], ['L', 12, 4], ['L', 20, 10.6], ['L', 20, 20], ['C', 20, 20.6, 19.6, 21, 19, 21], ['L', 14.5, 21], ['L', 14.5, 15.2], ['L', 9.5, 15.2], ['L', 9.5, 21], ['L', 5, 21], ['C', 4.4, 21, 4, 20.6, 4, 20], ['Z'])];
 
+// ── شعار المنصة الرسمي: كتاب مفتوح داخل بيت = «كتاب البيت» (يُقرأ من 16px حتى 512px) ──
+export const BRAND = [
+  P(['M', 3.4, 10.4], ['L', 12, 3.4], ['L', 20.6, 10.4], ['L', 20.6, 19.6], ['C', 20.6, 20.4, 20, 21, 19.2, 21], ['L', 4.8, 21], ['C', 4, 21, 3.4, 20.4, 3.4, 19.6], ['Z']),
+  P(['M', 12, 12.4], ['C', 10.3, 11.3, 8.4, 11, 6.6, 11.4], ['L', 6.6, 18], ['C', 8.4, 17.6, 10.3, 17.9, 12, 19], ['C', 13.7, 17.9, 15.6, 17.6, 17.4, 18], ['L', 17.4, 11.4], ['C', 15.6, 11, 13.7, 11.3, 12, 12.4], ['Z']),
+  P(['M', 12, 12.4], ['L', 12, 19]),
+];
+
 // ── التسلسل والقياس ──
 const ser = (shapes) => shapes.map((sh) => sh.t === 'c' ? `<circle cx="${f(sh.cx)}" cy="${f(sh.cy)}" r="${f(sh.r)}"/>` : `<path d="${sh.segs.map((s) => s[0] + s.slice(1).map(f).join(' ')).join('')}"/>`).join('');
 const SW = 1.5, RES = 480;
@@ -107,5 +114,8 @@ export function buildEmblems() {
     out[k] = svg;
     report[k] = { scale: f(s), w: f(m2.w), h: f(m2.h), cx: f((m2.x0 + m2.x1) / 2), cy: f((m2.y0 + m2.y1) / 2), ink: +(m2.ink * 100).toFixed(1) };
   }
+  { const m = measure(ser(BRAND)); const sc = Math.min(MAXD / Math.max(m.w, m.h), GEO / Math.sqrt(m.w * m.h)) * 1.04; const cx = (m.x0 + m.x1) / 2, cy = (m.y0 + m.y1) / 2;
+    out.brand = ser(BRAND.map((sh) => mapShape(sh, (x, y) => [12 + (x - cx) * sc, 12 + (y - cy) * sc], sc)));
+    const m2 = measure(out.brand); report.brand = { scale: f(sc), w: f(m2.w), h: f(m2.h), cx: f((m2.x0 + m2.x1) / 2), cy: f((m2.y0 + m2.y1) / 2), ink: +(m2.ink * 100).toFixed(1) }; }
   return { svgs: out, report };
 }
