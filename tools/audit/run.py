@@ -33,14 +33,32 @@ async def audit(pg, name, shots):
     if shots: await pg.screenshot(path=f'/tmp/shots/audit-{name}.png', full_page=True)
     return {'page': name, 'issues': issues, 'fontSizes': r['fontSizes'], 'iconSizes': r['iconSizes'], 'boxes': sum(1 for i in r['items'] if i['k'] == 'box')}
 
+ADMIN = os.environ.get('ADMIN_TOKEN', '')
+EXTRA = []  # صفحات حالة الطلب: تُنشأ طلبات تجريبية لكل حالة (بانتظار الدفع / مسلَّم) عبر API إن توفّر رمز الإدارة
+def mk_orders():
+    import urllib.request
+    def req(m, path, body=None, auth=False):
+        r = urllib.request.Request(BASE + path, method=m, data=json.dumps(body).encode() if body is not None else None, headers={'content-type': 'application/json', **({'authorization': 'Bearer ' + ADMIN} if auth else {})})
+        with urllib.request.urlopen(r, timeout=120) as x: return json.loads(x.read())
+    o = {'plan': 'basic', 'langs': ['am'], 'workers': ['Almaz'], 'book_name': 'دليل بيت التدقيق', 'home_name': 'التدقيق', 'icon': 'flower', 'rules': [], 'schedule': {'start': '07:00', 'end': '20:30', 'breaks': [['10:00', '10:30'], ['13:30', '16:00'], ['19:30', '20:00']], 'rest_day': 5}, 'buyer_name': 'تدقيق', 'buyer_phone': '0555000000'}
+    a = req('POST', '/api/orders', o); EXTRA.append((a['url'], 'status-pay'))
+    if ADMIN:
+        d = req('POST', '/api/orders', o); req('POST', f"/api/admin/orders/{d['id']}/approve", {}, True); EXTRA.append((d['url'], 'status-done'))
+
 async def main():
     out = []; shots = '--shots' in sys.argv
+    try: mk_orders()
+    except Exception as e: print('status pages skipped:', e, file=sys.stderr)
     async with async_playwright() as p:
         b = await p.chromium.launch()
         for vk, (w, h) in VPS.items():
             pg = await b.new_page(viewport={'width': w, 'height': h})
-            for path, tag in [('/', 'land'), ('/order', 'order'), ('/privacy', 'priv')]:
+            for path, tag in [('/', 'land'), ('/order', 'order'), ('/privacy', 'priv'), ('/terms', 'terms')] + EXTRA:
                 await pg.goto(BASE + path, wait_until='networkidle'); out.append(await audit(pg, f'{tag}-{vk}', shots))
+            if ADMIN:  # لوحة الإدارة بعد الدخول (الكل)
+                await pg.goto(BASE + '/admin', wait_until='networkidle'); await pg.fill('#tk', ADMIN); await pg.click('#lg'); await pg.wait_for_timeout(1200)
+                await pg.click('[data-s=""]'); await pg.wait_for_timeout(1500); out.append(await audit(pg, f'admin-{vk}', shots))
+                await pg.evaluate("sessionStorage.clear()")
             if vk == 'd': continue
             ctx = await b.new_context(viewport={'width': w, 'height': h})
             bp = await ctx.new_page(); await bp.goto('file://' + os.path.abspath(BOOK)); await bp.wait_for_timeout(700)

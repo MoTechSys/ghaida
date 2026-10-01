@@ -35,7 +35,7 @@ const UI = ['house', 'book-open', 'calendar-days', 'messages-square', 'siren', '
   'check', 'x', 'info', 'smartphone', 'lock-keyhole', 'sun', 'moon', 'sun-moon', 'a-arrow-up', 'a-arrow-down', 'phone', 'phone-call', 'download', 'copy', 'share-2', 'qr-code', 'shield-check',
   'wifi-off', 'languages', 'circle-check', 'circle-x', 'triangle-alert', 'octagon-alert', 'badge-check', 'receipt', 'upload', 'clock', 'hourglass', 'sparkles', 'users-round', 'user-round',
   'heart-handshake', 'scale', 'list-checks', 'plus', 'minus', 'trash-2', 'search', 'link', 'external-link', 'file-down', 'eye', 'ban', 'refresh-cw', 'log-in', 'mic', 'headphones', 'gem', 'crown',
-  'feather', 'leaf', 'flower-2', 'tree-palm', 'moon-star', 'star', 'hand', 'shield', 'zap', 'gauge', 'monitor-smartphone', 'printer', 'mail', 'map-pin', 'banknote', 'landmark', 'party-popper', 'award', 'quote', 'briefcase-business', 'bed'];
+  'feather', 'leaf', 'flower-2', 'tree-palm', 'moon-star', 'star', 'hand', 'shield', 'zap', 'gauge', 'monitor-smartphone', 'printer', 'mail', 'map-pin', 'banknote', 'landmark', 'party-popper', 'award', 'quote', 'briefcase-business', 'bed', 'log-out'];
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'book/icons/map.json'), 'utf8'));
 const names = new Set([...UI, ...Object.entries(MAP).filter(([k, v]) => !k.startsWith('_') && !v.startsWith('#')).map(([, v]) => v)]);
 const sprite = {};
