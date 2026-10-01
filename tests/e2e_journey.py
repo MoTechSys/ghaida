@@ -62,7 +62,11 @@ async def main():
         btn = ad.locator(f'button[data-act=approve][data-id="{oid}"]')
         ok('الطلب ظاهر في لوحة الإدارة', await btn.count() == 1, oid)
         ad.on('dialog', lambda d: asyncio.ensure_future(d.accept()))
+        ok('لوحة الإدارة بلا تمرير أفقي على الجوال', not await ad.evaluate('document.documentElement.scrollWidth>innerWidth'))
         await btn.click(); await ad.wait_for_timeout(6000); await ad.screenshot(path='/tmp/shots/j-7-approved.png', full_page=True)
+        card = ad.locator('article.oc', has=ad.locator(f'text={oid}'))
+        ok('بعد الاعتماد: البطاقة تعرض الرمز ورابط الكتاب والملف', await card.locator('code').count() == 1 and await card.locator('a[href*="/b/"]').count() >= 1 and await card.locator('a[href*="/dl/"]').count() >= 1)
+        ok('الحالة بالعربي (لا كلمات إنجليزية خام)', 'delivered' not in (await card.inner_text()) and '["' not in (await card.inner_text()))
         print('5) التسليم')
         for _ in range(20):
             await pg.reload(wait_until='networkidle'); t = await pg.inner_text('#app')

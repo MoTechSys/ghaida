@@ -281,7 +281,12 @@ admin.get('/orders', async (c) => {
   const st = c.req.query('status');
   const q = st ? c.env.DB.prepare('SELECT * FROM orders WHERE status=? ORDER BY created_at DESC LIMIT 200').bind(st) : c.env.DB.prepare('SELECT * FROM orders ORDER BY created_at DESC LIMIT 200');
   const { results } = await q.all();
-  return c.json(results.map((o: any) => ({ ...o, akey: undefined, verify: o.verify ? JSON.parse(o.verify) : null })));
+  // للإدارة فقط: رابط صفحة الطلب ورابط الكتاب لكل لغة (نفس الروابط التي تصل العميلة — لا تغيير في المسارات)
+  return c.json(results.map((o: any) => {
+    const langs: string[] = JSON.parse(o.langs || '[]'), tok = o.token ? String(o.token).slice(2) : '';
+    return { ...o, akey: undefined, langs, verify: o.verify ? JSON.parse(o.verify) : null, order_url: `/o/${o.id}?k=${o.akey}`,
+      books: tok ? langs.map((l) => ({ lang: l, url: `/b/${tok}/${l}/`, dl: `/dl/${tok}/${l}` })) : [] };
+  }));
 });
 admin.get('/receipt/:id', async (c) => {
   const o: any = await c.env.DB.prepare('SELECT receipt_key FROM orders WHERE id=?').bind(c.req.param('id')).first();
