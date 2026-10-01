@@ -61,7 +61,7 @@ p{margin:0;text-wrap:pretty}
 ::selection{background:rgba(163,21,79,.18)}
 :focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:6px}
 .i{width:1.25em;height:1.25em;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.emb{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round}
+.emb{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 .wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut)}
 .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .skip{position:absolute;inset-inline-start:12px;top:-60px;z-index:100;background:var(--plum);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700}
@@ -106,7 +106,7 @@ p{margin:0;text-wrap:pretty}
 .logo .mk{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#EBD3A0;background:linear-gradient(145deg,#7A1844,#3A0A1F);box-shadow:inset 0 0 0 1px rgba(233,211,166,.35)}
 .logo .mk .emb{width:26px;height:26px}
 .logo b{display:block;font:700 1.3rem/1.1 var(--fH);color:var(--plum)}
-.logo small{display:block;font:600 .6rem/1 var(--fB);letter-spacing:.22em;color:var(--gold);margin-top:5px;direction:ltr;text-align:right}
+.logo small{display:block;font:600 .75rem/1 var(--fB);letter-spacing:.22em;color:var(--gold);margin-top:5px;direction:ltr;text-align:right}
 .nav{display:flex;gap:4px;margin-inline-start:auto}
 .nav a{color:var(--ink2);text-decoration:none;font-size:.95rem;padding:8px 14px;border-radius:999px;transition:color .2s,background .2s}
 .nav a:hover{color:var(--plum);background:var(--blush)}
@@ -146,7 +146,7 @@ input[type=time].in{direction:ltr;text-align:center;font-variant-numeric:tabular
 .ftr .logo b{color:#fff}.ftr .logo small{color:var(--champ)}
 .ftr .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:28px}
 .ftr h4{font:600 .95rem var(--fB);color:#fff;margin-bottom:10px}
-.ftr a{color:#D9C2CC;text-decoration:none;display:block;padding:3px 0}.ftr a:hover{color:var(--champ)}
+.ftr a{color:#D9C2CC;text-decoration:none;display:flex;align-items:center;min-height:44px}.ftr a:hover{color:var(--champ)}
 .ftr .cp{grid-column:1/-1;border-top:1px solid rgba(233,211,166,.15);padding-top:18px;margin-top:6px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.84rem;color:#B497A4}
 @media(max-width:760px){.ftr .wrap{grid-template-columns:1fr 1fr}.ftr .about{grid-column:1/-1}}
 
@@ -175,7 +175,7 @@ export function head(o: HeadOpts) {
 <meta name="theme-color" content="#FBF5F1"><meta name="color-scheme" content="light">
 <meta name="format-detection" content="telephone=no">
 <meta name="application-name" content="${BRAND.name}"><meta name="apple-mobile-web-app-title" content="${BRAND.name}">
-<link rel="icon" href="${A('/favicon.ico')}" sizes="16x16 32x32 48x48"><link rel="icon" href="${A('/brand/icon.svg')}" type="image/svg+xml">
+<link rel="icon" href="${A('/favicon.ico')}" sizes="16x16 32x32 48x48"><link rel="icon" href="${A('/brand/favicon.svg')}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="${A('/brand/apple-touch-icon.png')}" sizes="180x180"><link rel="manifest" href="/manifest.webmanifest">
 <meta property="og:type" content="${o.ogType || 'website'}"><meta property="og:site_name" content="${BRAND.name}"><meta property="og:locale" content="ar_SA">
 <meta property="og:title" content="${esc(o.title)}"><meta property="og:description" content="${esc(o.desc)}"><meta property="og:url" content="${esc(url)}">

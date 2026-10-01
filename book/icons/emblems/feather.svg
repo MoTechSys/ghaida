@@ -2,4 +2,4 @@
 <rect width="512" height="512" fill="url(#b)"/>
 <rect x="70" y="70" width="372" height="372" rx="64" fill="none" stroke="url(#g)" stroke-width="5"/>
 <rect x="84" y="84" width="344" height="344" rx="54" fill="none" stroke="url(#g)" stroke-opacity=".45" stroke-width="2"/>
-<g transform="translate(122.88 122.88) scale(11.093333333333334)" fill="none" stroke="url(#g)" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"><path d="M12.67 19a2 2 0 0 0 1.416-.588l6.154-6.172a6 6 0 0 0-8.49-8.49L5.586 9.914A2 2 0 0 0 5 11.328V18a1 1 0 0 0 1 1z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></g></svg>
+<g transform="translate(128 128) scale(10.666666666666666)" fill="none" stroke="url(#g)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.12 3.05C12.24 3.46 8.51 6.14 6.64 10.37C5.46 13.09 5.81 16.01 7.43 18.56C10.43 18.9 13.21 17.94 15.14 15.67C18.12 12.14 18.89 7.62 17.12 3.05Z"/><path d="M14.93 6.56L5.93 20.96"/><path d="M12.62 10.25L16.1 10.24"/><path d="M10.78 13.21L9.26 10.08"/><path d="M9.05 15.98L12.91 15.95"/></g></svg>

@@ -10,6 +10,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Resvg } from '@resvg/resvg-js';
 import { execFileSync } from 'node:child_process';
+import { buildEmblems } from './emblems.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -34,7 +35,7 @@ const UI = ['house', 'book-open', 'calendar-days', 'messages-square', 'siren', '
   'check', 'x', 'info', 'smartphone', 'lock-keyhole', 'sun', 'moon', 'sun-moon', 'a-arrow-up', 'a-arrow-down', 'phone', 'phone-call', 'download', 'copy', 'share-2', 'qr-code', 'shield-check',
   'wifi-off', 'languages', 'circle-check', 'circle-x', 'triangle-alert', 'octagon-alert', 'badge-check', 'receipt', 'upload', 'clock', 'hourglass', 'sparkles', 'users-round', 'user-round',
   'heart-handshake', 'scale', 'list-checks', 'plus', 'minus', 'trash-2', 'search', 'link', 'external-link', 'file-down', 'eye', 'ban', 'refresh-cw', 'log-in', 'mic', 'headphones', 'gem', 'crown',
-  'feather', 'leaf', 'flower-2', 'tree-palm', 'moon-star', 'star', 'hand', 'shield', 'zap', 'gauge', 'monitor-smartphone', 'printer', 'mail', 'map-pin', 'banknote', 'landmark', 'party-popper', 'award', 'quote'];
+  'feather', 'leaf', 'flower-2', 'tree-palm', 'moon-star', 'star', 'hand', 'shield', 'zap', 'gauge', 'monitor-smartphone', 'printer', 'mail', 'map-pin', 'banknote', 'landmark', 'party-popper', 'award', 'quote', 'briefcase-business', 'bed'];
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'book/icons/map.json'), 'utf8'));
 const names = new Set([...UI, ...Object.entries(MAP).filter(([k, v]) => !k.startsWith('_') && !v.startsWith('#')).map(([, v]) => v)]);
 const sprite = {};
@@ -50,9 +51,13 @@ console.log('sprite:', Object.keys(sprite).length, 'icons', (JSON.stringify(spri
 
 // ── 2) شعارات الكتاب ──
 const EMB = { arch: 'قوس البيت', star8: 'نجمة', palm: 'نخلة', moon: 'هلال', flower: 'زهرة', gem: 'جوهرة', feather: 'ريشة', crown: 'تاج', leaf: 'غصن', house: 'بيت' };
-const SRC = { palm: 'tree-palm', moon: 'moon-star', flower: 'flower-2', gem: 'gem', feather: 'feather', crown: 'crown', leaf: 'leaf', house: 'house' };
+// مجموعة موحّدة مرسومة ومطبَّعة رقمياً (tools/emblems.mjs): نفس الشبكة والحجم البصري والمركز وسماكة الخط
+const EM = buildEmblems();
+console.table(EM.report);
 const emblems = {};
-for (const [k, ar] of Object.entries(EMB)) emblems[k] = { ar, svg: CUSTOM[k] || sprite[SRC[k]] };
+for (const [k, ar] of Object.entries(EMB)) emblems[k] = { ar, svg: EM.svgs[k] };
+CUSTOM.arch = EM.svgs.arch; sprite.arch = EM.svgs.arch;
+w(path.join(ROOT, 'book/icons/sprite.json'), JSON.stringify(sprite));
 w(path.join(ROOT, 'book/icons/emblems.json'), JSON.stringify(emblems, null, 1));
 
 // ── 3) رسم PNG ──
@@ -63,12 +68,12 @@ const GOLD = `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0
 const BG = `<radialGradient id="b" cx=".5" cy=".18" r=".95"><stop offset="0" stop-color="#8A1A4A"/><stop offset=".55" stop-color="#5A1030"/><stop offset="1" stop-color="#2E0818"/></radialGradient>`;
 function appIcon(svgInner, { maskable = true } = {}) {
   // 512×512: خلفية سوداء دافئة + إطار ذهبي مزدوج + الشعار (داخل منطقة الأمان 80% للأيقونات القابلة للقص)
-  const s = maskable ? 0.52 : 0.6, off = (512 - 24 * (512 * s / 24)) / 2, sc = (512 * s) / 24;
+  const s = maskable ? 0.5 : 0.56, off = (512 - 24 * (512 * s / 24)) / 2, sc = (512 * s) / 24;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><defs>${GOLD}${BG}</defs>
 <rect width="512" height="512" fill="url(#b)"/>
 <rect x="${maskable ? 70 : 34}" y="${maskable ? 70 : 34}" width="${maskable ? 372 : 444}" height="${maskable ? 372 : 444}" rx="${maskable ? 64 : 84}" fill="none" stroke="url(#g)" stroke-width="5"/>
 <rect x="${maskable ? 84 : 48}" y="${maskable ? 84 : 48}" width="${maskable ? 344 : 416}" height="${maskable ? 344 : 416}" rx="${maskable ? 54 : 72}" fill="none" stroke="url(#g)" stroke-opacity=".45" stroke-width="2"/>
-<g transform="translate(${off} ${off}) scale(${sc})" fill="none" stroke="url(#g)" stroke-width="${maskable ? 1.15 : 1.05}" stroke-linecap="round" stroke-linejoin="round">${svgInner}</g></svg>`;
+<g transform="translate(${off} ${off}) scale(${sc})" fill="none" stroke="url(#g)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${svgInner}</g></svg>`;
 }
 for (const [k, e] of Object.entries(emblems)) {
   const svg = appIcon(e.svg);
@@ -86,18 +91,21 @@ w(path.join(PUB, 'brand/apple-touch-icon.png'), png(brandSvg, 180));
 w(path.join(PUB, 'brand/icon-192.png'), png(brandSvg, 192));
 w(path.join(PUB, 'brand/icon-512.png'), png(brandSvg, 512));
 w(path.join(PUB, 'brand/icon-maskable-512.png'), png(appIcon(CUSTOM.arch), 512));
-w(path.join(PUB, 'brand/favicon-32.png'), png(brandSvg, 32));
-w(path.join(PUB, 'brand/favicon-48.png'), png(brandSvg, 48));
+// favicon صغير: بلا إطار، شعار أكبر وخط أثقل ليُقرأ بوضوح على 16–48px
+const favSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><defs>${GOLD}${BG}</defs><rect width="64" height="64" rx="14" fill="url(#b)"/><g transform="translate(6.4 6.4) scale(2.133)" fill="none" stroke="url(#g)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g></svg>`;
+w(path.join(PUB, 'brand/favicon.svg'), favSvg);
+w(path.join(PUB, 'brand/favicon-32.png'), png(favSvg, 32));
+w(path.join(PUB, 'brand/favicon-48.png'), png(favSvg, 48));
 // favicon.ico (PNG داخل ICO — مدعوم في كل المتصفحات الحديثة)
 {
-  const imgs = [16, 32, 48].map((s) => png(brandSvg, s));
+  const imgs = [16, 32, 48].map((s) => png(favSvg, s));
   const head = Buffer.alloc(6 + 16 * imgs.length); head.writeUInt16LE(0, 0); head.writeUInt16LE(1, 2); head.writeUInt16LE(imgs.length, 4);
   let off = head.length;
   imgs.forEach((b, i) => { const s = [16, 32, 48][i]; const o = 6 + 16 * i; head[o] = s; head[o + 1] = s; head[o + 2] = 0; head[o + 3] = 0; head.writeUInt16LE(1, o + 4); head.writeUInt16LE(32, o + 6); head.writeUInt32LE(b.length, o + 8); head.writeUInt32LE(off, o + 12); off += b.length; });
   w(path.join(PUB, 'favicon.ico'), Buffer.concat([head, ...imgs]));
 }
 // شعار نصّي (للهيدر يُرسم بـCSS؛ هذا للمشاركة/الوثائق)
-const markInline = `<g fill="none" stroke="url(#g)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g>`;
+const markInline = `<g fill="none" stroke="url(#g)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g>`;
 w(path.join(PUB, 'brand/logo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs>${GOLD}</defs>${markInline}</svg>`);
 
 // ── 5) صورة الواجهة: AVIF/WebP/JPEG بعدة مقاسات (Python/Pillow — أسرع وأجود من أدوات node هنا) ──
@@ -112,7 +120,7 @@ const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" vi
 <rect x="18" y="18" width="1164" height="594" rx="18" fill="none" stroke="url(#g)" stroke-opacity=".5" stroke-width="2"/>
 <g filter="url(#sh)"><rect x="106" y="46" width="270" height="556" rx="44" fill="#1A0710"/></g>
 <image href="data:image/png;base64,${shot}" x="118" y="58" width="246" height="532" preserveAspectRatio="xMidYMin slice" clip-path="url(#sc)"/>
-<g transform="translate(1046 86) scale(2.9)" fill="none" stroke="url(#g)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g>
+<g transform="translate(1046 86) scale(2.9)" fill="none" stroke="url(#g)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g>
 <text x="1110" y="300" text-anchor="end" direction="rtl" font-family="Amiri" font-weight="700" font-size="100" fill="#FFFFFF">كتاب البيت</text>
 <text x="1110" y="372" text-anchor="end" direction="rtl" font-family="Amiri" font-size="40" fill="#F3E2BD">قواعد بيتك… بلغة عاملتك، وبصوت تسمعه</text>
 <text x="1110" y="430" text-anchor="end" direction="rtl" font-family="Noto Naskh Arabic" font-size="27" fill="#E9D3A6" fill-opacity=".85">نسخة باسم بيتك · تعمل بلا إنترنت · آيفون وأندرويد</text>
