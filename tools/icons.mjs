@@ -57,6 +57,8 @@ console.table(EM.report);
 const emblems = {};
 for (const [k, ar] of Object.entries(EMB)) emblems[k] = { ar, svg: EM.svgs[k] };
 CUSTOM.arch = EM.svgs.arch; sprite.arch = EM.svgs.arch;
+// شعار المنصة الرسمي (منفصل عن شعارات الكتب التي تختارها المشترية)
+const MARK = EM.svgs.brand; sprite.brand = MARK;
 w(path.join(ROOT, 'book/icons/sprite.json'), JSON.stringify(sprite));
 w(path.join(ROOT, 'book/icons/emblems.json'), JSON.stringify(emblems, null, 1));
 
@@ -85,14 +87,14 @@ console.log('emblems:', Object.keys(emblems).join(' '));
 
 // ── 4) هوية الموقع ──
 const PUB = path.join(ROOT, 'platform/public');
-const brandSvg = appIcon(CUSTOM.arch, { maskable: false });
+const brandSvg = appIcon(MARK, { maskable: false });
 w(path.join(PUB, 'brand/icon.svg'), brandSvg);
 w(path.join(PUB, 'brand/apple-touch-icon.png'), png(brandSvg, 180));
 w(path.join(PUB, 'brand/icon-192.png'), png(brandSvg, 192));
 w(path.join(PUB, 'brand/icon-512.png'), png(brandSvg, 512));
-w(path.join(PUB, 'brand/icon-maskable-512.png'), png(appIcon(CUSTOM.arch), 512));
+w(path.join(PUB, 'brand/icon-maskable-512.png'), png(appIcon(MARK), 512));
 // favicon صغير: بلا إطار، شعار أكبر وخط أثقل ليُقرأ بوضوح على 16–48px
-const favSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><defs>${GOLD}${BG}</defs><rect width="64" height="64" rx="14" fill="url(#b)"/><g transform="translate(6.4 6.4) scale(2.133)" fill="none" stroke="url(#g)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g></svg>`;
+const favSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><defs>${GOLD}${BG}</defs><rect width="64" height="64" rx="14" fill="url(#b)"/><g transform="translate(6.4 6.4) scale(2.133)" fill="none" stroke="url(#g)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">${MARK}</g></svg>`;
 w(path.join(PUB, 'brand/favicon.svg'), favSvg);
 w(path.join(PUB, 'brand/favicon-32.png'), png(favSvg, 32));
 w(path.join(PUB, 'brand/favicon-48.png'), png(favSvg, 48));
@@ -105,7 +107,7 @@ w(path.join(PUB, 'brand/favicon-48.png'), png(favSvg, 48));
   w(path.join(PUB, 'favicon.ico'), Buffer.concat([head, ...imgs]));
 }
 // شعار نصّي (للهيدر يُرسم بـCSS؛ هذا للمشاركة/الوثائق)
-const markInline = `<g fill="none" stroke="url(#g)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g>`;
+const markInline = `<g fill="none" stroke="url(#g)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${MARK}</g>`;
 w(path.join(PUB, 'brand/logo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs>${GOLD}</defs>${markInline}</svg>`);
 
 // ── 5) صورة الواجهة: AVIF/WebP/JPEG بعدة مقاسات (Python/Pillow — أسرع وأجود من أدوات node هنا) ──
@@ -120,7 +122,7 @@ const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" vi
 <rect x="18" y="18" width="1164" height="594" rx="18" fill="none" stroke="url(#g)" stroke-opacity=".5" stroke-width="2"/>
 <g filter="url(#sh)"><rect x="106" y="46" width="270" height="556" rx="44" fill="#1A0710"/></g>
 <image href="data:image/png;base64,${shot}" x="118" y="58" width="246" height="532" preserveAspectRatio="xMidYMin slice" clip-path="url(#sc)"/>
-<g transform="translate(1046 86) scale(2.9)" fill="none" stroke="url(#g)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g>
+<g transform="translate(1046 86) scale(2.9)" fill="none" stroke="url(#g)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${MARK}</g>
 <text x="1110" y="300" text-anchor="end" direction="rtl" font-family="Amiri" font-weight="700" font-size="100" fill="#FFFFFF">كتاب البيت</text>
 <text x="1110" y="372" text-anchor="end" direction="rtl" font-family="Amiri" font-size="40" fill="#F3E2BD">قواعد بيتك… بلغة عاملتك، وبصوت تسمعه</text>
 <text x="1110" y="430" text-anchor="end" direction="rtl" font-family="Noto Naskh Arabic" font-size="27" fill="#E9D3A6" fill-opacity=".85">نسخة باسم بيتك · تعمل بلا إنترنت · آيفون وأندرويد</text>

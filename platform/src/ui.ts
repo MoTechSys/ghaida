@@ -18,6 +18,8 @@ export class Icons {
     const k = EMBLEMS[key] ? key : 'arch'; this.used.add('e:' + k);
     return `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><use href="#e-${k}"/></svg>`;
   }
+  // شعار المنصة الرسمي (كتاب مفتوح داخل بيت) — منفصل عن شعارات الكتب
+  mark(cls = 'emb') { this.used.add('brand'); return `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-brand"/></svg>`; }
   sprite() {
     let s = '';
     for (const n of this.used) {
@@ -104,7 +106,7 @@ p{margin:0;text-wrap:pretty}
 .hdr .wrap{display:flex;align-items:center;gap:20px;height:66px}
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);flex:none}
 .logo .mk{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#EBD3A0;background:linear-gradient(145deg,#7A1844,#3A0A1F);box-shadow:inset 0 0 0 1px rgba(233,211,166,.35)}
-.logo .mk .emb{width:26px;height:26px}
+.logo .mk .emb{width:28px;height:28px;stroke-width:1.6}
 .logo b{display:block;font:700 1.3rem/1.1 var(--fH);color:var(--plum)}
 .logo small{display:block;font:600 .75rem/1 var(--fB);letter-spacing:.22em;color:var(--gold);margin-top:5px;direction:ltr;text-align:right}
 .nav{display:flex;gap:4px;margin-inline-start:auto}
@@ -188,7 +190,7 @@ ${heroPre}<style>${CSS}${o.css || ''}</style>${ld}
 
 export function header(ic: Icons, { nav = true, cta = true } = {}) {
   return `<a class="skip" href="#main">تخطّي إلى المحتوى</a><header class="hdr"><div class="wrap">
-<a class="logo" href="/" aria-label="${BRAND.name} — الرئيسية"><span class="mk">${ic.emb('arch')}</span><span><b>${BRAND.name}</b><small>${BRAND.latin}</small></span></a>
+<a class="logo" href="/" aria-label="${BRAND.name} — الرئيسية"><span class="mk">${ic.mark()}</span><span><b>${BRAND.name}</b><small>${BRAND.latin}</small></span></a>
 ${nav ? `<nav class="nav" aria-label="القائمة"><a href="/#features">المزايا</a><a href="/#sample">العيّنة</a><a href="/#how">كيف يعمل</a><a href="/#plans">الباقات</a><a href="/#faq">الأسئلة</a></nav>` : '<span style="margin-inline-start:auto"></span>'}
 ${cta ? `<a class="btn btn-gold btn-sm" href="/order">اطلبي كتابك</a>` : ''}</div></header>`;
 }
@@ -196,7 +198,7 @@ ${cta ? `<a class="btn btn-gold btn-sm" href="/order">اطلبي كتابك</a>`
 export function footer(ic: Icons, wa = '') {
   const y = new Date().getUTCFullYear();
   return `<footer class="ftr"><div class="wrap">
-<div class="about"><a class="logo" href="/" style="margin-bottom:12px"><span class="mk">${ic.emb('arch')}</span><span><b>${BRAND.name}</b><small>${BRAND.latin}</small></span></a>
+<div class="about"><a class="logo" href="/" style="margin-bottom:12px"><span class="mk">${ic.mark()}</span><span><b>${BRAND.name}</b><small>${BRAND.latin}</small></span></a>
 <p>كتاب تفاعلي فاخر يُصنع لكل بيت: قواعدكم وجدولكم بلغة عاملتكم وبصوتها — يعمل على أي جوال حتى بدون إنترنت.</p></div>
 <div><h4>الكتاب</h4><a href="/#features">المزايا</a><a href="/#sample">عيّنة مجانية</a><a href="/#plans">الباقات</a><a href="/order">اطلبي كتابك</a></div>
 <div><h4>المساعدة</h4><a href="/#faq">الأسئلة الشائعة</a><a href="/privacy">سياسة الخصوصية</a><a href="/terms">الشروط والترخيص</a>${wa ? `<a href="https://wa.me/${esc(wa)}" rel="noopener">واتساب</a>` : ''}</div>

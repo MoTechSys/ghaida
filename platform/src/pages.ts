@@ -126,7 +126,11 @@ export function landingPage({ plans, wa, origin }: any) {
 /* الختام */
 .final{text-align:center;padding-block:clamp(64px,9vw,104px);color:#F5E9EE;background:radial-gradient(80% 120% at 50% 0%,#8A1A4A,#5A1030 55%,#3A0A1F)}
 .final .eyebrow{color:var(--champ)}.final h2{font-size:clamp(2rem,4vw,3rem);color:#fff}.final h2 em{font-style:normal;color:var(--champ)}
-.final p{color:#E2CCD5;margin:14px auto 30px;max-width:560px}`;
+.final p{color:#E2CCD5;margin:14px auto 30px;max-width:560px}
+.fin-acts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.wa-fab{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom));inset-inline-start:18px;z-index:40;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:#1f9d55;color:#fff;box-shadow:0 10px 24px -8px rgba(0,0,0,.45)}
+.wa-fab .i{width:28px;height:28px}
+@media print{.wa-fab{display:none}}`;
 
   const feats: [string, string, string][] = [
     ['house', 'باسم بيتك', 'تختارين اسم الكتاب وشعاره — يظهر على شاشة جوالها كأنه كتاب خاص ببيتكم.'],
@@ -219,7 +223,8 @@ export function landingPage({ plans, wa, origin }: any) {
 
 <section class="final"><div class="wrap rv"><span class="eyebrow">${BRAND.name}</span><h2 style="margin-top:12px">بيت مرتّب يبدأ من <em>تفاهم واضح</em></h2>
   <p>اصنعي كتاب بيتك الآن، ويصل لعاملتك بلغتها وبصوتها.</p>
-  <a class="btn btn-champ" href="/order">اصنعي كتاب بيتك ${ic.i('arrow-left')}</a></div></section>`;
+  <div class="fin-acts"><a class="btn btn-champ" href="/order">اصنعي كتاب بيتك ${ic.i('arrow-left')}</a>${wa ? `<a class="btn btn-ghost-l" href="https://wa.me/${wa}?text=${encodeURIComponent('السلام عليكم، عندي سؤال عن كتاب البيت')}" rel="noopener">${ic.i('whatsapp')} اسألينا على واتساب</a>` : ''}</div></div></section>
+${wa ? `<a class="wa-fab" href="https://wa.me/${wa}?text=${encodeURIComponent('السلام عليكم، عندي سؤال عن كتاب البيت')}" rel="noopener" aria-label="تواصلي معنا على واتساب">${ic.i('whatsapp')}</a>` : ''}`;
 
   const org = { '@context': 'https://schema.org', '@type': 'Organization', '@id': origin + '/#org', name: BRAND.name, alternateName: 'Ghaida Home Book', url: origin + '/', logo: origin + A('/brand/icon-512.png'), areaServed: 'SA' };
   const site = { '@context': 'https://schema.org', '@type': 'WebSite', '@id': origin + '/#site', name: BRAND.name, url: origin + '/', inLanguage: 'ar-SA', publisher: { '@id': origin + '/#org' } };
@@ -400,7 +405,7 @@ function render(){var h='';
   '<div class="r"><span>الآيبان</span><span class="v">'+E(PAY.iban)+'</span><button class="cp" data-c="iban">'+I('copy')+'نسخ</button></div>'+
   '<div class="r"><span>المستفيد</span><span class="v ar">'+E(PAY.name)+'</span></div>'+(PAY.bank&&PAY.bank!=='—'?'<div class="r"><span>البنك</span><span class="v ar">'+E(PAY.bank)+'</span></div>':'')+
   '<div class="r"><span>اكتبي في الملاحظة</span><span class="v">'+E(O.id)+'</span><button class="cp" data-c="id">'+I('copy')+'نسخ</button></div></div>'+
-  '<label class="drop" id="drop"><input type="file" id="file" accept="image/*" hidden><span class="ib">'+I('upload')+'</span><b>ارفعي صورة إيصال التحويل</b><span class="muted" style="font-size:.9rem">لقطة شاشة من تطبيق البنك تكفي</span></label><div id="msg" class="note" style="min-height:26px"></div>'}
+  '<label class="drop" id="drop"><input type="file" id="file" accept="image/*" hidden><span class="ib">'+I('upload')+'</span><b>ارفعي صورة إيصال التحويل</b><span class="muted" style="font-size:.9rem">لقطة شاشة من تطبيق البنك تكفي</span></label><div id="msg" class="note" style="min-height:26px"></div>'+(WA?'<a class="btn btn-line btn-block" style="margin-top:6px" href="https://wa.me/'+WA+'?text='+encodeURIComponent('عندي سؤال عن الدفع — طلبي '+O.id)+'">'+I('whatsapp')+' سؤال عن الدفع؟ واتساب</a>':'')}
  else if(O.status==='review'||O.status==='paid'){h+='<div class="card"><div class="alert info">'+I('hourglass')+'<span><b>وصلنا إيصالك</b> — '+E(O.verify&&O.verify.reason||'نراجعه الآن')+'</span></div><div style="margin-top:12px">';
   if(O.verify&&O.verify.checks){Object.keys(O.verify.checks).forEach(function(k){var v=O.verify.checks[k];h+='<div class="chk"><span class="'+(v===true?'y':v===false?'n':'u')+'">'+I(v===true?'circle-check':v===false?'circle-x':'info')+'</span>'+(LBL[k]||k)+'</div>'})}
   h+='</div><p class="note">'+I('refresh-cw')+' هذه الصفحة تتحدّث تلقائياً — احفظي رابطها.</p>'+(WA?'<a class="btn btn-wa btn-block" style="margin-top:12px" href="https://wa.me/'+WA+'?text='+encodeURIComponent('طلبي '+O.id)+'">'+I('whatsapp')+' تواصلي معنا على واتساب</a>':'')+'</div>';setTimeout(poll,8000)}

@@ -7,5 +7,5 @@
   "assets": { "directory": "./public", "binding": "ASSETS" },
   "d1_databases": [{ "binding": "DB", "database_name": "ghaida-book-db", "database_id": "local-dev" }],
   "r2_buckets": [{ "binding": "R2", "bucket_name": "ghaida-book-r2" }],
-  "vars": { "PRICE_BASIC": "99", "PRICE_PLUS": "149", "VISION_MODEL": "gpt-5-mini", "AUTO_APPROVE": "off", "PAY_NAME": "غيداء", "PAY_BANK": "—", "PAY_IBAN": "SA03 8000 0000 6080 1016 7519", "WHATSAPP": "" }
+  "vars": { "PRICE_BASIC": "99", "PRICE_PLUS": "149", "VISION_MODEL": "gpt-5-mini", "AUTO_APPROVE": "off", "PAY_NAME": "غيداء", "PAY_BANK": "—", "PAY_IBAN": "SA03 8000 0000 6080 1016 7519", "WHATSAPP": "966555759803" }
 }
