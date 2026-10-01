@@ -73,7 +73,7 @@ def iconize(o):
 # أيقونات واجهة الكتاب الثابتة (القالب + app.js) — تُضمَّن دائماً
 UI_ICONS = ["house", "book-open", "calendar-days", "messages-square", "siren", "message-circle", "volume-2", "arrow-left", "arrow-right", "chevron-left", "chevron-right",
             "check", "x", "info", "smartphone", "lock-keyhole", "sun", "moon", "sun-moon", "a-arrow-up", "phone", "phone-call", "triangle-alert", "badge-check", "lightbulb",
-            "moon-star", "plus", "play", "star8", "sparkles"]
+            "moon-star", "plus", "play", "star8", "sparkles", "briefcase-business", "bed"]
 
 
 def sprite_svg(data, meta):

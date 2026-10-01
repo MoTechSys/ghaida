@@ -124,7 +124,7 @@
     window.scrollTo(0, 0);
   }
   function back() { if (!history_.length) return show('vHome', false); var h = history_.pop(); curCh = h[1]; show(h[0], false); }
-  function setTop(t, s) { $('tT').textContent = t; $('tS').textContent = s || ''; }
+  function setTop(t, s) { $('tT').textContent = t; $('tT').className = 't1' + (String(t).length > 14 ? ' long' : ''); $('tS').textContent = s || ''; $('tS').style.display = s ? '' : 'none'; }
 
   function render(v) {
     if (v === 'vHome') return renderHome();
@@ -148,23 +148,26 @@
     var r = 24, C = 2 * Math.PI * r, off = C * (1 - p / 100);
     return '<svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="' + r + '" stroke="rgba(233,211,166,.25)" stroke-width="5" fill="none"/><circle cx="30" cy="30" r="' + r + '" stroke="#E9D3A6" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 30 30)"/><text x="30" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" font-family="ui-monospace,Menlo,monospace">' + p + '%</text></svg>';
   }
+  // بطاقة الرئيسية: الصورة (الأيقونة) أولاً وكبيرة، ثم الاسم، ثم زر سماع الاسم — لمن لا تقرأ
   function tile(v, ic, k, extra, cls) {
-    return '<button class="tile ' + (cls || '') + '" data-go="' + v + '"' + (extra || '') + '><span class="ib">' + I(ic) + '</span><span class="tt L">' + esc(S(k)) + '</span><span class="ts L">' + esc(S(k + '_sub')) + '</span></button>';
+    var au = UIAU(k);
+    return '<div class="tile ' + (cls || '') + '"><button class="tgo" data-go="' + v + '"' + (extra || '') + '><span class="ib">' + I(ic) + '</span><span class="tx"><span class="tt L">' + esc(S(k)) + '</span><span class="ts L">' + esc(S(k + '_sub')) + '</span></span></button>'
+      + (au && au[0] ? pbtn(au[0], 'mini', S(k)) : '') + '</div>';
   }
   function renderHome() {
-    setTop(META.bookName, META.home ? (S('copy_of') + ' ' + META.home) : '');
+    setTop(META.bookName, '');
     var el = $('vHome'), p = overall(), h = '';
     h += installCard();
     h += '<div class="hero"><p class="hn L">' + esc(S('hello_name')) + (META.worker ? '، ' + esc(META.worker) : '') + '</p>'
       + '<div class="hs ar">' + esc(META.bookName) + '</div>'
-      + '<div class="ring">' + ring(p) + '<div class="pv L">' + esc(S('progress')) + ' ' + p + '%<br><span style="opacity:.8">' + D.chapters.length + ' ' + esc(S('chapters_count')) + '</span></div></div></div>';
+      + '<div class="ring">' + ring(p) + '<div class="pv L"><b>' + esc(S('progress')) + '</b><span>' + D.chapters.length + ' ' + esc(S('chapters_count')) + '</span></div></div></div>';
     h += '<div class="tiles">';
     h += tile('vBook', 'book-open', 'book');
     h += tile('vToday', 'calendar-days', 'today');
-    if (D.rules && D.rules.length) h += '<button class="tile" data-go="vChapter" data-ch="rules"><span class="ib">' + I('house') + '</span><span class="tt L">' + esc(S('house_rules')) + '</span><span class="ts L">' + esc(S('house_rules_sub')) + '</span></button>';
+    if (D.rules && D.rules.length) h += tile('vChapter', 'house', 'house_rules', ' data-ch="rules"');
     h += tile('vReplies', 'messages-square', 'replies');
     h += tile('vSOS', 'siren', 'emergency', '', 'sos wide');
-    h += '<button class="tile wide madam" data-go="vMadam"><span class="ib">' + I('message-circle') + '</span><span><span class="tt ar" style="display:block">' + esc(SA('for_madam')) + '</span><span class="ts ar" style="display:block">' + esc(SA('for_madam_sub')) + '</span></span></button>';
+    h += '<div class="tile wide madam"><button class="tgo" data-go="vMadam"><span class="ib">' + I('message-circle') + '</span><span class="tx"><span class="tt ar">' + esc(SA('for_madam')) + '</span><span class="ts ar">' + esc(SA('for_madam_sub')) + '</span></span></button></div>';
     h += '</div>';
     h += '<div class="wmline ar">' + esc(META.wm) + '</div>';
     el.innerHTML = h;
@@ -177,13 +180,15 @@
       sections: D.rules.map(function (cat) { return { type: 'rules', title: cat.title, titleAu: cat.au, items: cat.items }; }) };
   }
   function renderBook() {
-    setTop(S('book'), S('book_sub'));
+    setTop(S('book'), '');
     var h = '<div class="chlist">';
     allChapters().forEach(function (c, i) {
       var st = c.id === 'rules' ? null : chapterStats(c);
-      h += '<button class="chrow" data-ch="' + c.id + '"><span class="ib">' + ICN(c.icon) + '</span><span class="tx"><span class="tt ' + (MODE === 'ar' ? 'ar' : 'L') + '" style="display:block">' + esc(pick(c.title)) + '</span>'
+      var tau = c.titleAu || [], aid = MODE === 'ar' ? tau[1] : tau[0];
+      h += '<div class="chrow"><button class="cgo" data-ch="' + c.id + '"><span class="num">' + (i + 1) + '</span><span class="ib">' + ICN(c.icon) + '</span><span class="tx"><span class="tt ' + (MODE === 'ar' ? 'ar' : 'L') + '" style="display:block">' + esc(pick(c.title)) + '</span>'
         + (MODE === 'both' ? '<span class="ts ar" style="display:block">' + esc(c.title.ar) + '</span>' : '')
-        + (st ? '<span class="bar"><i style="width:' + Math.round(st.ok * 100 / st.tot) + '%"></i></span>' : '') + '</span><span class="num">' + (i + 1) + '</span></button>';
+        + (st ? '<span class="bar"><i style="width:' + Math.round(st.ok * 100 / st.tot) + '%"></i></span>' : '') + '</span></button>'
+        + (aid ? pbtn(aid, 'mini' + (MODE === 'ar' ? ' ar' : ''), pick(c.title)) : '') + '</div>';
     });
     $('vBook').innerHTML = h + '</div>';
   }
@@ -193,7 +198,7 @@
   function lvlTag(lv) { if (lv === 'danger') return '<span class="lvl">' + I('x') + esc(S('danger_word')) + '</span>'; if (lv === 'warn') return '<span class="lvl">' + I('triangle-alert') + esc(S('warn_word')) + '</span>'; return ''; }
   function renderChapter(i) {
     var list = allChapters(), c = list[i]; if (!c) return show('vBook');
-    setTop(pick(c.title), (i + 1) + ' / ' + list.length);
+    setTop(S('book'), (i + 1) + ' / ' + list.length);  // العنوان الكامل في رأس الفصل؛ الشريط يبيّن الموضع فقط
     var h = '<div class="chead"><div class="ib">' + ICN(c.icon) + '</div><div style="flex:1"><h2 class="' + (MODE === 'ar' ? 'ar' : 'L') + '">' + esc(pick(c.title)) + '</h2>'
       + (c.subtitle ? '<div class="sub ' + (MODE === 'ar' ? 'ar' : 'L') + '">' + esc(pick(c.subtitle)) + '</div>' : '')
       + (MODE === 'both' ? '<div class="sub ar">' + esc(c.title.ar) + '</div>' : '') + '</div>' + pair(c.titleAu) + '</div>';
@@ -232,11 +237,15 @@
     var p = String(t).split('\n'), h = parseInt(p[0], 10);
     return I(h >= 6 && h < 18 ? 'sun' : 'moon') + '<span>' + esc(p[0]) + '</span>' + (p[1] ? '<small>' + esc(p[1]) + '</small>' : '');
   }
+  function stat(ic, n, k, cls) {
+    var au = UIAU(k);
+    return '<button class="stat ' + (cls || '') + '"' + (au && au[0] ? ' data-say="' + au[0] + '"' : '') + ' aria-label="' + esc(S(k)) + '"><span class="ib">' + I(ic) + '</span><span class="sx"><b>' + n + '<small class="L">' + esc(S('hours')) + '</small></b><span class="L">' + esc(S(k)) + '</span></span>' + (au && au[0] ? '<span class="say">' + I('volume-2') + '</span>' : '') + '</button>';
+  }
   function renderToday() {
-    setTop(S('today'), S('today_sub'));
+    setTop(S('today'), '');
     var sc = D.schedule, h = '';
     if (sc) {
-      h += '<div class="stats"><div class="stat"><b>' + sc.workH + '</b><span class="L">' + esc(S('work_hours')) + '</span></div><div class="stat"><b>' + sc.restH + '</b><span class="L">' + esc(S('rest_hours')) + '</span></div></div>';
+      h += '<div class="stats">' + stat('briefcase-business', sc.workH, 'work_hours') + stat('bed', sc.restH, 'rest_hours', 'rest') + '</div>';
       h += '<div class="sched">';
       sc.rows.forEach(function (r) {
         h += '<div class="srow ' + (r.rest ? 'rest' : '') + '"><div class="tm">' + tm(r.time) + '</div><div class="x"><div class="a L">' + esc(S(r.k)) + '</div>' + (MODE !== 'l' ? '<div class="b ar">' + esc(SA(r.k)) + '</div>' : '') + (r.note ? '<div class="b ar">' + esc(r.note) + '</div>' : '') + '</div>' + pair(UIAU(r.k)) + '</div>';
@@ -250,10 +259,10 @@
 
   // ═══════════════ ردودي (العاملة → عربي مسموع) ═══════════════
   function renderReplies() {
-    setTop(S('replies'), S('replies_sub'));
+    setTop(S('replies'), '');
     var h = '<div class="hint">' + I('lightbulb') + '<span class="x L">' + esc(S('replies_hint')) + '</span>' + pair([UIAU('replies_hint') ? UIAU('replies_hint')[0] : null, null]) + '</div><div class="rgrid">';
     D.replies.forEach(function (r, i) {
-      h += '<button class="rbtn ' + (r.level || '') + '" data-reply="' + i + '"><span class="ic">' + ICN(r.icon) + '</span><span class="a L">' + esc(r.text.l) + '</span><span class="b ar">' + esc(r.text.ar) + '</span></button>';
+      h += '<button class="rbtn ' + (r.level || '') + '" data-reply="' + i + '"><span class="ic">' + ICN(r.icon) + '<span class="say">' + I('volume-2') + '</span></span><span class="a L">' + esc(r.text.l) + '</span><span class="b ar">' + esc(r.text.ar) + '</span></button>';
     });
     $('vReplies').innerHTML = h + '</div>';
   }
@@ -266,12 +275,12 @@
 
   // ═══════════════ قولي لعاملتك (ربة البيت → لغة العاملة) ═══════════════
   function renderMadam() {
-    setTop(SA('for_madam'), SA('for_madam_sub'));
+    setTop(SA('for_madam'), '');
     var h = '';
     (D.madam || []).forEach(function (grp) {
       h += '<div class="h2 ar">' + esc(grp.title.ar) + '</div><div class="rgrid">';
       grp.items.forEach(function (it) {
-        h += '<button class="rbtn" data-au2="' + (it.au[0] || '') + '" data-txt="' + esc(it.text.l) + '"><span class="ic">' + ICN(it.icon) + '</span><span class="a ar">' + esc(it.text.ar) + '</span><span class="b L">' + esc(it.text.l) + '</span></button>';
+        h += '<button class="rbtn" data-au2="' + (it.au[0] || '') + '" data-txt="' + esc(it.text.l) + '"><span class="ic">' + ICN(it.icon) + '<span class="say">' + I('volume-2') + '</span></span><span class="a ar">' + esc(it.text.ar) + '</span><span class="b L">' + esc(it.text.l) + '</span></button>';
       });
       h += '</div>';
     });
@@ -319,6 +328,7 @@
     function up(sel) { var n = e.target; while (n && n !== document) { if (n.matches ? n.matches(sel) : n.msMatchesSelector(sel)) return n; n = n.parentNode; } return null; }
     var b;
     if ((b = up('.play'))) { e.preventDefault(); e.stopPropagation(); if (b.classList.contains('on')) return stop(); queue = []; return play(b.getAttribute('data-au'), b); }
+    if ((b = up('[data-say]'))) { if (b.classList.contains('on')) return stop(); return play(b.getAttribute('data-say'), b); }
     if ((b = up('.chk'))) { var k = b.getAttribute('data-k'); if (done[k]) delete done[k]; else done[k] = 1; b.classList.toggle('on'); store.set(NS + 'done', done); return; }
     if ((b = up('[data-reply]'))) return speakReply(+b.getAttribute('data-reply'), b);
     if ((b = up('[data-au2]'))) { stop(); b.classList.add('on'); var sp = $('speak'); sp.className = 'speak L on'; sp.textContent = b.getAttribute('data-txt'); return play(b.getAttribute('data-au2'), null, function () { b.classList.remove('on'); setTimeout(function () { sp.classList.remove('on'); sp.className = 'speak ar'; }, 900); }); }

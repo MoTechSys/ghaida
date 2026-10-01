@@ -91,9 +91,10 @@ export function landingPage({ plans, wa, origin }: any) {
 @media(max-width:860px){.demo{grid-template-columns:1fr}.demo .phone{order:-1;max-width:300px}}
 /* الخطوات */
 .steps{counter-reset:s}
-.step{position:relative;padding-top:64px}
-.step:before{counter-increment:s;content:counter(s);position:absolute;top:20px;inset-inline-start:clamp(20px,2.6vw,28px);width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:700 1.15rem/1 var(--fH);background:var(--plum);color:var(--champ);box-shadow:0 0 0 5px var(--blush)}
-.step h3{font-size:1.2rem;color:var(--plum)}.step p{color:var(--muted);margin-top:6px;font-size:.96rem}
+.step{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:14px;align-items:start}
+.step .sn{grid-row:1/3;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:700 1.2rem/1 var(--fH);background:var(--plum);color:var(--champ);box-shadow:0 0 0 5px var(--blush)}
+.step h3{font-size:1.15rem;color:var(--plum);align-self:center;min-height:44px;display:flex;align-items:center}.step p{color:var(--muted);margin-top:2px;font-size:.96rem;grid-column:2}
+@media(min-width:981px){.step{grid-template-columns:1fr;row-gap:12px}.step .sn{grid-row:auto}.step p{grid-column:1}.step h3{min-height:0}}
 /* الباقات */
 .plans{max-width:900px;margin-inline:auto;align-items:stretch}
 .plan{display:flex;flex-direction:column;position:relative}
@@ -189,10 +190,10 @@ export function landingPage({ plans, wa, origin }: any) {
 <section class="sec" id="how" aria-labelledby="h-how"><div class="wrap">
   <div class="sh rv"><span class="eyebrow">أربع خطوات</span><h2 id="h-how">جاهز خلال دقائق</h2></div>
   <div class="grid g4 steps">
-    <div class="card step rv"><h3>اختاري لغتها</h3><p>واسم الكتاب وشعاره كما تحبين.</p></div>
-    <div class="card step rv"><h3>قواعد بيتك وجدولها</h3><p>اختاري من المكتبة، وحددي مواعيدها ويوم راحتها.</p></div>
-    <div class="card step rv"><h3>حوّلي وارفعي الإيصال</h3><p>يُقرأ آلياً ويُراجع، ثم يُجهَّز كتابك.</p></div>
-    <div class="card step rv"><h3>أرسليه لها</h3><p>رابط ورمز على واتساب، وملف احتياطي يعمل بلا إنترنت.</p></div>
+    <div class="card step rv"><span class="sn" aria-hidden="true">1</span><h3><span class="sr">الخطوة 1: </span>اختاري لغتها</h3><p>واسم الكتاب وشعاره كما تحبين.</p></div>
+    <div class="card step rv"><span class="sn" aria-hidden="true">2</span><h3><span class="sr">الخطوة 2: </span>قواعد بيتك وجدولها</h3><p>اختاري من المكتبة، وحددي مواعيدها ويوم راحتها.</p></div>
+    <div class="card step rv"><span class="sn" aria-hidden="true">3</span><h3><span class="sr">الخطوة 3: </span>حوّلي وارفعي الإيصال</h3><p>يُقرأ آلياً ويُراجع، ثم يُجهَّز كتابك.</p></div>
+    <div class="card step rv"><span class="sn" aria-hidden="true">4</span><h3><span class="sr">الخطوة 4: </span>أرسليه لها</h3><p>رابط ورمز على واتساب، وملف احتياطي يعمل بلا إنترنت.</p></div>
   </div>
 </div></section>
 
@@ -204,7 +205,7 @@ export function landingPage({ plans, wa, origin }: any) {
       <a class="btn btn-line btn-block" href="/order?plan=basic">اختاري هذه الباقة</a></div>
     <div class="card plan best rv"><span class="ribbon">الأنسب للبيوت الكبيرة</span><h3>${esc(plans.plus.label)}</h3><div class="pr"><b>${plans.plus.price}</b><span>ريال</span></div><p class="muted">لعاملتين — كلٌّ بلغتها</p>
       <ul><li>${ic.i('check')}كتابان — لكل عاملة بلغتها واسمها</li><li>${ic.i('check')}نفس قواعد البيت للجميع</li><li>${ic.i('check')}كل مزايا الكتاب الشخصي</li><li>${ic.i('check')}إعادة إصدار مجانية عند تغيير العاملة</li></ul>
-      <a class="btn btn-gold btn-block" href="/order?plan=plus">اختاري هذه الباقة</a></div>
+      <a class="btn btn-champ btn-block" href="/order?plan=plus">اختاري هذه الباقة</a></div>
   </div>
 </div></section>
 
@@ -247,12 +248,15 @@ export function orderPage({ catalog, plans, origin }: any) {
 .prog i{height:4px;border-radius:4px;background:var(--line2)}.prog i.on{background:var(--plum)}
 .pane{display:none}.pane.on{display:block;animation:f .35s var(--ease)}@keyframes f{from{opacity:0;transform:translateY(8px)}}
 .pane h2{font-size:1.5rem;color:var(--plum)}.pane>.muted{margin-top:6px}
-.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-.opt{display:flex;flex-direction:column;gap:2px;text-align:start;border:1px solid var(--line2);border-radius:var(--r2);background:#fff;color:var(--ink);padding:16px 18px;cursor:pointer;transition:border-color .2s,background .2s;min-height:72px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:10px}
+.opt{display:grid;grid-template-columns:22px minmax(0,1fr);grid-template-rows:auto auto;column-gap:12px;row-gap:2px;align-items:center;text-align:start;border:1px solid var(--line2);border-radius:var(--r2);background:#fff;color:var(--ink);padding:14px 16px;cursor:pointer;transition:border-color .2s,background .2s;min-height:64px}
+.opt:before{content:"";grid-row:1/3;width:22px;height:22px;border-radius:50%;border:2px solid var(--line2);box-sizing:border-box;transition:.2s}
+.opt[aria-pressed=true]:before{border:7px solid var(--plum)}
+.opt b,.opt span{grid-column:2}
 .opt:hover{border-color:var(--plum)}
 .opt[aria-pressed=true]{border-color:var(--plum);background:var(--blush);box-shadow:0 0 0 1px var(--plum) inset}
 .opt[aria-disabled=true]{opacity:.42;cursor:not-allowed}
-.opt b{font-size:1.08rem;color:var(--plum)}.opt span{font-size:.88rem;color:var(--muted)}
+.opt b{font-size:1.06rem;color:var(--plum);line-height:1.35}.opt span{font-size:.88rem;color:var(--muted);line-height:1.4}
 .embs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
 .embs button{aspect-ratio:1;border-radius:16px;border:1px solid var(--line2);background:#fff;color:var(--plum);display:grid;place-items:center;cursor:pointer;transition:.2s}
 .embs button .emb{width:46%;height:46%}

@@ -46,7 +46,7 @@ function b64(u8) { return GHC.b64enc(u8); }
 const LEGACY = { '🌸': 'flower', '🌷': 'flower', '🌺': 'flower', '🏡': 'house', '🏠': 'house', '🌙': 'moon', '⭐': 'star8', '🕊️': 'feather', '💎': 'gem', '🌿': 'leaf' };
 export const emblemKey = (P, k) => { k = LEGACY[k] || k; return P.emblems && P.emblems[k] ? k : 'arch'; };
 function iconsIn(o, acc) { if (Array.isArray(o)) o.forEach((v) => iconsIn(v, acc)); else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) { if (k === 'icon' && typeof v === 'string') acc.add(v); else iconsIn(v, acc); } return acc; }
-const UI_ICONS = ['house', 'book-open', 'calendar-days', 'messages-square', 'siren', 'message-circle', 'volume-2', 'arrow-left', 'arrow-right', 'chevron-left', 'chevron-right', 'check', 'x', 'info', 'smartphone', 'lock-keyhole', 'sun', 'moon', 'sun-moon', 'a-arrow-up', 'phone', 'phone-call', 'triangle-alert', 'badge-check', 'lightbulb', 'moon-star', 'plus', 'play', 'star8', 'sparkles'];
+const UI_ICONS = ['house', 'book-open', 'calendar-days', 'messages-square', 'siren', 'message-circle', 'volume-2', 'arrow-left', 'arrow-right', 'chevron-left', 'chevron-right', 'check', 'x', 'info', 'smartphone', 'lock-keyhole', 'sun', 'moon', 'sun-moon', 'a-arrow-up', 'phone', 'phone-call', 'triangle-alert', 'badge-check', 'lightbulb', 'moon-star', 'plus', 'play', 'star8', 'sparkles', 'briefcase-business', 'bed'];
 function spriteSvg(P, data, emb) {
   const used = iconsIn([data, P.sos], new Set(UI_ICONS)); const S = P.sprite || {};
   let sy = [...used].sort().filter((n) => S[n]).map((n) => `<symbol id="i-${n}" viewBox="0 0 24 24">${S[n]}</symbol>`).join('');
