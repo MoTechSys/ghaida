@@ -32,7 +32,8 @@ _main الحالي: انظر `git log --oneline | head -1`. لا PRs مفتوح�
 | #7 | 10-01 | تدقيق بكسلي مُقاس (350 ← 0 عيب)، شعارات موحّدة رياضياً، «أيقونة + كلمة + صوت» لغير القارئات، 13 نصاً واجهة أصبحت منطوقة (ADR-022) |
 | #8 | 10-01 | شعار المنصة الرسمي «كتاب داخل بيت»، واتساب 966555759803، إيصالات اختبار، اختبار رحلة كاملة، دليل التجربة (ADR-023) |
 | #9 | 10-01 | **لوحة الإدارة للجوال**: بطاقات بدل الجدول، حالات عربية، فلاتر KPI + بحث، رابط الطلب/الكتاب/الملف/الرمز لكل طلب، الإيصال داخل البطاقة، تنبيهات؛ إصلاحات صفحة الطلب؛ التدقيق يشمل الإدارة وصفحات الحالة |
-| (هذا) | 10-01 | توثيق شامل: AGENTS / README / HANDOFF / RUNBOOK + Release الصوت `audio-v0.3` |
+| #10 | 10-01 | توثيق شامل: AGENTS / README / HANDOFF / RUNBOOK + Release الصوت `audio-v0.3` |
+| #11 | 10-01 | `docs/ARCHITECTURE.md`: كيف يعمل كل شيء من الداخل + خريطة كل ملف (مصدر/مولَّد/خارج git) + كل متغيرات البيئة |
 
 ## 🌐 المنصة — الصفحات والـAPI (لا تغيّر المسارات)
 | المسار | الغرض |
@@ -46,7 +47,7 @@ _main الحالي: انظر `git log --oneline | head -1`. لا PRs مفتوح�
 | `GET /api/catalog` · `POST /api/schedule/check` · `POST /api/orders` · `POST /api/orders/:id/receipt` | عامة |
 | `/api/admin/*` (Bearer ADMIN_TOKEN): `GET orders` (يعيد `langs`, `order_url`, `books[{lang,url,dl}]`) · `GET receipt/:id` · `POST orders/:id/{approve,reject,revoke,reissue}` · `POST trace` · `GET stats` | إدارة |
 
-**قاعدة البيانات D1**: جدولا `orders` و `events` (يُنشآن تلقائياً في `platform/src/index.ts`).
+**قاعدة البيانات D1**: جدولا `orders` و `events` (يُنشآن تلقائياً في `platform/src/index.ts`) — الأعمدة وحالات الطلب وفحوص الإيصال والتشفير بالتفصيل في `docs/ARCHITECTURE.md`.
 **R2**: `packs/template.html`, `packs/catalog.json`, `packs/<lang>/{pack.json,fonts.json,a/*}` + الإيصالات.
 **vars** (`wrangler.jsonc`): `PRICE_BASIC=99`, `PRICE_PLUS=149`, `VISION_MODEL=gpt-5-mini`, `AUTO_APPROVE=off`, `PAY_NAME=غيداء`, `PAY_BANK=—`, `PAY_IBAN=<تجريبي>`, `WHATSAPP=966555759803`.
 **أسرار** (`platform/.dev.vars` محلياً، `secret_put` في الإنتاج): `ADMIN_TOKEN`, `OPENAI_API_KEY`, `OPENAI_BASE_URL`.

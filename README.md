@@ -4,7 +4,7 @@
 
 **الحالة (2026-10-01)**: المحرك v2 + منصة البيع + لوحة الإدارة (للجوال) جاهزة ومختبرة آلياً — رحلة كاملة 17/17، API 27/27، الكتاب 25+29+18، بلا إنترنت ✓، هجوم ✓، تدقيق بكسلي 35 صفحة **CLEAN**. الأمهرية كاملة. التالي: بيانات البنك الحقيقية ← النشر ← أجهزة حقيقية ← لغات إضافية.
 
-**وكيل/مطوّر جديد؟** ابدأ بـ [`AGENTS.md`](AGENTS.md) ثم [`docs/HANDOFF.md`](docs/HANDOFF.md).
+**وكيل/مطوّر جديد؟** ابدأ بـ [`AGENTS.md`](AGENTS.md) ← [`docs/HANDOFF.md`](docs/HANDOFF.md) ← [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## كيف يعمل
 ```
@@ -26,7 +26,7 @@ book/templates/        book2.html (القالب) · book/icons (sprite + شعا�
 platform/              منصة البيع: Hono + Cloudflare Workers + D1 + R2 (src/index.ts · pages.ts · ui.ts)
 tools/                 emblems.mjs · icons.mjs · shots.py · images.py · audit/ · test_receipts.py
 tests/                 e2e_journey · e2e_platform · e2e_pwa_offline · e2e_book · attack_test
-docs/                  HANDOFF · DECISIONS (ADR-001..023) · RUNBOOK · DESIGN_SYSTEM · UI_AUDIT · TESTING_GUIDE · PERFORMANCE_SEO · RESEARCH_AUDIT
+docs/                  HANDOFF · ARCHITECTURE · DECISIONS (ADR-001..023) · RUNBOOK · DESIGN_SYSTEM · UI_AUDIT · TESTING_GUIDE · PERFORMANCE_SEO · RESEARCH_AUDIT
 _analysis/             النية الأصلية والبحث
 ```
 الصوت خارج git: GitHub Release [`audio-v0.3`](https://github.com/MoTechSys/ghaida/releases/tag/audio-v0.3).

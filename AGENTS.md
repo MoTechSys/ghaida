@@ -1,6 +1,6 @@
 # AGENTS.md — دليل الوكيل الجديد (ابدأ من هنا)
 
-> إذا كنت وكيل ذكاء اصطناعي أو مطوّراً جديداً على هذا المستودع: اقرأ هذا الملف كاملاً، ثم `docs/HANDOFF.md`.
+> إذا كنت وكيل ذكاء اصطناعي أو مطوّراً جديداً على هذا المستودع: اقرأ هذا الملف كاملاً، ثم `docs/HANDOFF.md`، ثم `docs/ARCHITECTURE.md` قبل تعديل أي كود.
 > هذان الملفان يكفيان لتعرف **ما هو المنتج، ما الذي بُني، أين كل شيء، كيف تشغّله وتختبره، وما المتبقي**.
 > آخر تحديث: 2026-10-01 (بعد PR #9). المرجع الأحدث دائماً: `git log --oneline | head`.
 
@@ -48,6 +48,7 @@ docs/
   HANDOFF.md          ← الحالة الآن + تاريخ الجلسات + المتبقي (حدّثه في نهاية كل جلسة!)
   DECISIONS.md        ← ADR-001..023
   RUNBOOK.md          ← كل الأوامر
+  ARCHITECTURE.md     ← من الداخل: تدفق البيانات، D1، حالات الطلب، فحوص الإيصال، التشفير، الحزمة، متغيرات البيئة، خريطة كل ملف (مصدر/مولَّد)
   DESIGN_SYSTEM.md    ← الألوان/الخطوط/المسافات/قواعد التدقيق
   UI_AUDIT.md         ← منهجية وأرقام التدقيق البكسلي (§1–7)
   TESTING_GUIDE.md    ← دليل التجربة اليدوية لرحلة الطلب (للمالكة)
@@ -72,13 +73,14 @@ book/
   core/assemble.js    ← مجمّع الكتاب على الخادم · make-esm.mjs (ينسخ core للمنصة: npm run core)
   templates/book2.html← القالب (CSS + هيكل)   · book.html (v1 قديم)
   icons/sprite.json, emblems.json, emblems/  ← مولّدة من tools/icons.mjs
-  fonts/              ← خطوط مضمّنة (subset)
+  fonts/              ← خطوط مضمّنة (subset، طريقة الاقتطاع في fonts/README.md)
+  icons/map.json      ← إيموجي المصدر ← اسم أيقونة Lucide (مصدر)
 platform/             ← منصة البيع
   src/index.ts        ← المسارات + API + D1 schema + التحقق من الإيصال + الإدارة
   src/pages.ts        ← كل الصفحات (الرئيسية، /order، /o/:id، /admin، الخصوصية، الشروط)
   src/ui.ts           ← التصميم المشترك (CSS tokens، الرأس/التذييل، Icons.mark())
   src/assets.gen.ts   ← مولّد (sprite + emblems) — لا تعدّله يدوياً
-  src/qrlib.ts        ← QR
+  src/qrlib.ts        ← QR (مولّد: npm run gen:qr ← scripts_gen.mjs)
   public/             ← brand/, emblems/, img/, fonts/, favicon.ico, _headers, samples/ (العيّنة؛ خارج git)
   packs/              ← حزم اللغات (خارج git؛ تولّدها export_pack.py)
   .keys/<lang>.ak     ← مفتاح صوت اللغة (خارج git، سرّي)
@@ -88,6 +90,7 @@ platform/             ← منصة البيع
 tools/                ← أدوات بناء غير حيّة
   emblems.mjs         ← رسم الشعارات + التطبيع الرياضي + BRAND
   icons.mjs           ← sprite (182 أيقونة) + favicon + أيقونات PWA + OG → book/icons + platform
+  src/fonts/*.ttf     ← خطوط رسم PNG/OG · src/shots/*.png ← لقطات (مولّدة)
   shots.py, images.py ← لقطات حقيقية من كتاب العرض → AVIF/WebP/PNG لصفحة البيع
   audit/run.py + audit.js + report.json ← التدقيق البكسلي
   test_receipts.py    ← إيصالات اختبار → test-assets/ (خارج git)
@@ -122,7 +125,7 @@ cd tools && npm i && node icons.mjs && cd .. && python3 engine/build_book2.py am
 10. التقرير لمعين: عربي، قصير، نتائج + روابط (معاينة، PR).
 
 ## 7. بداية جلسة جديدة (Checklist)
-- [ ] `cat AGENTS.md docs/HANDOFF.md` ← `git log --oneline | head` ← `git status` ← `gh pr list`
+- [ ] `cat AGENTS.md docs/HANDOFF.md docs/ARCHITECTURE.md` ← `git log --oneline | head` ← `git status` ← `gh pr list`
 - [ ] استعادة الصوت (أول مرة في ساندبوكس جديد) — الأمر في HANDOFF §«أول أوامر».
 - [ ] `python3 engine/tts.py ar --dry && python3 engine/tts.py am --dry` ← يجب `todo=0`
 - [ ] شغّل المنصة (background) ← `GetServiceUrl 8787` ← أعطِ الرابط
