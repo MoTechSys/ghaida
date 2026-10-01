@@ -21,8 +21,8 @@ export function zwDecode(t) {
   return GHC.utf8dec(new Uint8Array(out));
 }
 const hm = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-// 24 ساعة + ☀️/🌙 — الساعة الإثيوبية مزاحة 6 ساعات، فالصيغة 12 ساعة بلا ص/م مُلبسة جداً
-const fmt12 = (t) => { const [h, m] = t.split(':').map(Number); return `${h >= 6 && h < 18 ? '☀️' : '🌙'} ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`; };
+// 24 ساعة (الساعة الإثيوبية مزاحة 6 ساعات، فصيغة 12 ساعة بلا ص/م مُلبسة) — الواجهة تضيف أيقونة شمس/قمر
+const fmt12 = (t) => { const [h, m] = t.split(':').map(Number); return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`; };
 const hrs = (m) => (m % 60 === 0 ? String(m / 60) : (m / 60).toFixed(1));
 
 /** يتحقق من الجدول مقابل حدود النظام (لائحة العمالة المنزلية م10). يرمي خطأ عربي واضح. */
@@ -37,12 +37,22 @@ export function buildSchedule(sc, L) {
   const rest = 24 * 60 - (end - start);
   if (rest < L.min_daily_rest_hours * 60) throw new Error(`الراحة الليلية ${hrs(rest)} ساعة — الحد الأدنى ${L.min_daily_rest_hours} ساعات متواصلة.`);
   const rows = [{ time: fmt12(sc.start), k: 'sched_start' }];
-  for (const [a, b] of (sc.breaks || [])) rows.push({ time: `${fmt12(a)}\n${fmt12(b).slice(-5)}`, k: hm(b) - hm(a) >= 60 ? 'sched_meal' : 'sched_break', rest: true });
+  for (const [a, b] of (sc.breaks || [])) rows.push({ time: `${fmt12(a)}\n${fmt12(b)}`, k: hm(b) - hm(a) >= 60 ? 'sched_meal' : 'sched_break', rest: true });
   rows.push({ time: fmt12(sc.end), k: 'sched_end' });
   return { rows, workH: hrs(work), restH: hrs(rest), restDay: Number(sc.rest_day ?? 5) };
 }
 
 function b64(u8) { return GHC.b64enc(u8); }
+const LEGACY = { '🌸': 'flower', '🌷': 'flower', '🌺': 'flower', '🏡': 'house', '🏠': 'house', '🌙': 'moon', '⭐': 'star8', '🕊️': 'feather', '💎': 'gem', '🌿': 'leaf' };
+export const emblemKey = (P, k) => { k = LEGACY[k] || k; return P.emblems && P.emblems[k] ? k : 'arch'; };
+function iconsIn(o, acc) { if (Array.isArray(o)) o.forEach((v) => iconsIn(v, acc)); else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) { if (k === 'icon' && typeof v === 'string') acc.add(v); else iconsIn(v, acc); } return acc; }
+const UI_ICONS = ['house', 'book-open', 'calendar-days', 'messages-square', 'siren', 'message-circle', 'volume-2', 'arrow-left', 'arrow-right', 'chevron-left', 'chevron-right', 'check', 'x', 'info', 'smartphone', 'lock-keyhole', 'sun', 'moon', 'sun-moon', 'a-arrow-up', 'phone', 'phone-call', 'triangle-alert', 'badge-check', 'lightbulb', 'moon-star', 'plus', 'play', 'star8', 'sparkles'];
+function spriteSvg(P, data, emb) {
+  const used = iconsIn([data, P.sos], new Set(UI_ICONS)); const S = P.sprite || {};
+  let sy = [...used].sort().filter((n) => S[n]).map((n) => `<symbol id="i-${n}" viewBox="0 0 24 24">${S[n]}</symbol>`).join('');
+  sy += `<symbol id="e-${emb}" viewBox="0 0 24 24">${(P.emblems || {})[emb] || ''}</symbol>`;
+  return `<svg width="0" height="0" style="position:absolute" aria-hidden="true">${sy}</svg>`;
+}
 function hex(u8) { return GHC.hex(u8); }
 
 export function assemble({ pack, template, fonts, order, audio, pwa = false, rand }) {
@@ -66,7 +76,7 @@ export function assemble({ pack, template, fonts, order, audio, pwa = false, ran
   const check = hex(GHC.hmac(keys.mac, GHC.utf8('ghaida-check'))).slice(0, 16);
   const meta = {
     id: `${oid}-${P.lang}`.toLowerCase(), lang: P.lang, dir: P.dir, flagShort: P.flagShort,
-    bookName: order.book_name || 'كتاب البيت', home, worker: order.worker_name || '', icon: order.icon || '🏠', wm,
+    bookName: order.book_name || 'كتاب البيت', home, worker: order.worker_name || '', icon: emblemKey(P, order.icon), wm,
     madamPhone: order.madam_phone || '',
     ui0: Object.fromEntries(['welcome', 'welcome_sub', 'start', 'listen', 'made_for', 'unlock_title', 'unlock_hint', 'unlock_btn', 'wrong_code', 'emergency', 'audio_loading', 'call_madam', 'home', 'book', 'today', 'replies'].map((k) => [k, ui[k]])),
     sw: pwa ? 'sw.js' : null, audio: {}, sos: P.sos,
@@ -80,10 +90,10 @@ export function assemble({ pack, template, fonts, order, audio, pwa = false, ran
     meta.audio[g] = m;
   }
   const lic = `© غيداء — كتاب البيت. نسخة مرخّصة شخصياً: ${home} · رقم الطلب ${oid}. يُمنع بيع هذه النسخة أو نشرها أو تعديلها أو إعادة توزيعها. كل نسخة تحمل بصمة فريدة تكشف مصدرها. LICENSE: personal, non-transferable. Redistribution, resale or derivative works are prohibited.`;
-  const iconSvg = 'data:image/svg+xml;base64,' + b64(GHC.utf8(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#5A1030'/><rect x='8' y='8' width='84' height='84' rx='17' fill='none' stroke='#C9A86A' stroke-width='2'/><text x='50' y='64' font-size='44' text-anchor='middle'>${meta.icon}</text></svg>`));
+  const iconSvg = 'data:image/svg+xml;base64,' + b64(GHC.utf8(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#0E0C09'/><rect x='7' y='7' width='86' height='86' rx='17' fill='none' stroke='#C9A45C' stroke-width='2'/><g transform='translate(26 26) scale(2)' fill='none' stroke='#D9B873' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'>${(P.emblems || {})[meta.icon] || ''}</g></svg>`));
   const rep = {
     '{{LANG}}': P.lang, '{{DIR}}': P.dir, '{{BOOK_NAME}}': esc(meta.bookName), '{{BOOK_NAME_ATTR}}': esc(meta.bookName.slice(0, 22)),
-    '{{LICENSE_HEADER}}': lic.replace(/--/g, '—'), '{{CV_MADE}}': esc(ui.made_for.l), '{{ICON}}': esc(meta.icon), '{{FONT_STACK}}': P.fontStack,
+    '{{LICENSE_HEADER}}': lic.replace(/--/g, '—'), '{{CV_MADE}}': esc(ui.made_for.l), '{{EMBLEM}}': `<svg class="emb" viewBox="0 0 24 24" aria-hidden="true"><use href="#e-${meta.icon}"/></svg>`, '{{SPRITE}}': spriteSvg(P, data, meta.icon), '{{FONT_STACK}}': P.fontStack,
     '{{FONT_FACES}}': (fonts.ar || '') + (fonts[P.lang] || ''), '{{ICON_DATA}}': iconSvg, '{{ICON_PNG}}': pwa ? 'icon-180.png' : iconSvg,
     '{{MANIFEST_LINK}}': pwa ? '<link rel="manifest" href="manifest.webmanifest">' : '',
     '{{META_JSON}}': JSON.stringify(meta).replace(/<\//g, '<\\/'), '{{PAYLOAD}}': b64(sealed.ct), '{{AUDIO_BLOCKS}}': blocks.join('\n'),
@@ -95,8 +105,8 @@ export function assemble({ pack, template, fonts, order, audio, pwa = false, ran
 
 export function manifest(order, base) {
   const name = order.book_name || 'كتاب البيت';
-  return { name, short_name: name.slice(0, 12), start_url: base + 'index.html', scope: base, display: 'standalone', background_color: '#3d0a20', theme_color: '#5A1030', dir: 'rtl', lang: 'ar',
-    icons: [{ src: 'icon-180.png', sizes: '180x180', type: 'image/png' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }] };
+  return { name, short_name: name.slice(0, 12), start_url: base + 'index.html', scope: base, display: 'standalone', background_color: '#0A0907', theme_color: '#0A0907', dir: 'rtl', lang: 'ar',
+    icons: [{ src: 'icon-180.png', sizes: '180x180', type: 'image/png' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }] };
 }
 
 export function serviceWorker(ver, files) {

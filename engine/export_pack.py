@@ -18,6 +18,17 @@ from common import ROOT, LANGS, jload, chapter_files
 OUT = os.path.join(ROOT, "platform", "packs")
 
 
+def icons_in(o, acc=None):
+    acc = set() if acc is None else acc
+    if isinstance(o, dict):
+        for k, v in o.items():
+            if k == "icon" and isinstance(v, str): acc.add(v)
+            else: icons_in(v, acc)
+    elif isinstance(o, list):
+        for v in o: icons_in(v, acc)
+    return acc
+
+
 def export(lang):
     B.LANG_CUR = lang
     ap = B.AudioPack()
@@ -32,6 +43,7 @@ def export(lang):
     replies = B.build_replies(lang, ap)
     country = jload(os.path.join(ROOT, "content/country/sa.json"))
     sos = B.sos_block(lang, chapters, ui, country)
+    B.iconize(chapters); B.iconize(rules_all); B.iconize(replies); B.iconize(sos)
     d = os.path.join(OUT, lang); shutil.rmtree(d, ignore_errors=True); os.makedirs(os.path.join(d, "a"))
     # مجموعة الطوارئ المكشوفة (نسخة من مقاطع الطوارئ) — تعمل قبل إدخال الرمز
     sos_ids = sorted({x for sec in sos["sections"] for it in sec["items"] for x in it["au"] if x})
@@ -54,15 +66,15 @@ def export(lang):
         open(os.path.join(d, "a", fn + ".bin"), "wb").write(buf)
         open(os.path.join(d, "a", fn + ".b64"), "w").write(base64.b64encode(buf).decode())
         groups[g] = {"file": fn, "nonce": nonce, "clips": clips, "size": len(buf)}
-    icon = B.icon_png("x", 180); icon512 = B.icon_png("x", 512)
-    if icon:
-        open(os.path.join(d, "icon-180.png"), "wb").write(icon); open(os.path.join(d, "icon-512.png"), "wb").write(icon512)
     L = LANGS[lang]
     pack = {"lang": lang, "dir": L["dir"], "native": L["native"], "name": L["name"], "flagShort": B.FLAG_SHORT.get(lang, lang.upper()),
             "fontStack": B.FONT_STACK.get(lang, B.DEFAULT_STACK), "ui": ui, "chapters": chapters, "rules": rules_all,
             "ruleDefaults": defaults, "replies": replies, "sos": sos, "madam": B.build_madam(chapters), "groups": groups,
             "missing": ap.missing, "ak": ak.hex(), "limits": country["limits"], "emergency": country["emergency"],
-            "built": time.strftime("%Y-%m-%d %H:%M")}
+            "built": time.strftime("%Y-%m-%d %H:%M"),
+            # للخادم: رموز SVG لكل الأيقونات المستخدمة في الحزمة + الشعارات (assemble.js يبني sprite الكتاب منها)
+            "sprite": {n: B.SPRITE[n] for n in sorted(set(B.UI_ICONS) | icons_in([chapters, rules_all, replies, sos])) if n in B.SPRITE},
+            "emblems": {k: v["svg"] for k, v in B.EMBLEMS.items()}}
     json.dump(pack, open(os.path.join(d, "pack.json"), "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
     # القالب المشترك: CSS+JS+خطوط مدمجة مسبقاً؛ يبقى فقط ما يخص الطلب
     tpl = open(B.TPL, encoding="utf-8").read()

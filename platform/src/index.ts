@@ -11,7 +11,8 @@
 import { Hono } from 'hono';
 import { assemble, buildSchedule, manifest, serviceWorker } from '../../book/core/assemble.js';
 import GHC from '../../book/core/ghcrypto.mjs';
-import { landingPage, orderPage, statusPage, adminPage } from './pages';
+import { landingPage, orderPage, statusPage, adminPage, legalPage } from './pages';
+import { ASSET, EMBLEMS } from './assets.gen';
 
 type Env = {
   DB: D1Database; R2: R2Bucket; ASSETS: Fetcher;
@@ -60,20 +61,50 @@ async function migrate(e: Env) {
   migrated = true;
 }
 async function ev(e: Env, oid: string, kind: string, data: any = {}) { await e.DB.prepare('INSERT INTO events(order_id,at,kind,data) VALUES(?,?,?,?)').bind(oid, now(), kind, JSON.stringify(data)).run(); }
-app.use('*', async (c, next) => { await migrate(c.env); await next(); c.header('X-Content-Type-Options', 'nosniff'); c.header('Referrer-Policy', 'no-referrer'); });
+// ───────── ترويسات الأمان والأداء (كل الاستجابات الديناميكية) ─────────
+const CSP = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' blob: data:; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests";
+app.use('*', async (c, next) => {
+  if (!c.req.path.startsWith('/b/') || c.req.path.endsWith('/index.html') || c.req.path.endsWith('/')) await migrate(c.env);
+  await next();
+  c.res = new Response(c.res.body, c.res); // ترويسات استجابات ASSETS/R2 غير قابلة للتعديل — ننسخها
+  const h = c.res.headers;
+  h.set('X-Content-Type-Options', 'nosniff'); h.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  h.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  h.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()');
+  h.set('Cross-Origin-Opener-Policy', 'same-origin');
+  if ((h.get('Content-Type') || '').startsWith('text/html')) {
+    h.set('Content-Security-Policy', CSP); h.set('X-Frame-Options', 'SAMEORIGIN');
+    if (!h.get('Cache-Control')) h.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=86400');
+  }
+});
+const origin = (c: any) => new URL(c.req.url).origin;
+const emblem = (k: any) => (EMBLEMS[String(k)] ? String(k) : 'arch');
 
 // ───────── الصفحات ─────────
-app.get('/', async (c) => c.html(landingPage({ plans: PLANS(c.env), wa: c.env.WHATSAPP || '' })));
+app.get('/', async (c) => c.html(landingPage({ plans: PLANS(c.env), wa: c.env.WHATSAPP || '', origin: origin(c) })));
+app.get('/privacy', (c) => c.html(legalPage('privacy', { origin: origin(c) })));
+app.get('/terms', (c) => c.html(legalPage('terms', { origin: origin(c) })));
+// ───────── الفهرسة: robots / sitemap / manifest / llms.txt ─────────
+app.get('/robots.txt', (c) => c.text(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /o/\nDisallow: /b/\nDisallow: /dl/\n\nSitemap: ${origin(c)}/sitemap.xml\n`, 200, { 'Cache-Control': 'public, max-age=3600' }));
+app.get('/sitemap.xml', (c) => {
+  const o = origin(c), d = '2026-10-01';
+  const u = [['/', '1.0', 'weekly'], ['/order', '0.9', 'monthly'], ['/samples/am.html', '0.6', 'monthly'], ['/privacy', '0.3', 'yearly'], ['/terms', '0.3', 'yearly']];
+  return c.body(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${u.map(([p, pr, f]) => `<url><loc>${o}${p}</loc><lastmod>${d}</lastmod><changefreq>${f}</changefreq><priority>${pr}</priority>${p === '/' ? `<image:image><image:loc>${o}${ASSET['/brand/og.jpg']}</image:loc></image:image>` : ''}</url>`).join('\n')}\n</urlset>`, 200, { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=3600' });
+});
+app.get('/manifest.webmanifest', (c) => c.json({ name: 'كتاب البيت', short_name: 'كتاب البيت', description: 'قواعد بيتك بلغة عاملتك وبصوتها', lang: 'ar', dir: 'rtl', start_url: '/', scope: '/', display: 'standalone', background_color: '#0A0907', theme_color: '#0A0907',
+  icons: [{ src: ASSET['/brand/icon-192.png'], sizes: '192x192', type: 'image/png' }, { src: ASSET['/brand/icon-512.png'], sizes: '512x512', type: 'image/png' }, { src: ASSET['/brand/icon-maskable-512.png'], sizes: '512x512', type: 'image/png', purpose: 'maskable' }] }, 200, { 'Content-Type': 'application/manifest+json', 'Cache-Control': 'public, max-age=86400' }));
+app.get('/llms.txt', (c) => c.text(`# كتاب البيت (Ghaida Home Book)\n\n> كتاب إلكتروني تفاعلي مخصّص يُصنع لكل بيت في السعودية والخليج: قواعد البيت وجدول العاملة المنزلية (مطابق لنظام العمالة المنزلية) والسلامة والضيافة، بلغة العاملة الأم وبالعربية مع صوت لكل جملة، ويعمل دون إنترنت.\n\n- [الصفحة الرئيسية](${origin(c)}/): المزايا والباقات والأسئلة الشائعة\n- [اطلبي كتابك](${origin(c)}/order): معالج الطلب\n- [عيّنة مجانية](${origin(c)}/samples/am.html): فصل السلامة بالأمهرية\n- [الخصوصية](${origin(c)}/privacy) · [الشروط](${origin(c)}/terms)\n`));
 app.get('/order', async (c) => {
   const cat = JSON.parse(await r2text(c.env, 'packs/catalog.json'));
-  return c.html(orderPage({ catalog: cat, plans: PLANS(c.env) }));
+  return c.html(orderPage({ catalog: cat, plans: PLANS(c.env), origin: origin(c) }));
 });
 app.get('/o/:id', async (c) => {
   const o = await getOrder(c.env, c.req.param('id'), c.req.query('k'));
   if (!o) return c.text('الطلب غير موجود', 404);
+  c.header('X-Robots-Tag', 'noindex, nofollow'); c.header('Cache-Control', 'private, no-store');
   return c.html(statusPage({ o: publicOrder(o), pay: { iban: c.env.PAY_IBAN || 'SA00 0000 0000 0000 0000 0000', name: c.env.PAY_NAME || '—', bank: c.env.PAY_BANK || '' }, wa: c.env.WHATSAPP || '', origin: new URL(c.req.url).origin }));
 });
-app.get('/admin', (c) => c.html(adminPage()));
+app.get('/admin', (c) => { c.header('X-Robots-Tag', 'noindex, nofollow'); c.header('Cache-Control', 'no-store'); return c.html(adminPage({ origin: origin(c) })); });
 
 // ───────── API: الكتالوج ─────────
 app.get('/api/catalog', async (c) => c.json({ ...(JSON.parse(await r2text(c.env, 'packs/catalog.json'))), plans: PLANS(c.env) }));
@@ -100,7 +131,7 @@ app.post('/api/orders', async (c) => {
   const id = 'GH-' + rid(5), key = rid(16);
   await c.env.DB.prepare(`INSERT INTO orders(id,created_at,status,plan,price,currency,buyer_name,buyer_phone,book_name,home_name,icon,langs,workers,rules,schedule,madam_phone,akey,notes)
     VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(id, now(), 'awaiting_payment', plan, plans[plan].price, 'SAR', String(b.buyer_name || '').slice(0, 60), phone,
-    bookName, String(b.home_name || bookName).slice(0, 40), String(b.icon || '🌸').slice(0, 4), JSON.stringify(langs), JSON.stringify((b.workers || []).map((w: any) => String(w || '').slice(0, 30))),
+    bookName, String(b.home_name || bookName).slice(0, 40), emblem(b.icon), JSON.stringify(langs), JSON.stringify((b.workers || []).map((w: any) => String(w || '').slice(0, 30))),
     JSON.stringify((b.rules || []).slice(0, 80)), b.schedule ? JSON.stringify(b.schedule) : null, String(b.madam_phone || phone).replace(/[^\d+]/g, ''), key, '').run();
   await ev(c.env, id, 'created', { plan, langs });
   return c.json({ id, key, url: `/o/${id}?k=${key}`, price: plans[plan].price });
@@ -189,7 +220,7 @@ async function deliver(e: Env, id: string) {
   const books: any[] = [];
   for (let i = 0; i < langs.length; i++) {
     const lang = langs[i]; const { pack, fonts, template } = await loadPack(e, lang);
-    const order = { order_id: o.id, book_name: o.book_name, home_name: o.home_name, worker_name: workers[i] || '', icon: o.icon,
+    const order = { order_id: o.id, book_name: o.book_name, home_name: o.home_name, worker_name: workers[i] || '', icon: emblem(o.icon),
       rules: JSON.parse(o.rules || '[]'), schedule: o.schedule ? JSON.parse(o.schedule) : null, madam_phone: o.madam_phone, code };
     const r = assemble({ pack, template, fonts, order, audio: null, pwa: true, rand });
     const base = `/b/${token}/${lang}/`;
@@ -208,12 +239,12 @@ async function deliver(e: Env, id: string) {
 // الصوت والأيقونات مشتركة بين كل كتب اللغة (مشفّرة بمفتاح اللغة داخل الحمولة المقفلة) — تُقدَّم من الحزمة مباشرة
 app.get('/b/:token/:lang/*', async (c) => {
   const { token, lang } = c.req.param(); const rest = c.req.path.split(`/b/${token}/${lang}/`)[1] || 'index.html';
-  const o: any = await c.env.DB.prepare('SELECT id, revoked, status FROM orders WHERE token=?').bind('t:' + token).first();
+  const o: any = await c.env.DB.prepare('SELECT id, revoked, status, icon FROM orders WHERE token=?').bind('t:' + token).first();
   if (!o || o.status !== 'delivered') return c.text('الكتاب غير موجود', 404);
   if (o.revoked) return c.html('<meta charset=utf-8><body style="font:18px sans-serif;padding:30px;text-align:center">تم إيقاف هذا الرابط. تواصلي مع البائعة.</body>', 410);
   let key: string, type = 'application/octet-stream', cacheCtl = 'private, max-age=300';
   if (/^a\/[a-z0-9]+\.bin$/.test(rest)) { key = `packs/${lang}/${rest}`; cacheCtl = 'public, max-age=31536000, immutable'; }
-  else if (/^icon-(180|512)\.png$/.test(rest)) { key = `packs/${lang}/${rest}`; type = 'image/png'; cacheCtl = 'public, max-age=86400'; }
+  else if (/^icon-(180|512)\.png$/.test(rest)) { return c.env.ASSETS.fetch(new Request(new URL(`/emblems/${emblem(o.icon)}-${rest.slice(5, 8)}.png`, c.req.url))); }
   else if (['index.html', 'manifest.webmanifest', 'sw.js'].includes(rest)) { key = `books/${token}/${lang}/${rest}`; }
   else return c.text('not found', 404);
   const obj = await c.env.R2.get(key); if (!obj) return c.text('not found', 404);
@@ -232,7 +263,7 @@ app.get('/dl/:token/:lang', async (c) => {
   for (const [g, info] of Object.entries<any>(pack.groups)) audio[g] = await r2text(c.env, `packs/${lang}/a/${info.file}.b64`);
   const langs = JSON.parse(o.langs), i = langs.indexOf(lang); if (i < 0) return c.text('غير متاح', 404);
   const r = assemble({ pack, template, fonts, audio, pwa: false, rand,
-    order: { order_id: o.id, book_name: o.book_name, home_name: o.home_name, worker_name: JSON.parse(o.workers || '[]')[i] || '', icon: o.icon,
+    order: { order_id: o.id, book_name: o.book_name, home_name: o.home_name, worker_name: JSON.parse(o.workers || '[]')[i] || '', icon: emblem(o.icon),
       rules: JSON.parse(o.rules || '[]'), schedule: o.schedule ? JSON.parse(o.schedule) : null, madam_phone: o.madam_phone, code: o.code } });
   await ev(c.env, o.id, 'download', { lang });
   const fname = encodeURIComponent(`${o.book_name}.html`);

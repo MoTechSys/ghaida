@@ -23,6 +23,11 @@
   var done = store.get(NS + 'done', {});
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function I(n, c) { return '<svg class="i' + (c ? ' ' + c : '') + '" aria-hidden="true"><use href="#i-' + n + '"/></svg>'; }
+  function EMB(k) { return '<svg class="emb" viewBox="0 0 24 24" aria-hidden="true"><use href="#e-' + (k || 'arch') + '"/></svg>'; }
+  // أيقونة المحتوى: اسم Lucide (يُحوَّل وقت البناء من الإيموجي في المصدر) أو «#n» = رقم خطوة
+  function ICN(n) { if (!n) return I('sparkles'); if (n.charAt(0) === '#') return '<b style="font:700 16px/1 var(--fH)">' + n.slice(1) + '</b>'; return I(n); }
+  var RTL = META.dir === 'rtl', FWD = RTL ? 'arrow-left' : 'arrow-right', BACK = RTL ? 'chevron-right' : 'chevron-left', NEXT = RTL ? 'chevron-left' : 'chevron-right';
   function S(k) { var u = (D && D.ui) || META.ui0 || {}; return u[k] ? u[k].l : k; }
   function SA(k) { var u = (D && D.ui) || META.ui0 || {}; return u[k] ? u[k].ar : ''; }
   function UIAU(k) { var u = (D && D.ui) || META.ui0 || {}; return u[k] ? u[k].au : null; }
@@ -92,8 +97,7 @@
     });
   }
   function playQueue(list) { stop(); var i = 0; (function nx() { if (i >= list.length) return; var q = list[i++]; play(q.id, q.btn, nx); })(); }
-  var IC_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4a1 1 0 0 0 1 1h3l4 4V5L7 9H4a1 1 0 0 0-1 1zm13.5 2A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
-  function pbtn(id, cls, label) { return '<button class="play ' + (cls || '') + (id && clipGroup[id] ? '' : ' na') + '" data-au="' + (id || '') + '" aria-label="' + esc(label || 'play') + '">' + IC_PLAY + '</button>'; }
+  function pbtn(id, cls, label) { var tag = cls === 'ar' ? 'ع' : (META.flagShort || ''); return '<button class="play ' + (cls || '') + (id && clipGroup[id] ? '' : ' na') + '" data-au="' + (id || '') + '" aria-label="' + esc(label || 'play') + '">' + I('play') + '<span class="lb">' + esc(tag) + '</span></button>'; }
   function pair(au) { // au = [idL, idAr]
     au = au || [];
     if (MODE === 'ar') return '<div class="pb">' + pbtn(au[1], 'ar', 'Arabic') + '</div>';
@@ -116,7 +120,7 @@
     VIEWS.forEach(function (x) { var el = $(x); if (x !== v) { el.classList.remove('on'); if (x !== 'vHome' && x !== 'vSOS') el.innerHTML = ''; } });
     curView = v; render(v); $(v).classList.add('on');
     [].forEach.call(document.querySelectorAll('.tabbar button'), function (b) { b.classList.toggle('on', b.getAttribute('data-v') === v || (v === 'vChapter' && b.getAttribute('data-v') === 'vBook')); });
-    $('btnBack').textContent = v === 'vHome' ? (META.icon || '🏠') : '‹';
+    $('btnBack').innerHTML = v === 'vHome' ? EMB(META.icon) : I(BACK);
     window.scrollTo(0, 0);
   }
   function back() { if (!history_.length) return show('vHome', false); var h = history_.pop(); curCh = h[1]; show(h[0], false); }
@@ -142,25 +146,25 @@
   function overall() { var t = 0, o = 0; D.chapters.forEach(function (c) { var s = chapterStats(c); t += s.tot; o += s.ok; }); return t ? Math.round(o * 100 / t) : 0; }
   function ring(p) {
     var r = 24, C = 2 * Math.PI * r, off = C * (1 - p / 100);
-    return '<svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="' + r + '" stroke="rgba(233,211,166,.25)" stroke-width="6" fill="none"/><circle cx="30" cy="30" r="' + r + '" stroke="#E9D3A6" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 30 30)"/><text x="30" y="35" text-anchor="middle" font-size="14" font-weight="800" fill="#fff" font-family="system-ui">' + p + '%</text></svg>';
+    return '<svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="' + r + '" stroke="rgba(201,164,92,.18)" stroke-width="4" fill="none"/><circle cx="30" cy="30" r="' + r + '" stroke="#D9B873" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 30 30)"/><text x="30" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="#F4EAD4" font-family="ui-monospace,Menlo,monospace">' + p + '%</text></svg>';
   }
   function tile(v, ic, k, extra, cls) {
-    return '<button class="tile ' + (cls || '') + '" data-go="' + v + '"' + (extra || '') + '><span class="ic">' + ic + '</span><span class="tt L">' + esc(S(k)) + '</span><span class="ts L">' + esc(S(k + '_sub')) + '</span></button>';
+    return '<button class="tile ' + (cls || '') + '" data-go="' + v + '"' + (extra || '') + '><span class="ib">' + I(ic) + '</span><span class="tt L">' + esc(S(k)) + '</span><span class="ts L">' + esc(S(k + '_sub')) + '</span></button>';
   }
   function renderHome() {
     setTop(META.bookName, META.home ? (S('copy_of') + ' ' + META.home) : '');
     var el = $('vHome'), p = overall(), h = '';
     h += installCard();
-    h += '<div class="hero"><p class="hn L">' + esc(S('hello_name')) + (META.worker ? '، ' + esc(META.worker) : '') + ' 👋</p>'
+    h += '<div class="hero"><p class="hn L">' + esc(S('hello_name')) + (META.worker ? '، ' + esc(META.worker) : '') + '</p>'
       + '<div class="hs ar">' + esc(META.bookName) + '</div>'
       + '<div class="ring">' + ring(p) + '<div class="pv L">' + esc(S('progress')) + ' ' + p + '%<br><span style="opacity:.8">' + D.chapters.length + ' ' + esc(S('chapters_count')) + '</span></div></div></div>';
     h += '<div class="tiles">';
-    h += tile('vBook', '📖', 'book');
-    h += tile('vToday', '🗓️', 'today');
-    if (D.rules && D.rules.length) h += '<button class="tile" data-go="vChapter" data-ch="rules"><span class="ic">🏡</span><span class="tt L">' + esc(S('house_rules')) + '</span><span class="ts L">' + esc(S('house_rules_sub')) + '</span></button>';
-    h += tile('vReplies', '💬', 'replies');
-    h += tile('vSOS', '🆘', 'emergency', '', 'sos wide');
-    h += '<button class="tile wide madam" data-go="vMadam"><span class="ic">🗣️</span><span><span class="tt ar" style="display:block">' + esc(SA('for_madam')) + '</span><span class="ts ar" style="display:block">' + esc(SA('for_madam_sub')) + '</span></span></button>';
+    h += tile('vBook', 'book-open', 'book');
+    h += tile('vToday', 'calendar-days', 'today');
+    if (D.rules && D.rules.length) h += '<button class="tile" data-go="vChapter" data-ch="rules"><span class="ib">' + I('house') + '</span><span class="tt L">' + esc(S('house_rules')) + '</span><span class="ts L">' + esc(S('house_rules_sub')) + '</span></button>';
+    h += tile('vReplies', 'messages-square', 'replies');
+    h += tile('vSOS', 'siren', 'emergency', '', 'sos wide');
+    h += '<button class="tile wide madam" data-go="vMadam"><span class="ib">' + I('message-circle') + '</span><span><span class="tt ar" style="display:block">' + esc(SA('for_madam')) + '</span><span class="ts ar" style="display:block">' + esc(SA('for_madam_sub')) + '</span></span></button>';
     h += '</div>';
     h += '<div class="wmline ar">' + esc(META.wm) + '</div>';
     el.innerHTML = h;
@@ -169,7 +173,7 @@
   // ═══════════════ قائمة الدروس ═══════════════
   function allChapters() { var list = D.chapters.slice(); if (D.rules && D.rules.length) list.splice(Math.min(3, list.length), 0, rulesChapter()); return list; }
   function rulesChapter() {
-    return { id: 'rules', icon: '🏡', title: { l: S('house_rules'), ar: SA('house_rules') }, subtitle: { l: S('house_rules_sub'), ar: SA('house_rules_sub') }, titleAu: UIAU('house_rules'),
+    return { id: 'rules', icon: 'house', title: { l: S('house_rules'), ar: SA('house_rules') }, subtitle: { l: S('house_rules_sub'), ar: SA('house_rules_sub') }, titleAu: UIAU('house_rules'),
       sections: D.rules.map(function (cat) { return { type: 'rules', title: cat.title, titleAu: cat.au, items: cat.items }; }) };
   }
   function renderBook() {
@@ -177,7 +181,7 @@
     var h = '<div class="chlist">';
     allChapters().forEach(function (c, i) {
       var st = c.id === 'rules' ? null : chapterStats(c);
-      h += '<button class="chrow" data-ch="' + c.id + '"><span class="ic">' + c.icon + '</span><span class="tx"><span class="tt ' + (MODE === 'ar' ? 'ar' : 'L') + '" style="display:block">' + esc(pick(c.title)) + '</span>'
+      h += '<button class="chrow" data-ch="' + c.id + '"><span class="ib">' + ICN(c.icon) + '</span><span class="tx"><span class="tt ' + (MODE === 'ar' ? 'ar' : 'L') + '" style="display:block">' + esc(pick(c.title)) + '</span>'
         + (MODE === 'both' ? '<span class="ts ar" style="display:block">' + esc(c.title.ar) + '</span>' : '')
         + (st ? '<span class="bar"><i style="width:' + Math.round(st.ok * 100 / st.tot) + '%"></i></span>' : '') + '</span><span class="num">' + (i + 1) + '</span></button>';
     });
@@ -186,11 +190,11 @@
 
   // ═══════════════ الفصل ═══════════════
   function findCh(id) { var l = allChapters(); for (var i = 0; i < l.length; i++) if (l[i].id === id) return i; return -1; }
-  function lvlTag(lv) { if (lv === 'danger') return '<span class="lvl">✕ ' + esc(S('danger_word')) + '</span>'; if (lv === 'warn') return '<span class="lvl">! ' + esc(S('warn_word')) + '</span>'; return ''; }
+  function lvlTag(lv) { if (lv === 'danger') return '<span class="lvl">' + I('x') + esc(S('danger_word')) + '</span>'; if (lv === 'warn') return '<span class="lvl">' + I('triangle-alert') + esc(S('warn_word')) + '</span>'; return ''; }
   function renderChapter(i) {
     var list = allChapters(), c = list[i]; if (!c) return show('vBook');
     setTop(pick(c.title), (i + 1) + ' / ' + list.length);
-    var h = '<div class="chead"><div class="ic">' + c.icon + '</div><div style="flex:1"><h2 class="' + (MODE === 'ar' ? 'ar' : 'L') + '">' + esc(pick(c.title)) + '</h2>'
+    var h = '<div class="chead"><div class="ib">' + ICN(c.icon) + '</div><div style="flex:1"><h2 class="' + (MODE === 'ar' ? 'ar' : 'L') + '">' + esc(pick(c.title)) + '</h2>'
       + (c.subtitle ? '<div class="sub ' + (MODE === 'ar' ? 'ar' : 'L') + '">' + esc(pick(c.subtitle)) + '</div>' : '')
       + (MODE === 'both' ? '<div class="sub ar">' + esc(c.title.ar) + '</div>' : '') + '</div>' + pair(c.titleAu) + '</div>';
     c.sections.forEach(function (s, si) {
@@ -201,9 +205,9 @@
         var key = c.id + '/' + si + '/' + ii;
         var lv = it.level || (s.type === 'donts' ? 'danger' : '');
         var isStep = s.type === 'steps';
-        var ic = isStep ? (ii + 1) : (it.icon || '•');
-        var tel = it.tel ? '<a class="call" href="tel:' + it.tel + '">📞 <span style="direction:ltr">' + it.tel + '</span></a>' : '';
-        var chk = (isStep || s.type === 'checklist') ? '<button class="chk' + (done[key] ? ' on' : '') + '" data-k="' + key + '" aria-label="done">✓</button>' : '';
+        var ic = isStep ? (ii + 1) : ICN(it.icon);
+        var tel = it.tel ? '<a class="call" href="tel:' + it.tel + '">' + I('phone') + ' <span style="direction:ltr">' + it.tel + '</span></a>' : '';
+        var chk = (isStep || s.type === 'checklist') ? '<button class="chk' + (done[key] ? ' on' : '') + '" data-k="' + key + '" aria-label="done">' + I('check') + '</button>' : '';
         var why = it.why ? '<div class="why ' + (MODE === 'ar' ? 'ar' : 'L') + '">' + esc(pick(it.why)) + '</div>' : '';
         h += '<div class="it ' + (isStep ? 'step ' : '') + lv + '"><div class="ic">' + ic + '</div><div class="x">' + lvlTag(lv) + bi(it.text) + why + tel + '</div>' + chk + pair(it.au) + '</div>';
       });
@@ -211,9 +215,9 @@
     });
     if (c.id !== 'rules') {
       done['read/' + c.id] = 1; store.set(NS + 'done', done);
-      h += '<div class="donecard"><div class="big">🌸</div><div class="L" style="font-weight:800">' + esc(S('chapter_done')) + '</div>' + (MODE !== 'l' ? '<div class="ar" style="text-align:center;color:var(--muted)">' + esc(SA('chapter_done')) + '</div>' : '') + '</div>';
+      h += '<div class="donecard"><div class="ib">' + I('badge-check') + '</div><div class="L" style="font-weight:800">' + esc(S('chapter_done')) + '</div>' + (MODE !== 'l' ? '<div class="ar" style="text-align:center;color:var(--muted)">' + esc(SA('chapter_done')) + '</div>' : '') + '</div>';
     }
-    h += '<div class="nav2">' + (i > 0 ? '<button data-step="-1">‹ ' + esc(S('prev')) + '</button>' : '') + '<button data-readall="1">🔊 ' + esc(S('read_all')) + '</button>' + (i < list.length - 1 ? '<button class="pri" data-step="1">' + esc(S('next')) + ' ›</button>' : '') + '</div>';
+    h += '<div class="nav2">' + (i > 0 ? '<button data-step="-1">' + I(BACK) + esc(S('prev')) + '</button>' : '') + '<button data-readall="1">' + I('volume-2') + esc(S('read_all')) + '</button>' + (i < list.length - 1 ? '<button class="pri" data-step="1">' + esc(S('next')) + I(NEXT) + '</button>' : '') + '</div>';
     h += '<div class="wmline ar">' + esc(META.wm) + '</div>';
     $('vChapter').innerHTML = h;
   }
@@ -224,6 +228,10 @@
   }
 
   // ═══════════════ يومي ═══════════════
+  function tm(t) { // "07:00" أو "10:00\n10:30" — أيقونة شمس/قمر حسب الساعة (نظام 24 ساعة: الساعة الإثيوبية مزاحة 6 ساعات فصيغة 12 ساعة مُلبسة)
+    var p = String(t).split('\n'), h = parseInt(p[0], 10);
+    return I(h >= 6 && h < 18 ? 'sun' : 'moon') + '<span>' + esc(p[0]) + '</span>' + (p[1] ? '<small>' + esc(p[1]) + '</small>' : '');
+  }
   function renderToday() {
     setTop(S('today'), S('today_sub'));
     var sc = D.schedule, h = '';
@@ -231,10 +239,10 @@
       h += '<div class="stats"><div class="stat"><b>' + sc.workH + '</b><span class="L">' + esc(S('work_hours')) + '</span></div><div class="stat"><b>' + sc.restH + '</b><span class="L">' + esc(S('rest_hours')) + '</span></div></div>';
       h += '<div class="sched">';
       sc.rows.forEach(function (r) {
-        h += '<div class="srow ' + (r.rest ? 'rest' : '') + '"><div class="tm">' + esc(r.time) + '</div><div class="x"><div class="a L">' + esc(S(r.k)) + '</div>' + (MODE !== 'l' ? '<div class="b ar">' + esc(SA(r.k)) + '</div>' : '') + (r.note ? '<div class="b ar">' + esc(r.note) + '</div>' : '') + '</div>' + pair(UIAU(r.k)) + '</div>';
+        h += '<div class="srow ' + (r.rest ? 'rest' : '') + '"><div class="tm">' + tm(r.time) + '</div><div class="x"><div class="a L">' + esc(S(r.k)) + '</div>' + (MODE !== 'l' ? '<div class="b ar">' + esc(SA(r.k)) + '</div>' : '') + (r.note ? '<div class="b ar">' + esc(r.note) + '</div>' : '') + '</div>' + pair(UIAU(r.k)) + '</div>';
       });
-      h += '</div><div class="hint"><span>ℹ️</span><span class="x L">' + esc(S('sched_note')) + '</span>' + pair(UIAU('sched_note')) + '</div>';
-      h += '<div class="rest-day"><span class="L">' + esc(S('rest_day')) + ': ' + esc(S('day_' + sc.restDay)) + '</span><div class="ar" style="text-align:center;font-weight:600">' + esc(SA('rest_day')) + ': ' + esc(SA('day_' + sc.restDay)) + '</div></div>';
+      h += '</div><div class="hint">' + I('info') + '<span class="x L">' + esc(S('sched_note')) + '</span>' + pair(UIAU('sched_note')) + '</div>';
+      h += '<div class="rest-day">' + I('moon-star') + '<div><span class="L">' + esc(S('rest_day')) + ': ' + esc(S('day_' + sc.restDay)) + '</span><div class="ar" style="text-align:center;font-weight:600">' + esc(SA('rest_day')) + ': ' + esc(SA('day_' + sc.restDay)) + '</div></div></div>';
     }
     // مهام اليوم: خطوات الفصول كقائمة ✓ مختصرة
     $('vToday').innerHTML = h || '<p class="L">—</p>';
@@ -243,9 +251,9 @@
   // ═══════════════ ردودي (العاملة → عربي مسموع) ═══════════════
   function renderReplies() {
     setTop(S('replies'), S('replies_sub'));
-    var h = '<div class="hint"><span style="font-size:22px">💡</span><span class="x L">' + esc(S('replies_hint')) + '</span>' + pair([UIAU('replies_hint') ? UIAU('replies_hint')[0] : null, null]) + '</div><div class="rgrid">';
+    var h = '<div class="hint">' + I('lightbulb') + '<span class="x L">' + esc(S('replies_hint')) + '</span>' + pair([UIAU('replies_hint') ? UIAU('replies_hint')[0] : null, null]) + '</div><div class="rgrid">';
     D.replies.forEach(function (r, i) {
-      h += '<button class="rbtn ' + (r.level || '') + '" data-reply="' + i + '"><span class="ic">' + r.icon + '</span><span class="a L">' + esc(r.text.l) + '</span><span class="b ar">' + esc(r.text.ar) + '</span></button>';
+      h += '<button class="rbtn ' + (r.level || '') + '" data-reply="' + i + '"><span class="ic">' + ICN(r.icon) + '</span><span class="a L">' + esc(r.text.l) + '</span><span class="b ar">' + esc(r.text.ar) + '</span></button>';
     });
     $('vReplies').innerHTML = h + '</div>';
   }
@@ -263,7 +271,7 @@
     (D.madam || []).forEach(function (grp) {
       h += '<div class="h2 ar">' + esc(grp.title.ar) + '</div><div class="rgrid">';
       grp.items.forEach(function (it) {
-        h += '<button class="rbtn" data-au2="' + (it.au[0] || '') + '" data-txt="' + esc(it.text.l) + '"><span class="ic">' + (it.icon || '•') + '</span><span class="a ar">' + esc(it.text.ar) + '</span><span class="b L">' + esc(it.text.l) + '</span></button>';
+        h += '<button class="rbtn" data-au2="' + (it.au[0] || '') + '" data-txt="' + esc(it.text.l) + '"><span class="ic">' + ICN(it.icon) + '</span><span class="a ar">' + esc(it.text.ar) + '</span><span class="b L">' + esc(it.text.l) + '</span></button>';
       });
       h += '</div>';
     });
@@ -278,11 +286,11 @@
     s.numbers.forEach(function (n, i) {
       h += '<a class="sosbig ' + (i === 1 ? 'alt' : i > 1 ? 'alt2' : '') + '" href="tel:' + n.tel + '"><span class="n">' + n.tel + '</span><span class="x"><b class="L" style="display:block">' + esc(n.l) + '</b><span class="ar" style="display:block;opacity:.9">' + esc(n.ar) + '</span></span></a>';
     });
-    if (META.madamPhone) h += '<a class="sosbig alt" href="tel:' + esc(META.madamPhone) + '"><span class="n">📞</span><span class="x"><b class="L" style="display:block">' + esc(u.call_madam.l) + '</b><span class="ar" style="display:block">' + esc(u.call_madam.ar) + ' · <span style="direction:ltr;unicode-bidi:isolate">' + esc(META.madamPhone) + '</span></span></span></a>';
+    if (META.madamPhone) h += '<a class="sosbig alt" href="tel:' + esc(META.madamPhone) + '"><span class="n">' + I('phone-call') + '</span><span class="x"><b class="L" style="display:block">' + esc(u.call_madam.l) + '</b><span class="ar" style="display:block">' + esc(u.call_madam.ar) + ' · <span style="direction:ltr;unicode-bidi:isolate">' + esc(META.madamPhone) + '</span></span></span></a>';
     s.sections.forEach(function (sec) {
       h += '<div class="sec"><h3><span class="x"><span class="L">' + esc(sec.title.l) + '</span><span class="b ar">' + esc(sec.title.ar) + '</span></span></h3>';
       sec.items.forEach(function (it) {
-        h += '<div class="it ' + (it.level || '') + '"><div class="ic">' + (it.icon || '•') + '</div><div class="x"><div class="a L">' + esc(it.text.l) + '</div><div class="b ar">' + esc(it.text.ar) + '</div></div><div class="pb">' + pbtn(it.au[0], '', LANG) + pbtn(it.au[1], 'ar', 'Arabic') + '</div></div>';
+        h += '<div class="it ' + (it.level || '') + '"><div class="ic">' + ICN(it.icon) + '</div><div class="x"><div class="a L">' + esc(it.text.l) + '</div><div class="b ar">' + esc(it.text.ar) + '</div></div><div class="pb">' + pbtn(it.au[0], '', LANG) + pbtn(it.au[1], 'ar', 'Arabic') + '</div></div>';
       });
       h += '</div>';
     });
@@ -297,10 +305,10 @@
     var ua = navigator.userAgent || '', ios = /iPhone|iPad|iPod/.test(ua) || (ua.indexOf('Mac') > -1 && 'ontouchend' in document);
     var inapp = /FBAN|FBAV|Instagram|Line\/|Snapchat|TikTok|; wv\)/.test(ua);
     var steps = ios ? ['ios_1', 'ios_2', 'ios_3'] : ['and_1', 'and_2', 'and_3'];
-    var h = '<div class="install"><h4>📲 <span class="L">' + esc(S('install_title')) + '</span>' + pair(UIAU('install_title')) + '</h4>';
+    var h = '<div class="install"><h4>' + I('smartphone') + '<span class="L" style="flex:1">' + esc(S('install_title')) + '</span>' + pair(UIAU('install_title')) + '</h4>';
     if (inapp) h += '<div class="it warn"><div class="x"><div class="a L">' + esc(S('inapp_warn')) + '</div></div></div>';
     h += '<ol>' + steps.map(function (k) { return '<li><span class="L">' + esc(S(k)) + '</span> ' + (UIAU(k) ? pbtn(UIAU(k)[0], '', '') .replace('class="play', 'style="display:inline-flex;vertical-align:middle;min-width:38px;height:34px" class="play') : '') + '</li>'; }).join('') + '</ol>';
-    h += '<div class="row">' + (window.__bip ? '<button data-install="1">＋ ' + esc(S('install_title')) + '</button>' : '') + '<button class="ghost" data-noinstall="1">✕</button></div></div>';
+    h += '<div class="row">' + (window.__bip ? '<button data-install="1">' + I('plus') + esc(S('install_title')) + '</button>' : '') + '<button class="ghost" data-noinstall="1" aria-label="close">' + I('x') + '</button></div></div>';
     return h;
   }
   window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); window.__bip = e; if (curView === 'vHome' && D) renderHome(); });
@@ -318,20 +326,35 @@
     if ((b = up('[data-go]'))) return show(b.getAttribute('data-go'));
     if ((b = up('[data-step]'))) { curCh += +b.getAttribute('data-step'); return show('vChapter', false); }
     if ((b = up('[data-readall]'))) return readAll();
+    if ((b = up('#sheet'))) return;
     if ((b = up('[data-mode]'))) { MODE = b.getAttribute('data-mode'); store.set(NS + 'mode', MODE); syncSeg(); return render(curView); }
     if ((b = up('[data-v]'))) { history_ = []; return show(b.getAttribute('data-v'), false); }
     if ((b = up('[data-noinstall]'))) { store.set(NS + 'noinstall', 1); return renderHome(); }
     if ((b = up('[data-install]'))) { if (window.__bip) { window.__bip.prompt(); window.__bip = null; } return; }
   });
   $('btnBack').onclick = function () { if (curView === 'vHome') return; back(); };
+  // ═══════════════ إعدادات القراءة: ليلي/ورقي + حجم الخط (تُحفظ على الجهاز، عامة لكل الكتب) ═══════════════
+  function setTheme(t) { document.documentElement.setAttribute('data-theme', t); try { localStorage.setItem('gh2.theme', t); } catch (e) {} var m = $('themeColor'); if (m) m.setAttribute('content', t === 'paper' ? '#F7F1E6' : '#0A0907'); syncSet(); }
+  function setZoom(z) { document.documentElement.style.setProperty('--z', z); try { localStorage.setItem('gh2.zoom', z); } catch (e) {} syncSet(); }
+  function syncSet() {
+    var t = document.documentElement.getAttribute('data-theme') || 'night', z = (getComputedStyle(document.documentElement).getPropertyValue('--z') || '1').trim();
+    [].forEach.call(document.querySelectorAll('#thOpt button'), function (b) { b.classList.toggle('on', b.getAttribute('data-th') === t); });
+    [].forEach.call(document.querySelectorAll('#zOpt button'), function (b) { b.classList.toggle('on', parseFloat(b.getAttribute('data-z')) === parseFloat(z)); });
+  }
+  function sheet(on) { $('sheet').classList.toggle('on', on); $('scrim').classList.toggle('on', on); if (on) syncSet(); }
+  $('btnSet').onclick = function () { sheet(!$('sheet').classList.contains('on')); };
+  $('scrim').onclick = function () { sheet(false); };
+  [].forEach.call(document.querySelectorAll('#thOpt button'), function (b) { b.onclick = function () { setTheme(b.getAttribute('data-th')); }; });
+  [].forEach.call(document.querySelectorAll('#zOpt button'), function (b) { b.onclick = function () { setZoom(b.getAttribute('data-z')); }; });
+  if (document.documentElement.getAttribute('data-theme') === 'paper') { var tc = $('themeColor'); if (tc) tc.setAttribute('content', '#F7F1E6'); }
   function syncSeg() { [].forEach.call(document.querySelectorAll('.seg button'), function (x) { x.classList.toggle('on', x.getAttribute('data-mode') === MODE); }); }
 
   // ═══════════════ الإقلاع: قفل ← غلاف ← الرئيسية ═══════════════
   function applyStatic() {
     var u = META.ui0;
-    $('mBoth').textContent = META.flagShort + '+ع'; $('mL').textContent = META.flagShort; syncSeg();
+    $('mBoth').textContent = META.flagShort + '+ع'; $('btnBack').innerHTML = EMB(META.icon); $('mL').textContent = META.flagShort; syncSeg();
     [].forEach.call(document.querySelectorAll('[data-s]'), function (el) { var k = el.getAttribute('data-s'); el.textContent = u[k] ? u[k].l : k; });
-    $('cvIcon').textContent = META.icon || '🏠';
+    $('cvIcon').innerHTML = EMB(META.icon);
     $('cvMade').textContent = u.made_for.l; $('cvName').textContent = META.bookName;
     $('cvHello').textContent = u.welcome.l + (META.worker ? ' ' + META.worker : '');
     $('cvSub').textContent = u.welcome_sub.l; $('cvAr').textContent = u.welcome.ar + ' ' + u.welcome_sub.ar;
@@ -369,8 +392,8 @@
     $('lkT').textContent = u.unlock_title.l; $('lkTa').textContent = u.unlock_title.ar; $('lkH').textContent = u.unlock_hint.l;
     $('lkB').textContent = u.unlock_btn.l; $('lkL').querySelector('span').textContent = u.listen.l;
     $('lkL').onclick = function () { playQueue([{ id: u.unlock_title.au[0] }, { id: u.unlock_hint.au[0] }]); };
-    var sosB = document.createElement('button'); sosB.className = 'cover-listen'; sosB.style.cssText = 'margin:10px auto 0;border-color:#ffb4b4;color:#ffd6d6';
-    sosB.textContent = '🆘 ' + u.emergency.l; sosB.onclick = function () { $('lock').classList.add('hidden'); D = { chapters: [], replies: [], ui: META.ui0 }; show('vSOS', false); $('tabbar').classList.add('hidden'); };
+    var sosB = document.createElement('button'); sosB.className = 'ghostbtn sos cover-listen'; sosB.style.cssText = 'margin:10px auto 0';
+    sosB.innerHTML = I('siren') + '<span>' + esc(u.emergency.l) + '</span>'; sosB.onclick = function () { $('lock').classList.add('hidden'); D = { chapters: [], replies: [], ui: META.ui0 }; show('vSOS', false); $('tabbar').classList.add('hidden'); };
     $('lkL').parentNode.appendChild(sosB);
     var inp = $('code');
     inp.oninput = function () { var v = GHC.normCode(inp.value).slice(0, 8); inp.value = v.length > 4 ? v.slice(0, 4) + '-' + v.slice(4) : v; $('lkE').textContent = ''; };
@@ -386,7 +409,7 @@
     };
     inp.onkeydown = function (e) { if (e.keyCode === 13) $('lkB').onclick(); };
   }
-  try { start(); } catch (err) { document.body.insertAdjacentHTML('afterbegin', '<div style="padding:20px;background:#fdecec;color:#b3261e">⚠️ ' + esc(err && err.message) + '</div>'); }
+  try { start(); } catch (err) { document.body.insertAdjacentHTML('afterbegin', '<div style="padding:20px;background:#2a1210;color:#f4a89d">' + esc(err && err.message) + '</div>'); }
   // Service Worker — للنسخة المستضافة فقط
   if ('serviceWorker' in navigator && /^https?:/.test(location.protocol) && META.sw) { navigator.serviceWorker.register(META.sw).catch(function () {}); }
 })();
