@@ -440,7 +440,7 @@ def build(lang, order, pwa=False, sample=False, out_dir=None):
             open(os.path.join(d, "icon-180.png"), "wb").write(icon_p)
             open(os.path.join(d, "icon-512.png"), "wb").write(icon_png(meta["icon"], 512))
         man = {"name": meta["bookName"], "short_name": meta["bookName"][:12], "start_url": "./index.html", "scope": "./", "display": "standalone",
-               "background_color": "#0A0907", "theme_color": "#0A0907", "dir": "rtl", "lang": "ar",
+               "background_color": "#FBF5F1", "theme_color": "#5A1030", "dir": "rtl", "lang": "ar",
                "icons": [{"src": "icon-180.png", "sizes": "180x180", "type": "image/png"}, {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]}
         open(os.path.join(d, "manifest.webmanifest"), "w", encoding="utf-8").write(json.dumps(man, ensure_ascii=False))
         files = ["./", "./index.html", "./manifest.webmanifest", "./icon-180.png", "./icon-512.png"] + ["./" + f for f in pwa_files]

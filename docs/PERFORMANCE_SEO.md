@@ -2,9 +2,11 @@
 
 ## الأداء
 - **CSS حرج داخل الصفحة:** لا ملفات CSS أو JS خارجية تحجب العرض. حجم صفحة البيع نحو 50KB غير مضغوطة.
-- **صورة الواجهة:** `<picture>` بصيغ AVIF ثم WebP ثم JPEG، وبمقاسات `srcset` من 640 إلى 1920، مع قصّ خاص بالجوال (480 و828).
-  - تُحمَّل مسبقاً `preload` حسب حجم الشاشة، مع `fetchpriority=high`.
-  - معاينة ضبابية LQIP مضمّنة. صورة 960w بصيغة AVIF حجمها 19KB.
+- **صور الواجهة لقطات حقيقية من الكتاب** (لا صور مخزون ولا صور مولّدة).
+  - تُعرض بـ `<picture>` بصيغ AVIF ثم WebP ثم JPEG، وبعرضين 300w و600w.
+  - لقطة الغلاف تُحمَّل مسبقاً مع `fetchpriority=high`، وحجمها 8.6KB بعرض 300w و20KB بعرض 600w.
+  - بقية اللقطات `loading=lazy`، ولكل صورة `width` و`height` حتى لا تتزحزح الصفحة (CLS = 0).
+  - صفحة البيع نحو 56KB من HTML تشمل CSS والرموز.
 - **الخطوط:** خطّان woff2 مقتطعان (65KB معاً) ومحمّلان مسبقاً.
 - **التخزين المؤقت:** الأصول تُخدم بعنوان فيه بصمة المحتوى `?v=hash` مع `Cache-Control: immutable` لسنة كاملة (`public/_headers`).
   - صفحات HTML: `s-maxage=300, stale-while-revalidate`.
@@ -18,7 +20,7 @@
 - `canonical` و`hreflang=ar-SA`، و`robots` فيه `max-image-preview:large`.
 - وسوم OpenGraph وTwitter مع صورة 1200×630 مرسومة بخط أميري (`/brand/og.jpg`).
 - بيانات منظمة JSON-LD من الأنواع: `Organization` و`WebSite` و`Product` (مع عرضين `Offer` بالريال) و`FAQPage` (8 أسئلة).
-- `/robots.txt` يمنع الفهرسة عن `/api` و`/admin` و`/o` و`/b` و`/dl`، و`/sitemap.xml` يشمل صورة الواجهة، و`/manifest.webmanifest`، و`/llms.txt` لمحركات البحث بالذكاء الاصطناعي.
+- `/robots.txt` يمنع الفهرسة عن `/api` و`/admin` و`/o` و`/b` و`/dl`، و`/sitemap.xml` يشمل صورة OG، و`/manifest.webmanifest`، و`/llms.txt` لمحركات البحث بالذكاء الاصطناعي.
 - الكتب وصفحات الطلبات عليها `noindex`.
 - ترتيب العناوين سليم: H1 واحد في كل صفحة، وH2 لكل قسم، ومعالم دلالية `header/nav/main/footer` ورابط «تخطّي إلى المحتوى».
 
