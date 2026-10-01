@@ -38,7 +38,63 @@ FONT_STACK = {
     "hi": "'Noto Sans Devanagari','Mangal',system-ui,sans-serif",
 }
 DEFAULT_STACK = "system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans',sans-serif"
-FONT_FILES = {"ar": ("Noto Naskh Arabic", "book/fonts/NotoNaskhArabic.woff2"), "am": ("Noto Sans Ethiopic", "book/fonts/NotoSansEthiopic.woff2")}
+# الخطوط المضمّنة: نسخ مُقتطعة (book/fonts/README.md). Naskh متغيّر 400–700 للنص العربي، وأميري للعناوين واسم الكتاب.
+FONT_FILES = {"ar": [("Naskh", "book/fonts/NotoNaskhArabic-var.woff2", "400 700"), ("AmiriB", "book/fonts/Amiri-Bold-sub.woff2", "700")],
+              "am": [("Noto Sans Ethiopic", "book/fonts/NotoSansEthiopic.woff2", "400 700")]}
+ICON_MAP = json.load(open(os.path.join(ROOT, "book/icons/map.json"), encoding="utf-8")); ICON_MAP.pop("_doc", None)
+SPRITE = json.load(open(os.path.join(ROOT, "book/icons/sprite.json"), encoding="utf-8"))
+EMBLEMS = json.load(open(os.path.join(ROOT, "book/icons/emblems.json"), encoding="utf-8"))
+LEGACY_EMBLEM = {"🌸": "flower", "🌷": "flower", "🌺": "flower", "🏡": "house", "🏠": "house", "🌙": "moon", "⭐": "star8", "🕊️": "feather", "💎": "gem", "🌿": "leaf", "☕": "arch"}
+
+
+def emblem_key(k):
+    k = LEGACY_EMBLEM.get(k, k)
+    return k if k in EMBLEMS else "arch"
+
+
+def icon_name(e):
+    """إيموجي المصدر ← اسم أيقونة خطية (أو «#n» لرقم). المحتوى المصدر يبقى كما هو للمترجمين."""
+    if not e: return ""
+    if e in SPRITE or e.startswith("#"): return e
+    return ICON_MAP.get(e) or ICON_MAP.get(e.replace("\ufe0f", "")) or "sparkles"
+
+
+def iconize(o):
+    """يحوّل كل حقول icon في بنية الكتاب إلى أسماء أيقونات (تكراري)."""
+    if isinstance(o, dict):
+        for k, v in o.items():
+            if k == "icon" and isinstance(v, str): o[k] = icon_name(v)
+            else: iconize(v)
+    elif isinstance(o, list):
+        for v in o: iconize(v)
+    return o
+
+
+# أيقونات واجهة الكتاب الثابتة (القالب + app.js) — تُضمَّن دائماً
+UI_ICONS = ["house", "book-open", "calendar-days", "messages-square", "siren", "message-circle", "volume-2", "arrow-left", "arrow-right", "chevron-left", "chevron-right",
+            "check", "x", "info", "smartphone", "lock-keyhole", "sun", "moon", "sun-moon", "a-arrow-up", "phone", "phone-call", "triangle-alert", "badge-check", "lightbulb",
+            "moon-star", "plus", "play", "star8", "sparkles"]
+
+
+def sprite_svg(data, meta):
+    """SVG sprite: فقط الأيقونات المستخدمة فعلاً في هذا الكتاب (+ شعاره) — بلا طلبات شبكة، وبلا إيموجي."""
+    used = set(UI_ICONS)
+    def walk(o):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if k == "icon" and isinstance(v, str) and v in SPRITE: used.add(v)
+                else: walk(v)
+        elif isinstance(o, list):
+            for v in o: walk(v)
+    walk(data); walk(meta.get("sos"))
+    sy = "".join(f'<symbol id="i-{n}" viewBox="0 0 24 24">{SPRITE[n]}</symbol>' for n in sorted(used) if n in SPRITE)
+    e = emblem_key(meta.get("icon")); sy += f'<symbol id="e-{e}" viewBox="0 0 24 24">{EMBLEMS[e]["svg"]}</symbol>'
+    return f'<svg width="0" height="0" style="position:absolute" aria-hidden="true">{sy}</svg>'
+
+
+def emblem_svg(k):
+    return f'<svg class="emb" viewBox="0 0 24 24" aria-hidden="true"><use href="#e-{emblem_key(k)}"/></svg>'
+
 FLAG_SHORT = {"am": "አማ", "tl": "TL", "id": "ID", "ur": "اردو", "en": "EN", "sw": "SW", "si": "සිං", "bn": "বাং", "hi": "हि", "om": "OM"}
 
 ZW = ["\u200b", "\u200c"]  # بت 0 / بت 1 — غير مرئيين
@@ -166,7 +222,8 @@ def hm(t):
 
 
 def fmt12(t):
-    hh, mm = [int(x) for x in t.split(":")]; return f"{'☀️' if 6 <= hh < 18 else '🌙'} {hh:02d}:{mm:02d}"
+    """24 ساعة (الساعة الإثيوبية مزاحة 6 ساعات، فصيغة 12 ساعة بلا ص/م مُلبسة). الواجهة تضيف أيقونة شمس/قمر."""
+    hh, mm = [int(x) for x in t.split(":")]; return f"{hh:02d}:{mm:02d}"
 
 
 def build_schedule(sc, limits):
@@ -188,7 +245,7 @@ def build_schedule(sc, limits):
     rows = [{"time": fmt12(sc["start"]), "k": "sched_start"}]
     for i, (a, b) in enumerate(sc.get("breaks", [])):
         k = "sched_meal" if hm(b) - hm(a) >= 60 else "sched_break"
-        rows.append({"time": f"{fmt12(a)}\n{fmt12(b)[-5:]}", "k": k, "rest": True})
+        rows.append({"time": f"{fmt12(a)}\n{fmt12(b)}", "k": k, "rest": True})
     rows.append({"time": fmt12(sc["end"]), "k": "sched_end"})
     def hrs(m): return (f"{m // 60}" if m % 60 == 0 else f"{m / 60:.1f}")
     return {"rows": rows, "workH": hrs(work), "restH": hrs(rest), "restDay": int(sc.get("rest_day", 5))}
@@ -231,28 +288,15 @@ def stamp_fingerprint(data, fp):
 
 
 # ───────────────────────── أيقونة ─────────────────────────
-def icon_png(emoji, size=180):
-    """أيقونة PNG للشاشة الرئيسية (iOS لا يقبل SVG في apple-touch-icon): خلفية برقوقية + إطار ذهبي + الحرف الأول."""
-    try:
-        from PIL import Image, ImageDraw
-    except Exception:
-        return None
-    im = Image.new("RGB", (size, size), (90, 16, 48)); d = ImageDraw.Draw(im)
-    for i in range(size):  # تدرّج
-        c = (int(90 + 32 * i / size), int(16 + 10 * i / size), int(48 + 26 * i / size)); d.line([(0, i), (size, i)], fill=c)
-    m = size * 0.09; d.rounded_rectangle([m, m, size - m, size - m], radius=size * 0.16, outline=(201, 168, 106), width=max(2, size // 60))
-    r = size * 0.24; cx = cy = size / 2
-    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(233, 211, 166))
-    d.ellipse([cx - r * 0.55, cy - r * 0.55, cx + r * 0.55, cy + r * 0.55], fill=(90, 16, 48))
-    b = io.BytesIO(); im.save(b, "PNG", optimize=True); return b.getvalue()
+def icon_png(key, size=180):
+    """أيقونة الشاشة الرئيسية للشعار المختار (مرسومة مسبقاً بواسطة tools/icons.mjs — ذهب على أسود، قابلة للقص maskable)."""
+    p = os.path.join(ROOT, "book/icons/emblems", f"{emblem_key(key)}-{512 if size > 180 else 180}.png")
+    return open(p, "rb").read() if os.path.exists(p) else None
 
 
-def icon_svg(emoji):
-    s = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='0' y2='1'>"
-         "<stop offset='0' stop-color='#7a1844'/><stop offset='1' stop-color='#3d0a20'/></linearGradient></defs>"
-         "<rect width='100' height='100' rx='22' fill='url(#g)'/><rect x='8' y='8' width='84' height='84' rx='17' fill='none' stroke='#C9A86A' stroke-width='2'/>"
-         f"<text x='50' y='64' font-size='44' text-anchor='middle'>{emoji}</text></svg>")
-    return "data:image/svg+xml;base64," + base64.b64encode(s.encode()).decode()
+def icon_svg(key):
+    p = os.path.join(ROOT, "book/icons/emblems", f"{emblem_key(key)}.svg")
+    return "data:image/svg+xml;base64," + base64.b64encode(open(p, "rb").read()).decode()
 
 
 # ───────────────────────── JS ─────────────────────────
@@ -269,16 +313,16 @@ def minify(path):
 def font_faces(langs):
     css = ""
     for lg in langs:
-        if lg in FONT_FILES:
-            fam, p = FONT_FILES[lg]; fp = os.path.join(ROOT, p)
+        for fam, p, wt in FONT_FILES.get(lg, []):
+            fp = os.path.join(ROOT, p)
             if os.path.exists(fp):
-                css += "@font-face{font-family:'%s';src:url(data:font/woff2;base64,%s) format('woff2');font-display:swap}\n" % (fam, base64.b64encode(open(fp, "rb").read()).decode())
+                css += "@font-face{font-family:'%s';src:url(data:font/woff2;base64,%s) format('woff2');font-weight:%s;font-display:swap}\n" % (fam, base64.b64encode(open(fp, "rb").read()).decode(), wt)
     return css
 
 
 # ───────────────────────── البناء ─────────────────────────
 DEMO_ORDER = {"order_id": "DEMO", "book_name": "دليل بيت أم سارة", "home_name": "بيت أم سارة", "worker_name": "",
-              "buyer": "نسخة معاينة", "icon": "🌸", "rules": None,
+              "buyer": "نسخة معاينة", "icon": "flower", "rules": None,
               "schedule": {"start": "07:00", "end": "20:30", "breaks": [["10:00", "10:30"], ["13:30", "16:00"], ["19:30", "20:00"]], "rest_day": 5},
               "country": "sa", "encrypt": False}
 
@@ -300,6 +344,7 @@ def build(lang, order, pwa=False, sample=False, out_dir=None):
     replies = build_replies(lang, ap)
     sched = build_schedule(order["schedule"], country["limits"]) if order.get("schedule") else None
     data = {"chapters": chapters, "rules": rules, "replies": replies, "schedule": sched, "ui": ui, "madam": build_madam(chapters)}
+    iconize(data)
     oid = order.get("order_id", "DEMO")
     fp = f"{oid}|{lang}|{time.strftime('%Y%m%d')}"
     if oid != "DEMO": stamp_fingerprint(data, fp)
@@ -309,11 +354,11 @@ def build(lang, order, pwa=False, sample=False, out_dir=None):
     code = GC.norm_code(order.get("code") or GC.new_code()) if encrypt else None
     meta = {"id": f"{oid}-{lang}".lower(), "lang": lang, "dir": L["dir"], "flagShort": FLAG_SHORT.get(lang, lang.upper()),
             "bookName": order.get("book_name") or "كتاب البيت", "home": order.get("home_name", ""), "worker": order.get("worker_name", ""),
-            "icon": order.get("icon") or "🏠", "wm": wm, "madamPhone": order.get("madam_phone", ""),
+            "icon": emblem_key(order.get("icon")), "wm": wm, "madamPhone": order.get("madam_phone", ""),
             "ui0": {k: ui[k] for k in ("welcome", "welcome_sub", "start", "listen", "made_for", "unlock_title", "unlock_hint", "unlock_btn",
                                         "wrong_code", "emergency", "audio_loading", "call_madam", "home", "book", "today", "replies")},
             "sw": "sw.js" if pwa else None, "audio": {}, "enc": None}
-    meta["sos"] = sos_block(lang, chapters, ui, country)
+    meta["sos"] = iconize(sos_block(lang, chapters, ui, country))
 
     # ─ التشفير ─ مفتاح صوت عشوائي (ak) داخل الحمولة المشفرة بالرمز؛ الصوت يُشفَّر بـ ak
     keys = None
@@ -367,7 +412,7 @@ def build(lang, order, pwa=False, sample=False, out_dir=None):
     icon_p = icon_png(meta["icon"])
     rep = {
         "{{LANG}}": lang, "{{DIR}}": L["dir"], "{{BOOK_NAME}}": html_esc(meta["bookName"]), "{{BOOK_NAME_ATTR}}": html_esc(meta["bookName"][:22]),
-        "{{LICENSE_HEADER}}": lic, "{{CV_MADE}}": html_esc(ui["made_for"]["l"]), "{{ICON}}": meta["icon"], "{{FONT_STACK}}": FONT_STACK.get(lang, DEFAULT_STACK), "{{FONT_FACES}}": font_faces(["ar", lang]),
+        "{{LICENSE_HEADER}}": lic, "{{CV_MADE}}": html_esc(ui["made_for"]["l"]), "{{EMBLEM}}": emblem_svg(meta["icon"]), "{{SPRITE}}": sprite_svg(data, meta), "{{FONT_STACK}}": FONT_STACK.get(lang, DEFAULT_STACK), "{{FONT_FACES}}": font_faces(["ar", lang]),
         "{{ICON_DATA}}": icon_svg(meta["icon"]),
         "{{ICON_PNG}}": ("icon-180.png" if pwa else ("data:image/png;base64," + base64.b64encode(icon_p).decode() if icon_p else icon_svg(meta["icon"]))),
         "{{MANIFEST_LINK}}": '<link rel="manifest" href="manifest.webmanifest">' if pwa else "",
@@ -395,8 +440,8 @@ def build(lang, order, pwa=False, sample=False, out_dir=None):
             open(os.path.join(d, "icon-180.png"), "wb").write(icon_p)
             open(os.path.join(d, "icon-512.png"), "wb").write(icon_png(meta["icon"], 512))
         man = {"name": meta["bookName"], "short_name": meta["bookName"][:12], "start_url": "./index.html", "scope": "./", "display": "standalone",
-               "background_color": "#3d0a20", "theme_color": "#5A1030", "dir": "rtl", "lang": "ar",
-               "icons": [{"src": "icon-180.png", "sizes": "180x180", "type": "image/png"}, {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}]}
+               "background_color": "#0A0907", "theme_color": "#0A0907", "dir": "rtl", "lang": "ar",
+               "icons": [{"src": "icon-180.png", "sizes": "180x180", "type": "image/png"}, {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]}
         open(os.path.join(d, "manifest.webmanifest"), "w", encoding="utf-8").write(json.dumps(man, ensure_ascii=False))
         files = ["./", "./index.html", "./manifest.webmanifest", "./icon-180.png", "./icon-512.png"] + ["./" + f for f in pwa_files]
         ver = hashlib.sha1(html.encode()).hexdigest()[:10]

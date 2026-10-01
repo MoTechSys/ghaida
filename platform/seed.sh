@@ -12,7 +12,6 @@ for d in packs/*/; do
   L=$(basename "$d")
   put "packs/$L/pack.json" "$d/pack.json" application/json
   put "packs/$L/fonts.json" "$d/fonts.json" application/json
-  for f in "$d"/icon-*.png; do put "packs/$L/$(basename "$f")" "$f" image/png; done
   for f in "$d"/a/*; do put "packs/$L/a/$(basename "$f")" "$f"; done
 done
 echo "seeded ($MODE)"

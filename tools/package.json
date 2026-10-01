@@ -1,0 +1,8 @@
+{
+  "name": "ghaida-tools",
+  "private": true,
+  "type": "module",
+  "description": "أدوات البناء غير الحية: أيقونات SVG (Lucide ISC + Simple Icons CC0) ورسم أيقونات الشاشة الرئيسية PNG (resvg).",
+  "scripts": { "icons": "node icons.mjs" },
+  "devDependencies": { "lucide-static": "0.544.0", "simple-icons": "13.21.0", "@resvg/resvg-js": "2.6.2" }
+}
