@@ -105,7 +105,7 @@ export function assemble({ pack, template, fonts, order, audio, pwa = false, ran
 
 export function manifest(order, base) {
   const name = order.book_name || 'كتاب البيت';
-  return { name, short_name: name.slice(0, 12), start_url: base + 'index.html', scope: base, display: 'standalone', background_color: '#0A0907', theme_color: '#0A0907', dir: 'rtl', lang: 'ar',
+  return { name, short_name: name.slice(0, 12), start_url: base + 'index.html', scope: base, display: 'standalone', background_color: '#FBF5F1', theme_color: '#5A1030', dir: 'rtl', lang: 'ar',
     icons: [{ src: 'icon-180.png', sizes: '180x180', type: 'image/png' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }] };
 }
 

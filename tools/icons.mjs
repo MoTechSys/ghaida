@@ -58,8 +58,9 @@ w(path.join(ROOT, 'book/icons/emblems.json'), JSON.stringify(emblems, null, 1));
 // ── 3) رسم PNG ──
 const FONTS = ['Amiri-Bold.ttf', 'Amiri-Regular.ttf', 'NotoNaskhArabic-VF.ttf'].map((f) => path.join(HERE, 'src/fonts', f));
 const png = (svg, width) => new Resvg(svg, { fitTo: { mode: 'width', value: width }, font: { fontFiles: FONTS, loadSystemFonts: false, defaultFontFamily: 'Amiri' } }).render().asPng();
-const GOLD = `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1DCA7"/><stop offset=".45" stop-color="#C9A45C"/><stop offset="1" stop-color="#8E6B2E"/></linearGradient>`;
-const BG = `<radialGradient id="b" cx=".5" cy=".32" r=".8"><stop offset="0" stop-color="#2A241A"/><stop offset=".6" stop-color="#14110C"/><stop offset="1" stop-color="#080706"/></radialGradient>`;
+// هوية غيداء: برقوقي عميق + ذهب شمباني
+const GOLD = `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7E9C8"/><stop offset=".5" stop-color="#E2C68E"/><stop offset="1" stop-color="#C29A55"/></linearGradient>`;
+const BG = `<radialGradient id="b" cx=".5" cy=".18" r=".95"><stop offset="0" stop-color="#8A1A4A"/><stop offset=".55" stop-color="#5A1030"/><stop offset="1" stop-color="#2E0818"/></radialGradient>`;
 function appIcon(svgInner, { maskable = true } = {}) {
   // 512×512: خلفية سوداء دافئة + إطار ذهبي مزدوج + الشعار (داخل منطقة الأمان 80% للأيقونات القابلة للقص)
   const s = maskable ? 0.52 : 0.6, off = (512 - 24 * (512 * s / 24)) / 2, sc = (512 * s) / 24;
@@ -102,21 +103,23 @@ w(path.join(PUB, 'brand/logo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" vie
 // ── 5) صورة الواجهة: AVIF/WebP/JPEG بعدة مقاسات (Python/Pillow — أسرع وأجود من أدوات node هنا) ──
 execFileSync('python3', [path.join(HERE, 'images.py')], { stdio: 'inherit' });
 
-// ── 6) صورة المشاركة OG 1200×630 (الصورة + نص عربي مرسوم بخط أميري) ──
-const heroJpg = fs.readFileSync(path.join(PUB, 'img/hero-1440.jpg')).toString('base64');
-const og = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630" viewBox="0 0 1200 630"><defs>${GOLD}
-<linearGradient id="fade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".45" stop-color="#000" stop-opacity=".15"/><stop offset=".8" stop-color="#000" stop-opacity=".82"/></linearGradient></defs>
-<image href="data:image/jpeg;base64,${heroJpg}" x="0" y="-55" width="1200" height="670" preserveAspectRatio="xMidYMid slice"/>
-<rect width="1200" height="630" fill="url(#fade)"/>
-<rect x="18" y="18" width="1164" height="594" rx="18" fill="none" stroke="url(#g)" stroke-opacity=".55" stroke-width="2"/>
-<g transform="translate(1050 92) scale(3.2)" fill="none" stroke="url(#g)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g>
-<text x="1110" y="300" text-anchor="end" direction="rtl" font-family="Amiri" font-weight="700" font-size="104" fill="url(#g)">كتاب البيت</text>
-<text x="1110" y="372" text-anchor="end" direction="rtl" font-family="Amiri" font-size="40" fill="#EDE3CC">قواعد بيتك… بلغة عاملتك، وبصوت تسمعه</text>
-<text x="1110" y="430" text-anchor="end" direction="rtl" font-family="Noto Naskh Arabic" font-size="27" fill="#BFB49C">نسخة خاصة باسم بيتك · تعمل بلا إنترنت · آيفون وأندرويد</text>
-<text x="1110" y="548" text-anchor="end" font-family="Amiri" font-size="22" letter-spacing="6" fill="#C9A45C">GHAIDA · HOME BOOK</text></svg>`;
+// ── 6) صورة المشاركة OG 1200×630: برقوقي + لقطة حقيقية للكتاب داخل جوال + العنوان بخط أميري ──
+const shot = fs.readFileSync(path.join(HERE, 'src/shots/cover.png')).toString('base64');
+const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><defs>${GOLD}
+<radialGradient id="ob" cx=".78" cy=".1" r="1.1"><stop offset="0" stop-color="#8A1A4A"/><stop offset=".5" stop-color="#5A1030"/><stop offset="1" stop-color="#2B0716"/></radialGradient>
+<clipPath id="sc"><rect x="118" y="58" width="246" height="532" rx="34"/></clipPath><filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#000" flood-opacity=".45"/></filter></defs>
+<rect width="1200" height="630" fill="url(#ob)"/>
+<rect x="18" y="18" width="1164" height="594" rx="18" fill="none" stroke="url(#g)" stroke-opacity=".5" stroke-width="2"/>
+<g filter="url(#sh)"><rect x="106" y="46" width="270" height="556" rx="44" fill="#1A0710"/></g>
+<image href="data:image/png;base64,${shot}" x="118" y="58" width="246" height="532" preserveAspectRatio="xMidYMin slice" clip-path="url(#sc)"/>
+<g transform="translate(1046 86) scale(2.9)" fill="none" stroke="url(#g)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">${CUSTOM.arch}</g>
+<text x="1110" y="300" text-anchor="end" direction="rtl" font-family="Amiri" font-weight="700" font-size="100" fill="#FFFFFF">كتاب البيت</text>
+<text x="1110" y="372" text-anchor="end" direction="rtl" font-family="Amiri" font-size="40" fill="#F3E2BD">قواعد بيتك… بلغة عاملتك، وبصوت تسمعه</text>
+<text x="1110" y="430" text-anchor="end" direction="rtl" font-family="Noto Naskh Arabic" font-size="27" fill="#E9D3A6" fill-opacity=".85">نسخة باسم بيتك · تعمل بلا إنترنت · آيفون وأندرويد</text>
+<text x="1110" y="548" text-anchor="end" font-family="Amiri" font-size="22" letter-spacing="6" fill="#E2C68E">GHAIDA · HOME BOOK</text></svg>`;
 const ogPng = png(og, 1200);
 w(path.join(ROOT, 'tools/out/og.png'), ogPng);
-execFileSync('python3', ['-c', `from PIL import Image;im=Image.open('${path.join(ROOT, 'tools/out/og.png')}').convert('RGB');im.save('${path.join(PUB, 'brand/og.jpg')}',quality=84,optimize=True,progressive=True)`]);
+execFileSync('python3', ['-c', `from PIL import Image;im=Image.open('${path.join(ROOT, 'tools/out/og.png')}').convert('RGB');im.save('${path.join(PUB, 'brand/og.jpg')}',quality=86,optimize=True,progressive=True)`]);
 console.log('brand + og done');
 
 // ── 7) بصمات المحتوى (cache-busting) + وحدة TS للمنصة ──
@@ -126,9 +129,9 @@ const hash = (p) => crypto.createHash('sha256').update(fs.readFileSync(p)).diges
 const files = {};
 for (const dir of ['fonts', 'img', 'brand']) for (const f of fs.readdirSync(path.join(PUB, dir))) if (!/\.(json|txt)$/.test(f)) files[`/${dir}/${f}`] = `/${dir}/${f}?v=${hash(path.join(PUB, dir, f))}`;
 files['/favicon.ico'] = '/favicon.ico?v=' + hash(path.join(PUB, 'favicon.ico'));
-const hero = JSON.parse(fs.readFileSync(path.join(PUB, 'img/hero.json'), 'utf8'));
+const hero = JSON.parse(fs.readFileSync(path.join(PUB, 'img/shots.json'), 'utf8'));
 const usedUI = sprite;
-w(path.join(ROOT, 'platform/src/assets.gen.ts'), `// مولَّد بواسطة tools/icons.mjs — لا تعدّله يدوياً\nexport const ASSET: Record<string, string> = ${JSON.stringify(files, null, 1)};\nexport const HERO = ${JSON.stringify({ lqip: hero.lqip, w: hero.w, h: hero.h, mobile: hero.mobile })};\nexport const ICONS: Record<string, string> = ${JSON.stringify(usedUI)};\nexport const EMBLEMS: Record<string, { ar: string; svg: string }> = ${JSON.stringify(emblems)};\n`);
+w(path.join(ROOT, 'platform/src/assets.gen.ts'), `// مولَّد بواسطة tools/icons.mjs — لا تعدّله يدوياً\nexport const ASSET: Record<string, string> = ${JSON.stringify(files, null, 1)};\nexport const SHOTS: Record<string, { w: number; h: number }> = ${JSON.stringify(hero)};\nexport const ICONS: Record<string, string> = ${JSON.stringify(usedUI)};\nexport const EMBLEMS: Record<string, { ar: string; svg: string }> = ${JSON.stringify(emblems)};\n`);
 console.log('assets.gen.ts:', Object.keys(files).length, 'files');
 // خريطة الإيموجي → أيقونة متاحة أيضاً للمنصة (كتالوج القواعد في معالج الطلب)
 fs.appendFileSync(path.join(ROOT, 'platform/src/assets.gen.ts'), `export const EMOJI: Record<string, string> = ${JSON.stringify(Object.fromEntries(Object.entries(MAP).filter(([k]) => !k.startsWith('_'))))};\n`);

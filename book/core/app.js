@@ -146,7 +146,7 @@
   function overall() { var t = 0, o = 0; D.chapters.forEach(function (c) { var s = chapterStats(c); t += s.tot; o += s.ok; }); return t ? Math.round(o * 100 / t) : 0; }
   function ring(p) {
     var r = 24, C = 2 * Math.PI * r, off = C * (1 - p / 100);
-    return '<svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="' + r + '" stroke="rgba(201,164,92,.18)" stroke-width="4" fill="none"/><circle cx="30" cy="30" r="' + r + '" stroke="#D9B873" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 30 30)"/><text x="30" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="#F4EAD4" font-family="ui-monospace,Menlo,monospace">' + p + '%</text></svg>';
+    return '<svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="' + r + '" stroke="rgba(233,211,166,.25)" stroke-width="5" fill="none"/><circle cx="30" cy="30" r="' + r + '" stroke="#E9D3A6" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 30 30)"/><text x="30" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" font-family="ui-monospace,Menlo,monospace">' + p + '%</text></svg>';
   }
   function tile(v, ic, k, extra, cls) {
     return '<button class="tile ' + (cls || '') + '" data-go="' + v + '"' + (extra || '') + '><span class="ib">' + I(ic) + '</span><span class="tt L">' + esc(S(k)) + '</span><span class="ts L">' + esc(S(k + '_sub')) + '</span></button>';
@@ -334,10 +334,10 @@
   });
   $('btnBack').onclick = function () { if (curView === 'vHome') return; back(); };
   // ═══════════════ إعدادات القراءة: ليلي/ورقي + حجم الخط (تُحفظ على الجهاز، عامة لكل الكتب) ═══════════════
-  function setTheme(t) { document.documentElement.setAttribute('data-theme', t); try { localStorage.setItem('gh2.theme', t); } catch (e) {} var m = $('themeColor'); if (m) m.setAttribute('content', t === 'paper' ? '#F7F1E6' : '#0A0907'); syncSet(); }
+  function setTheme(t) { document.documentElement.setAttribute('data-theme', t); try { localStorage.setItem('gh2.theme', t); } catch (e) {} var m = $('themeColor'); if (m) m.setAttribute('content', t === 'night' ? '#150A10' : '#5A1030'); syncSet(); }
   function setZoom(z) { document.documentElement.style.setProperty('--z', z); try { localStorage.setItem('gh2.zoom', z); } catch (e) {} syncSet(); }
   function syncSet() {
-    var t = document.documentElement.getAttribute('data-theme') || 'night', z = (getComputedStyle(document.documentElement).getPropertyValue('--z') || '1').trim();
+    var t = document.documentElement.getAttribute('data-theme') || 'day', z = (getComputedStyle(document.documentElement).getPropertyValue('--z') || '1').trim();
     [].forEach.call(document.querySelectorAll('#thOpt button'), function (b) { b.classList.toggle('on', b.getAttribute('data-th') === t); });
     [].forEach.call(document.querySelectorAll('#zOpt button'), function (b) { b.classList.toggle('on', parseFloat(b.getAttribute('data-z')) === parseFloat(z)); });
   }
@@ -346,7 +346,7 @@
   $('scrim').onclick = function () { sheet(false); };
   [].forEach.call(document.querySelectorAll('#thOpt button'), function (b) { b.onclick = function () { setTheme(b.getAttribute('data-th')); }; });
   [].forEach.call(document.querySelectorAll('#zOpt button'), function (b) { b.onclick = function () { setZoom(b.getAttribute('data-z')); }; });
-  if (document.documentElement.getAttribute('data-theme') === 'paper') { var tc = $('themeColor'); if (tc) tc.setAttribute('content', '#F7F1E6'); }
+  if (document.documentElement.getAttribute('data-theme') === 'night') { var tc = $('themeColor'); if (tc) tc.setAttribute('content', '#150A10'); }
   function syncSeg() { [].forEach.call(document.querySelectorAll('.seg button'), function (x) { x.classList.toggle('on', x.getAttribute('data-mode') === MODE); }); }
 
   // ═══════════════ الإقلاع: قفل ← غلاف ← الرئيسية ═══════════════
