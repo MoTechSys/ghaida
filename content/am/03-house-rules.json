@@ -134,37 +134,38 @@
     {
       "id": "daily-times",
       "type": "schedule",
-      "title": "የቀናችን ሰዓቶች (በቤቱ መሠረት ይቀየራሉ)",
+      "title": "የቀኑ ሰዓታት (ምሳሌ — የቤቱ ባለቤት ሴት ጊዜ ሰሌዳሽን ታዘጋጃለች)",
       "items": [
         {
           "icon": "🌅",
-          "text": "መነሳት እና ስራ መጀመር: 7:00 ጠዋት"
-        },
-        {
-          "icon": "🍳",
-          "text": "ቁርስ: 8:00"
+          "text": "የስራ መጀመሪያ: 7:00 ጠዋት"
         },
         {
           "icon": "☕",
-          "text": "እረፍት: 11:00 (30 ደቂቃ)"
+          "text": "እረፍት እና ቁርስ: 10:00 – 10:30"
         },
         {
           "icon": "🍛",
-          "text": "ምሳ እና እረፍት: 2:00 – 4:00"
+          "text": "ምሳ እና እረፍት: 1:30 – 4:00 (2 እና ግማሽ ሰዓት፣ ከስራ ጊዜ አይቈጠርም)"
         },
         {
           "icon": "🌙",
-          "text": "እራት: 8:00"
+          "text": "እረፍት እና እራት: 7:30 – 8:00"
         },
         {
           "icon": "🛌",
-          "text": "ስራ መጨረስ: 10:00 ማታ"
+          "text": "የስራ መጨረሻ: 8:30 ማታ — ከዚያ በኋላ ለእረፍትና ለእንቅልፍ ጊዜሽ ነው"
+        },
+        {
+          "icon": "⏱️",
+          "text": "ድምር: 10 ሰዓት ስራ ብቻ፣ በሌሊት ከ10 ሰዓት በላይ ቀጥታ እረፍት"
         },
         {
           "icon": "📅",
-          "text": "የሳምንቱ ዕረፍት ቀን: ዓርብ"
+          "text": "የሳምንታዊ ዕረፍት ቀን: አርብ (24 ሰዓት ሙሉ፣ ሙሉ ደመወዝ ጋር)"
         }
-      ]
+      ],
+      "text": "ህጉ ይወስናል፡ በቀን ከ10 ሰዓት በላይ ስራ አይሆን። ከየ5 ሰዓት ሥራ በኋላ ግማሽ ሰዓት እረፍት። ቢያንስ 8 ሰዓት ቀጥታ እንቅልፍ።"
     }
   ],
   "_meta": {
@@ -173,6 +174,48 @@
     "model": "gpt-5",
     "tokens": 29845,
     "generated": "2026-09-30",
-    "qa_fixed": 3
+    "qa_fixed": 3,
+    "src": {
+      "title": "a8a6bdbc21032d3d",
+      "subtitle": "0f48dd447adcd79f",
+      "sections/0/text": "cb61b1dbba9231d2",
+      "sections/1/title": "006b97789f67e95a",
+      "sections/1/text": "2878b04a102e45f2",
+      "sections/1/items/0/text": "1100baab75e01a07",
+      "sections/1/items/1/text": "4a38024ea4fb2411",
+      "sections/1/items/2/text": "4aa08fc52f31ed27",
+      "sections/1/items/3/text": "6c640f975a45ffde",
+      "sections/1/items/4/text": "f178c57202e1433d",
+      "sections/1/items/5/text": "0a2b7f8e7113d162",
+      "sections/1/items/6/text": "1e0637d9dc9bef80",
+      "sections/2/title": "2ffd6dc21eb156db",
+      "sections/2/items/0/text": "28f3a58dda98fcd3",
+      "sections/2/items/1/text": "204f5d20f48d9e3f",
+      "sections/2/items/1/why": "272bd64bc405b856",
+      "sections/2/items/2/text": "12ada26f4742d032",
+      "sections/3/title": "fd2265e7ad7047bc",
+      "sections/3/items/0/text": "dbcba03ddefcdd66",
+      "sections/3/items/1/text": "5dcf9a7f79b2a038",
+      "sections/3/items/2/text": "b654f4a0d522a84b",
+      "sections/3/items/2/why": "7b70d33331819ddf",
+      "sections/3/items/3/text": "070fcf609baf2083",
+      "sections/4/title": "0a6b777ec845cb8a",
+      "sections/4/items/0/text": "c3523df559f32bcd",
+      "sections/4/items/1/text": "bbc16eaec8d6cc08",
+      "sections/4/items/2/text": "5439dd1d61ce209d",
+      "sections/5/title": "8db966b3d973e976",
+      "sections/5/items/0/text": "c8644e2b8291d994",
+      "sections/5/items/1/text": "bc9dc91162086af0",
+      "sections/5/items/2/text": "514c09d7d365e57c",
+      "sections/6/title": "06122c827095a3f6",
+      "sections/6/items/0/text": "211ae044c475090b",
+      "sections/6/items/1/text": "f57d73e8db936d5a",
+      "sections/6/items/2/text": "930ff82f036cb451",
+      "sections/6/items/3/text": "d03d84b1fce82c25",
+      "sections/6/items/4/text": "1b6aa47369d65810",
+      "sections/6/items/5/text": "1828620183230056",
+      "sections/6/items/6/text": "5f3f816a14f842d7",
+      "sections/6/text": "aded25b6983d9e53"
+    }
   }
 }

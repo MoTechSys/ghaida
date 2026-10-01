@@ -1,59 +1,63 @@
 # HANDOFF — حالة العمل الحالية (حدّث هذا الملف في نهاية كل جلسة)
 
-_آخر تحديث: 2026-09-30 — الجلسة 2 (اكتمل الكتاب الأمهري الأول) (الوكيل: Claude عبر Genspark، بتوجيه م. معين)_
+_آخر تحديث: 2026-10-01 — الجلسة 3: «الكتاب الشخصي الفاخر» v2 + منصة البيع (الوكيل: Claude عبر Genspark، بتوجيه م. معين)_
 
-## ✅ ما أُنجز
-| البند | الحالة | ملاحظات |
+## 🧭 ما هو المنتج الآن (جملة واحدة)
+ربة البيت تدخل الموقع ← تختار لغة عاملتها وتسمّي «كتاب بيتها» وتختار قواعده وجدوله ← تحوّل وترفع الإيصال ← تستلم **رابطاً + رمزاً** (يُثبَّت على جوال العاملة ككتاب باسم البيت ويعمل بلا إنترنت) **وملفاً واحداً** للواتساب — مشفّر، ببصمة، بصوت لكل جملة.
+
+## ✅ ما أُنجز في الجلسة 3
+| البند | الحالة | الدليل |
 |---|---|---|
-| تحليل محادثة واتساب (نص + 22 صوت + وسائط) | ✅ | `_analysis/transcripts_voice_notes.md` |
-| بحث السوق والمنافسين | ✅ | `_analysis/market_research.md` — السوق: PDF 30 ريال بلا صوت |
-| قرار المنتج: ملف HTML واحد أوفلاين، نسخة/لغة | ✅ | `docs/DECISIONS.md` ADR-001..008 |
-| المحتوى العربي (8 فصول، 319 جملة) | ✅ v1 | `content/ar/` — يحتاج مراجعة غيداء/معين لاحقاً (لهجة، تفاصيل بيت) |
-| محرك الترجمة | ✅ | `engine/translate.py` — gpt-5، تقسيم بالأقسام، تحقق بنية |
-| بوابة جودة الترجمة | ✅ | `engine/qa_translate.py` — **إلزامية قبل النشر** |
-| محرك الصوت | ✅ | `engine/tts.py` — كاش، ضغط 32kbps، ~4KB/ث |
-| باني الكتاب | ✅ | `engine/build_book.py` — ملف واحد + خيار PWA |
-| قالب الواجهة pink | ✅ v1 (7/10) | `book/templates/book.html` |
-| صوت عربي (380 جملة) | ✅ 380/380 | 9.1MB مصدر @32k. **أرشيف**: https://github.com/MoTechSys/ghaida/releases/tag/audio-v0.1 |
-| ترجمة أمهرية (gpt-5) | ✅ 8/8 فصول | `content/am/` مرفوعة في git |
-| QA أمهري | ✅ مع --fix | 3–4 تصحيحات/فصل في الفصول 1–3 (تقرير: `content/am/_qa_report.json`). الفصول 4–8 QA جارٍ عند إغلاق الجلسة — أعد `qa_translate.py am --fix` ثم `tts.py am` ثم build |
-| صوت أمهري | ✅ 380/380 | 7.9MB مصدر |
-| **الكتاب الأمهري الكامل** | ✅ **v0.1 مبني** | `dist/ghaida-book-am.html` **11.7MB** (صوت مشحون @20k). تقييم بصري 7/10، "جاهز لإرسال للعميلة" |
-| خطوط مضمّنة (Ethiopic + Naskh) | ✅ | `book/fonts/*.woff2` تُضمَّن تلقائياً |
+| تدقيق ghaida-research (36 وثيقة + 14 مخرجاً) والتحقق من الأنظمة | ✅ | `docs/RESEARCH_AUDIT.md` |
+| QA الأمهري للفصول 4–8 (لم يكن مكتملاً) | ✅ 43 تصحيحاً | `content/am/_qa_report.json` (يُدمج الآن) |
+| جدول الفصل 03 كان يخالف حد 10 ساعات | ✅ صُحِّح | ADR-011 |
+| مساند 920002866 + يوم بديل في الحقوق | ✅ | `content/ar/08-rights.json` |
+| مكتبة قواعد البيت (61 قاعدة/10 فئات) | ✅ عربي + أمهري + صوت | `content/*/library/rules.json` |
+| ردود العاملة (18) + نصوص الواجهة (73) | ✅ عربي + أمهري + صوت | `content/*/_replies.json`, `_ui.json` |
+| مترجم تزايدي لكل أنواع المحتوى | ✅ | `engine/sync_translate.py` |
+| محرك الكتاب v2 (فاخر، مشفّر، صوت كسول، بصمة، طوارئ مفتوحة) | ✅ | `engine/build_book2.py`, `book/core/*`, `book/templates/book2.html` |
+| تشفير JS خالص ↔ Python مطابق بالبايت | ✅ RFC 8439 + FIPS | `book/core/ghcrypto.js`, `engine/ghcrypto.py` |
+| مجمّع الكتاب على الخادم (JS) | ✅ < 0.5ث/طلب | `book/core/assemble.js` |
+| منصة البيع (Hono + D1 + R2) | ✅ محلياً | `platform/` |
+| صفحة بيع فاخرة + عيّنة مجانية حيّة + معالج طلب 4 خطوات | ✅ | `platform/src/pages.ts` |
+| تحقق الإيصال بالرؤية + 7 فحوص + طابور مراجعة | ✅ | ADR-016 |
+| لوحة إدارة (اعتماد/رفض/إيقاف/إعادة إصدار/تتبّع تسريب) | ✅ | `/admin` |
+| **الاختبارات** | ✅ **كلها خضراء** | انظر أدناه |
+
+## 🧪 نتائج الاختبارات (Chromium headless، محاكاة جوال 360px)
+| الاختبار | النتيجة |
+|---|---|
+| `tests/e2e_book.py` كتاب مكشوف (معاينة) | **25/25** |
+| `tests/e2e_book.py` كتاب مشفّر (Python) | **29/29** — رمز خاطئ يُرفض، صحيح يفتح في 0.41ث |
+| `tests/e2e_book.py` كتاب مجمّع على الخادم (JS) | **29/29** |
+| `tests/e2e_book.py --sample` العيّنة المجانية | **18/18** |
+| `tests/attack_test.py` هجوم QA | الاستخراج بلا رمز **محجوب**؛ التلاعب بايت واحد **مكشوف**؛ البصمة **تُسترجع** |
+| `tests/e2e_platform.py` رحلة الشراء كاملة | **27/27** — إيصال مبلغ خطأ يُرفض، مكرر يُكشف، صحيح يُقرأ 7/7 |
+| `tests/e2e_pwa_offline.py` | تثبيت SW، 17 ملفاً في الكاش، **إعادة تحميل بلا إنترنت تعمل، والصوت يعمل بلا إنترنت** |
+| الأداء | تفاعلي **0.99ث** على CPU أبطأ ×6؛ JS heap **2–5MB** (v0.1: +117MB RSS)؛ 0 أخطاء JS |
 
 ## 🔴 المتبقي (بالترتيب)
-0. **أول أمر في الجلسة القادمة** (ساندبوكس جديد = `audio/` فارغ):
-   ```bash
-   cd /home/user/webapp && curl -sL https://github.com/MoTechSys/ghaida/releases/download/audio-v0.1/ghaida_audio_ar_2026-09-30.tar.gz | tar -xz && curl -sL https://github.com/MoTechSys/ghaida/releases/download/audio-v0.1/ghaida_audio_am_2026-09-30.tar.gz | tar -xz
-   python3 engine/qa_translate.py am --fix && python3 engine/tts.py am && python3 engine/build_book.py am --pwa
-   ```
-   (AI Drive `/mnt/aidrive` كان للقراءة فقط → نستخدم GitHub Releases للأرشيف.)
-1. **إكمال QA الفصول 4–8 أمهري** ثم إعادة الصوت للجمل المصححة والبناء (الأمر أعلاه).
-2. **مراجعة سمعية**: مقطع أمهري عشوائي فُرِّغ عكسياً بتطابق ≈98% ✅. كرّر على 5 مقاطع من الفصول 6–7.
-3. **معاينة لغيداء**: أرسل `dist/ghaida-book-am.html` (≈12MB) على واتساب + رابط PWA. اجمع ملاحظاتها على: الألوان، سهولة الاستخدام، المحتوى الناقص من واقع بيوت جدة.
-4. **تحسين التصميم إلى 9/10**: تضمين خط Ethiopic WOFF2 (~200KB) للأجهزة القديمة؛ أيقونات "افعل/لا تفعل" مرسومة بدل الإيموجي (توليد بـ nano-banana، حزمة SVG موحّدة)؛ صفحة غلاف (Cover) فيها اسم البيت (تخصيص بسيط: `?home=بيت أم سارة`).
-5. **بقية اللغات**: tl → bn → id → si → ur → sw → en. كل لغة: translate → qa → tts → build (≈1 ساعة/لغة معظمها انتظار).
-6. **صفحة بيع (Landing)** بسيطة pink: اختيار الجنسية → زر واتساب لغيداء → بعد التحويل تُرسل الملف. (Cloudflare Pages، مجاناً).
-7. **PDF مطبوع** مولَّد من نفس المحتوى (اختياري — بعض العميلات يطبعن ويغلّفن حرارياً كما في السوق).
-8. تحديث التسعير مع غيداء (49/79 مقترح).
+1. **النشر العام**: `gsk hosted deploy` (يحتاج موافقتك في الواجهة) ← `secret_put` لـ `ADMIN_TOKEN` و `OPENAI_API_KEY` و `OPENAI_BASE_URL` ← `bash platform/seed.sh --remote` (يرفع الحزم لـR2 البعيد — أو عبر `gsk hosted r2_put`). ضبط `PAY_IBAN/PAY_NAME/PAY_BANK/WHATSAPP` في `wrangler.jsonc` (حالياً **قيم وهمية**).
+2. **أجهزة حقيقية** (أهم خطر غير مقاس): آيفون — فتح الرابط في سفاري + الإضافة للشاشة + فتح **الملف** من واتساب؛ أندرويد 2GB. ورقة الفحص: `ghaida-research/team-results/qa-test-plan.md`.
+3. **مراجعة ناطقة أمهرية** لفصلي السلامة والحقوق ومكتبة القواعد.
+4. **مراجعة قانونية** لفصل الحقوق (8 مقابل 9 ساعات راحة — مسودة 2026).
+5. **اللغات التالية** (لكل لغة ≈ ساعة، معظمها انتظار): `sync_translate.py <l>` ← `qa_translate.py <l> --fix` ← `tts.py ar && tts.py <l>` ← `export_pack.py <l>` ← `seed.sh`. الترتيب المقترح: tl → bn → en → **om (أورومو — الأكثر طلباً عند المنافسين)** → si → id → ur. أضف `om` في `languages.json`.
+6. خط Ethiopic/Bengali/Sinhala subset (الأمهري مضمّن كاملاً 72KB؛ أضف خطوط بقية اللغات في `FONT_FILES`).
+7. بوابة دفع بـwebhook موقّع متى توفرت وثيقة العمل الحر (استبدل `verify()` فقط).
+8. 20 عميلة تجريبية بسعرين (99/149 مقابل 79/129) لقياس رغبة الدفع الحقيقية.
 
-## ⚠️ مشاكل معروفة / دروس
-- `gpt-5-mini` **غير مقبول للترجمة** (أخطاء معنى خطيرة في الأمهرية). استخدم gpt-5 دائماً + QA.
-- الفصل 04 (56 عنصراً) يفشل كـJSON واحد → التقسيم بالأقسام يعمل.
-- Playwright المحلي لا يعمل (مكتبات نظام ناقصة) → استخدم `gsk screenshot <url>` للقطات.
-- `audio/` و `dist/` خارج git (حجم). احفظ أرشيف الصوت في AI Drive: `tar -czf ghaida_audio_YYYY-MM-DD.tar.gz audio/ && cp ... /mnt/aidrive/`.
-- gpt-5 أبطأ ويعطي 524 أحياناً على الفصول الكبيرة → `TRANSLATE_WHOLE_MAX=12` يجعل معظم الفصول تُترجم قسماً بقسم (موثوق). لا تشغّل نسختين من translate.py معاً (تكتبان نفس الملفات).
-- `pkill -f translate.py` يقتل شِل الوكيل نفسه (النمط يطابق أمر الشِل) → استخدم `ps -eo pid,args | grep "[e]ngine/translate"` ثم kill بالـ PID.
-- `tts.py`/`build_book.py` تقرأ `content/<lang>/[0-9]*.json` فقط (تجاهل `_qa_report.json`).
-- الصوت يُشحن داخل الكتاب @20kbps/16kHz (تفريغ عكسي 100% ✅) — المصدر يبقى @32k في `audio/`. تغيير: `SHIP_BITRATE=24k python3 engine/build_book.py am`.
-- الصوت العربي MSA لا خليجي — مقبول ومفهوم (تقييم 9/10)؛ إن أراد معين لهجة خليجية أقوى، جرّب صوت Gemini آخر أو ElevenLabs مع نص مشكول.
+## ⚠️ دروس / مشاكل معروفة
+- **لا تستخدم `pkill -f <نمط>`** — يطابق شِل الوكيل نفسه ويقتله. استخدم `ps -eo pid,args | grep "[w]rangler"` ثم `kill PID`.
+- الحزم `platform/packs/` ومفاتيح الصوت `platform/.keys/<lang>.ak` **خارج git**. المفتاح ثابت لكل لغة؛ لو فُقد، أعد `export_pack.py` (يولّد مفتاحاً جديداً) ثم `seed.sh` — الكتب المسلّمة سابقاً تحمل مفتاحها داخلها فتستمر بالعمل في وضع الملف، لكن روابط PWA القديمة تحتاج «إعادة إصدار» من اللوحة.
+- عيّنة صفحة البيع: `python3 engine/export_pack.py am --sample` ← `platform/public/samples/am.html` (خارج git؛ أعد توليدها قبل النشر).
+- `audio/` خارج git: أول أمر في ساندبوكس جديد هو تنزيل أرشيف الصوت (أدناه) — **الصوت الجديد للمكتبة/الردود/الواجهة يجب رفعه كأرشيف Release جديد** (`audio-v0.2`).
+- gpt-5 يعطي 524 أحياناً: الأدوات تعيد المحاولة تلقائياً؛ `QA_BATCH`/`SYNC_BATCH` لتصغير الدفعات.
 
-## 🔗 روابط مهمة
-- GitHub: https://github.com/MoTechSys/ghaida (branch العمل: `genspark_ai_developer`)
-- معاينة الساندبوكس (مؤقتة): يُعاد إنشاؤها بـ `cd dist && python3 -m http.server 8080` + GetServiceUrl.
-
-## 📊 أرقام مرجعية
-- جمل عربية فريدة: 380 → صوت ≈ 5.5MB
-- جمل أمهرية: ≈380 → صوت ≈ 6MB
-- الكتاب الكامل بلغتين: ≈ 12MB (هدف < 15MB)
-- تكلفة توليد لغة واحدة (ترجمة + QA + صوت): منخفضة جداً (بضعة دولارات credits)
+## ▶️ أول أوامر في جلسة جديدة
+```bash
+cd /home/user/webapp
+for a in ar am; do curl -sL https://github.com/MoTechSys/ghaida/releases/download/audio-v0.2/ghaida_audio_${a}_2026-10-01.tar.gz | tar -xz; done
+python3 engine/tts.py ar --dry && python3 engine/tts.py am --dry       # يجب todo=0
+python3 engine/export_pack.py am --sample
+cd platform && npm i && npm run core && bash seed.sh --local && npm run dev   # ثم GetServiceUrl 8787
+```

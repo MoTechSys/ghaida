@@ -1,0 +1,18 @@
+{
+  "id": "sa",
+  "name": "السعودية",
+  "status": "verified",
+  "verified_on": "2026-10-01",
+  "sources": [
+    "لائحة العمالة المنزلية ومن في حكمها — أم القرى: https://www.uqn.gov.sa/details?p=23820 (المواد 9–16)",
+    "مساند — الرقم الموحد 920002866: https://www.musaned.com.sa/terms-and-conditions-channels",
+    "تطبيق Musaned - domestic labor (com.laborer): https://play.google.com/store/apps/details?id=com.laborer"
+  ],
+  "currency": {"code": "SAR", "decimals": 2},
+  "limits": {"max_work_hours": 10, "min_daily_rest_hours": 8, "break_after_hours": 5, "break_minutes": 30},
+  "emergency": [
+    {"tel": "911", "key": "call_911"},
+    {"tel": "19911", "key": "call_hrsd"},
+    {"tel": "920002866", "key": "call_musaned"}
+  ]
+}

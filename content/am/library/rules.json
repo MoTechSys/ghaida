@@ -1,0 +1,491 @@
+{
+  "id": "library-rules",
+  "version": 1,
+  "categories": [
+    {
+      "id": "time",
+      "icon": "⏰",
+      "title": "ጊዜ እና ልማድ",
+      "rules": [
+        {
+          "id": "t01",
+          "icon": "🌅",
+          "text": "በየቀኑ በእቅድሽ የተጻፈው ሰዓት ላይ ሥራሽን ጀምሪ.",
+          "default": true
+        },
+        {
+          "id": "t02",
+          "icon": "🔁",
+          "text": "ሳትተኛ በፊት ምግብ ቤቱን አስተካክሪ እና ሳህኖችን አጠቢ.",
+          "default": true
+        },
+        {
+          "id": "t03",
+          "icon": "📋",
+          "text": "ሥራሽን ቀድሞ ካጨረስሽ፣ እመቤትን ቀጣይ ምን እንድታደርጊ ጠይቂ."
+        },
+        {
+          "id": "t04",
+          "icon": "🛏️",
+          "text": "ከቤተሰቡ ከተነሳ በኋላ መኝታ ክፍሎችን አስተካክሪ. ከዚያ በፊት አታስተካክሪ."
+        },
+        {
+          "id": "t05",
+          "icon": "🕌",
+          "text": "በአርብ የጸሎት ጊዜ ቤቱ ዝም ይላል. ቫኩም ማጽጃ አትጠቀሚ፣ ማጠቢያ ማሽንም አትጠቀሚ."
+        },
+        {
+          "id": "t06",
+          "icon": "🌙",
+          "text": "በረመዳን ጊዜ ሰዓታት ይቀየራሉ. እመቤት አዲሱን ጊዜ እቅድ ትነግርሻለች."
+        }
+      ]
+    },
+    {
+      "id": "kitchen",
+      "icon": "🍳",
+      "title": "ምግብ ቤት እና ምግብ",
+      "rules": [
+        {
+          "id": "k01",
+          "icon": "🧼",
+          "text": "ማንኛውንም ምግብ ሳትነካ በፊት እጅሽን አጠቢ.",
+          "default": true
+        },
+        {
+          "id": "k02",
+          "icon": "🔪",
+          "text": "ለስጋ መቁረጫ ሰሌዳ አንዱ፣ ለአትክልት ሌላ. አታቀላቀልም.",
+          "why": "ከያልተበሰለ ስጋ ወደ ዝግጁ ምግብ ተባዮች እንዳይተላለፉ."
+        },
+        {
+          "id": "k03",
+          "icon": "🧊",
+          "text": "የተበሰለ ምግብን በሁለት ሰዓታት ውስጥ ወደ ፍሪጅ አስገቢ.",
+          "why": "ከፍሪጅ ውጭ የቆየ ምግብ ይበላሻል እና ሕመም ያመጣ."
+        },
+        {
+          "id": "k04",
+          "icon": "🏷️",
+          "text": "በፍሪጅ ያሉ የምግብ ሳጥኖች ላይ ቀን ጽፊ."
+        },
+        {
+          "id": "k05",
+          "icon": "🥜",
+          "text": "በቤታችን ከአንዳንድ ምግብ አለርጂ አለ. አዲስ ነገር ከምትጨምሪ በፊት ጠይቂ.",
+          "level": "danger",
+          "why": "አለርጂ ለልጁ በጣም አደገኛ ሊሆን ይችላል."
+        },
+        {
+          "id": "k06",
+          "icon": "🌶️",
+          "text": "በልጆች ምግብ ውስጥ በርበሬ አትጨምሪ."
+        },
+        {
+          "id": "k07",
+          "icon": "🗑️",
+          "text": "የተረፈ ምግብ አትጣሊ. መጀመሪያ እመቤትን ጠይቂ."
+        },
+        {
+          "id": "k08",
+          "icon": "🫖",
+          "text": "ዳላንና ፊንጃሎችን በትኩስ ውሃ ብቻ አጠቢ. ጠንካራ ሳሙና አትጠቀም."
+        }
+      ]
+    },
+    {
+      "id": "kids",
+      "icon": "👶",
+      "title": "ልጆች",
+      "rules": [
+        {
+          "id": "c01",
+          "icon": "👀",
+          "text": "ትንንሽ ልጅን ብቻውን ፈጽሞ አትተዪ.",
+          "level": "danger",
+          "default": true
+        },
+        {
+          "id": "c02",
+          "icon": "📵",
+          "text": "ልጆቹን ስልክ አትስጪ. የእናታቸው ፈቃድ ከሆነ ብቻ."
+        },
+        {
+          "id": "c03",
+          "icon": "🍬",
+          "text": "ልጆችን ከምግብ በፊት ጣፋጭ ነገር አትስጪ."
+        },
+        {
+          "id": "c04",
+          "icon": "🚪",
+          "text": "ልጆች አጠገቡ ሲሆኑ የውጭ በርን አትክፈቺ.",
+          "level": "warn"
+        },
+        {
+          "id": "c05",
+          "icon": "🛁",
+          "text": "የልጁ መታጠቢያ፡ ከልጁን ማስገባት በፊት የውሃውን ሙቀት በእጅሽ ሞኪ.",
+          "level": "warn"
+        },
+        {
+          "id": "c06",
+          "icon": "😴",
+          "text": "ልጆች የመኝታ ሰዓት፡ ቤቱን ዝም አድርጊ፣ መብራቶቹን ዝቅ አድርጊ."
+        },
+        {
+          "id": "c07",
+          "icon": "🙅",
+          "text": "ልጁን አትመቺ፣ አትጮኺለት. ቢሳሳት ለእናቱ ንገሪ.",
+          "why": "ማሳደግ የእናትና የአባት ኃላፊነት ነው."
+        },
+        {
+          "id": "c08",
+          "icon": "📚",
+          "text": "መጫወቻና መጽሃፎቻቸውን ለማስተካከል ልጆቹን ርዳዪ. እነርሱ ያድርጉ፤ አንቺ አታድርጊላቸው."
+        }
+      ]
+    },
+    {
+      "id": "elders",
+      "icon": "👵",
+      "title": "አረጋውያን",
+      "rules": [
+        {
+          "id": "e01",
+          "icon": "💊",
+          "text": "መድሃኒትን በተጻፈው ሰዓትና መጠን ብቻ ስጪ. ምንም ነገር አታሻሽሪ.",
+          "level": "danger"
+        },
+        {
+          "id": "e02",
+          "icon": "🦯",
+          "text": "ወደ መታጠቢያና ደረጃ ሲሄዱ ከአያት ወይም አያ ጎን ተጓዚ.",
+          "level": "warn"
+        },
+        {
+          "id": "e03",
+          "icon": "💧",
+          "text": "የመታጠቢያውን መሬት ጥሩ ደረቅ አድርጊ፣ ማንም እንዳይተናወጥ.",
+          "level": "warn"
+        },
+        {
+          "id": "e04",
+          "icon": "🗣️",
+          "text": "ከእነርሱ ጋር በረጋና በክብር ተናገሪ. ጥያቄን ቢያድጉም እንኳ በረጋ ተናገሪ."
+        },
+        {
+          "id": "e05",
+          "icon": "📞",
+          "text": "ከእነርሱ አንዱ በድንገት ተደክመ ከሆነ ወዲያው ለቤቱ ባለቤት ሴት ደውሊ.",
+          "level": "danger"
+        }
+      ]
+    },
+    {
+      "id": "guests",
+      "icon": "☕",
+      "title": "እንግዶችና ማጅሊስ",
+      "rules": [
+        {
+          "id": "g01",
+          "icon": "🪑",
+          "text": "እንግዶች ከሚደርሱ በፊት፡ ማጅሊስን ንጹሕ አድጊ፣ ቡክሁርን አዘጋጂ፣ ቡናውን አዘጋጂ."
+        },
+        {
+          "id": "g02",
+          "icon": "🚺",
+          "text": "የሴቶች እንግዶች በሴቶች ማጅሊስ፣ የወንዶች እንግዶች በወንዶች ማጅሊስ."
+        },
+        {
+          "id": "g03",
+          "icon": "🤝",
+          "text": "ቡናን በቀኝ እጅሽ አቀርቢ። ከእድሜ ከፍ ያላቸው ጀምሪ."
+        },
+        {
+          "id": "g04",
+          "icon": "🤫",
+          "text": "ስለ ቤት ነገር ከእንግዶች ጋር አትናገሪ."
+        },
+        {
+          "id": "g05",
+          "icon": "🍽️",
+          "text": "እንግዶች ከወጡ በኋላ፡ ፍንጃሎችንና ሳህኖችን ሰብስቢ፣ ማጅሊስን አስተካክሊ."
+        },
+        {
+          "id": "g06",
+          "icon": "🧕",
+          "text": "ያላወቅሽ ወንዶች ከመጡ፣ ከመውጣትሽ በፊት ሂጃብሽን ልብሲ."
+        }
+      ]
+    },
+    {
+      "id": "laundry",
+      "icon": "🧺",
+      "title": "ልብስ እና ማጠብ",
+      "rules": [
+        {
+          "id": "l01",
+          "icon": "🏷️",
+          "text": "አዲስ ልብስ ማጠብ በፊት የማጠብ ምልክቱን አንቢ። ካልተረዳሽ ጠይቂ."
+        },
+        {
+          "id": "l02",
+          "icon": "🖤",
+          "text": "አባያዎችን ብቻቸውን በቀዝቃዛ ውሃ አጠቢ፣ በጥላ አሳጥሚ."
+        },
+        {
+          "id": "l03",
+          "icon": "⚪",
+          "text": "ነጭ ልብሶች ብቻ. ከነሱ ጋር ምንም ቀለም አትጨምሪ.",
+          "default": true
+        },
+        {
+          "id": "l04",
+          "icon": "🔥",
+          "text": "ሲልክ እና የሚያበራ ጨርቅን በከፍተኛ ሙቀት አይሮን አታድርጊ.",
+          "level": "warn"
+        },
+        {
+          "id": "l05",
+          "icon": "👕",
+          "text": "የእያንዳንዱ ሰው ልብስ በራሱ ዶላብ ውስጥ. የቤተሰብ ልብሶችን አትቀላቀሊ."
+        },
+        {
+          "id": "l06",
+          "icon": "🧦",
+          "text": "ልብስሽን ብቻ በተመደበልሽ ጊዜ አጠቢ."
+        }
+      ]
+    },
+    {
+      "id": "rooms",
+      "icon": "🚪",
+      "title": "ክፍሎች እና ግላዊነት",
+      "rules": [
+        {
+          "id": "r01",
+          "icon": "✋",
+          "text": "በሮውን መንኮር አድርጊ እና ቆዪ፣ ማንኛውንም ክፍል ከመግባትሽ በፊት.",
+          "default": true
+        },
+        {
+          "id": "r02",
+          "icon": "🔒",
+          "text": "ዋናው መኝታ ክፍል፡ እስካልተጠየቅሽ ድረስ አትግቢ."
+        },
+        {
+          "id": "r03",
+          "icon": "💍",
+          "text": "ወርቅ ወይም ገንዘብ ካገኘሽ አትንኪ። ቤት ወይዘሮን ንገሪ.",
+          "default": true
+        },
+        {
+          "id": "r04",
+          "icon": "🗄️",
+          "text": "የግል ድራወሮችንና ዶላቦችን አትክፈቺ."
+        },
+        {
+          "id": "r05",
+          "icon": "🖥️",
+          "text": "ኮምፒዩተሩን ወይም በጠረጴዛው ላይ ያሉ ወረቀቶችን አታንኪ."
+        },
+        {
+          "id": "r06",
+          "icon": "🛏️",
+          "text": "ክፍልሽ የአንቺ ነው. ፍቃድሽ ካልሰጪ ማንም አይገባም፣ አስፈላጊ ጊዜ ብቻ."
+        }
+      ]
+    },
+    {
+      "id": "phone",
+      "icon": "📱",
+      "title": "ስልክና ፎቶ",
+      "rules": [
+        {
+          "id": "p01",
+          "icon": "📵",
+          "text": "በቤት ውስጥ ፎቶ አትውሰዲ ምንም. የቤተሰቡንም ፎቶ አትውሰዲ.",
+          "level": "danger",
+          "default": true
+        },
+        {
+          "id": "p02",
+          "icon": "⏸️",
+          "text": "ስልክሽን በዕረፍት ጊዜ ብቻ ተጠቀሚ. በስራ ጊዜ አታጠቀምሺ.",
+          "default": true
+        },
+        {
+          "id": "p03",
+          "icon": "👶",
+          "text": "ልጆቹን ሲጠብቂ፣ ስልክሽን ሩቅ አስቀምጪ.",
+          "level": "warn"
+        },
+        {
+          "id": "p04",
+          "icon": "🌐",
+          "text": "በቲክ ቶክ ወይም በፌስቡክ ስለቤቱ ምንም ነገር አታወጪ."
+        },
+        {
+          "id": "p05",
+          "icon": "📶",
+          "text": "ዋይፋይ ለአንቺ በዕረፍት ጊዜ ብቻ ነው."
+        }
+      ]
+    },
+    {
+      "id": "door",
+      "icon": "🔑",
+      "title": "በርና ደህንነት",
+      "rules": [
+        {
+          "id": "d01",
+          "icon": "🚫",
+          "text": "ለማንኛውም አታውቂ ሰው በር አትክፈቺ.",
+          "level": "danger",
+          "default": true
+        },
+        {
+          "id": "d02",
+          "icon": "📦",
+          "text": "ዴሊቨሪ፡ በበር ላይ ብቻ ተቀበሊ. ማንም አይግባ.",
+          "default": true
+        },
+        {
+          "id": "d03",
+          "icon": "🔐",
+          "text": "ከእያንዳንዱ መውጣትና መግባት በኋላ ውጭ በርን በቁልፍ ከልፊ."
+        },
+        {
+          "id": "d04",
+          "icon": "🚗",
+          "text": "ከሹፌሩ ጋር ብቻ አትጓዚ. ፍቃድ ከየቤት ባለቤት ሴት ካገኘሽ ብቻ."
+        },
+        {
+          "id": "d05",
+          "icon": "🏠",
+          "text": "ቤተሰቡ ከወጣ፣ ከቤት አትውጪ."
+        },
+        {
+          "id": "d06",
+          "icon": "🧯",
+          "text": "የእሳት ማጥፊያው እና ዋናው የጋዝ ቁልፍ የት እንደሚገኙ እወቂ.",
+          "level": "warn"
+        }
+      ]
+    },
+    {
+      "id": "supplies",
+      "icon": "🛒",
+      "title": "ግዢና እቃዎች",
+      "rules": [
+        {
+          "id": "s01",
+          "icon": "📝",
+          "text": "ማንኛውም ነገር ሊያልቅ ከጀመረ፣ ከማልቀቁ በፊት የቤት ባለቤት ሴትን ንገሪ."
+        },
+        {
+          "id": "s02",
+          "icon": "🧴",
+          "text": "ንጽህና ፈሳሽን ትንሽ ብቻ ተጠቀሚ. ብዙ መጠን ተጨማሪ ንጽህና አያሳይም."
+        },
+        {
+          "id": "s03",
+          "icon": "🧽",
+          "text": "ለሳህኖች የተለየ ስፖንጅ ተጠቀሚ. ለመታጠቢያ ቤትም የተለየ ስፖንጅ ተጠቀሚ. አታቀላቀልሽ.",
+          "level": "warn"
+        },
+        {
+          "id": "s04",
+          "icon": "💡",
+          "text": "ክፍል ባዶ ሲሆን መብራትንና ኤሲን አጥፊ."
+        },
+        {
+          "id": "s05",
+          "icon": "🚰",
+          "text": "አስፈላጊ ሳይሆን ውሃን እየፈሰሰ አታስቀርሽ."
+        }
+      ]
+    }
+  ],
+  "_meta": {
+    "src": {
+      "categories/0/title": "154fbb9bcc02caae",
+      "categories/0/rules/0/text": "da89442647a9f93f",
+      "categories/0/rules/1/text": "917e4f737fcd1b79",
+      "categories/0/rules/2/text": "4050c7b18c25c058",
+      "categories/0/rules/3/text": "b61257cb5b5a3fc4",
+      "categories/0/rules/4/text": "94274f7678b4ca8d",
+      "categories/0/rules/5/text": "376d8ebdc24ee056",
+      "categories/1/title": "46315fb661014017",
+      "categories/1/rules/0/text": "d4bdf46da1505e2f",
+      "categories/1/rules/1/text": "c393950e8ac6830f",
+      "categories/1/rules/1/why": "a8056fe20dd06f09",
+      "categories/1/rules/2/text": "680db8f25394140b",
+      "categories/1/rules/2/why": "5ca34f547a597e64",
+      "categories/1/rules/3/text": "411ab04bf13c840b",
+      "categories/1/rules/4/text": "8570943d3a3c5254",
+      "categories/1/rules/4/why": "3cd9686d33845cba",
+      "categories/1/rules/5/text": "870b81c1cd0112e8",
+      "categories/1/rules/6/text": "5cf0b0192b1822fb",
+      "categories/1/rules/7/text": "02f543bfd9a47d11",
+      "categories/2/title": "6c456350c396d22e",
+      "categories/2/rules/0/text": "49e2a4e27f892178",
+      "categories/2/rules/1/text": "bebd018d68624793",
+      "categories/2/rules/2/text": "531d0f155abf01bb",
+      "categories/2/rules/3/text": "2cca32d9ff79959d",
+      "categories/2/rules/4/text": "f268fb746dab84c1",
+      "categories/2/rules/5/text": "e0b8ae38647bbbe2",
+      "categories/2/rules/6/text": "065feed33289fa9e",
+      "categories/2/rules/6/why": "5e1b0e768045a223",
+      "categories/2/rules/7/text": "5dd88d364910f8a3",
+      "categories/3/title": "dd3e5f4197ee82e6",
+      "categories/3/rules/0/text": "4b4812d50a3f9cf2",
+      "categories/3/rules/1/text": "c51e4bbcb9c435cf",
+      "categories/3/rules/2/text": "69cc0a15e3740e3b",
+      "categories/3/rules/3/text": "2d8c088225726e40",
+      "categories/3/rules/4/text": "c48042e507973ab3",
+      "categories/4/title": "59a9440f0a95dbfd",
+      "categories/4/rules/0/text": "9791657ddda0f415",
+      "categories/4/rules/1/text": "c17c68e6b3c3c9ef",
+      "categories/4/rules/2/text": "40cc8777dae9d5bd",
+      "categories/4/rules/3/text": "f0a7f5636bb37383",
+      "categories/4/rules/4/text": "c5d4eb85b023a93a",
+      "categories/4/rules/5/text": "36587a87f4ed57a7",
+      "categories/5/title": "d3a8e48a4184fbb3",
+      "categories/5/rules/0/text": "159e2f3ed8e318fd",
+      "categories/5/rules/1/text": "c0198708e0db9338",
+      "categories/5/rules/2/text": "29b78df53dcaf8d4",
+      "categories/5/rules/3/text": "722d5266d7c77125",
+      "categories/5/rules/4/text": "f8917dc46100ba28",
+      "categories/5/rules/5/text": "82be65acbda385dc",
+      "categories/6/title": "d56e20de4447ec10",
+      "categories/6/rules/0/text": "aafde1156b3a9dbc",
+      "categories/6/rules/1/text": "528f5a80780066b8",
+      "categories/6/rules/2/text": "7ef3f49cc31efd36",
+      "categories/6/rules/3/text": "cda674787fd5fb4b",
+      "categories/6/rules/4/text": "6eef2ee579dc2b37",
+      "categories/6/rules/5/text": "33f2b2e87c4e2b94",
+      "categories/7/title": "0a1d4f6a3beaf2e1",
+      "categories/7/rules/0/text": "3b41354b46aace4f",
+      "categories/7/rules/1/text": "21eb2db0792bd5c9",
+      "categories/7/rules/2/text": "1167db43c54d7cf0",
+      "categories/7/rules/3/text": "a76a8435aa2b0ace",
+      "categories/7/rules/4/text": "0a6b7f5527b7460c",
+      "categories/8/title": "bffe7cd9a1893c6f",
+      "categories/8/rules/0/text": "7267d1d7045c8e67",
+      "categories/8/rules/1/text": "2247764070377a60",
+      "categories/8/rules/2/text": "695229e45f13538b",
+      "categories/8/rules/3/text": "e5abc1cafe02cc2b",
+      "categories/8/rules/4/text": "919191d930dcf97b",
+      "categories/8/rules/5/text": "11c3fee51fda0c48",
+      "categories/9/title": "98ad988ab52f0115",
+      "categories/9/rules/0/text": "8051db2da73940ad",
+      "categories/9/rules/1/text": "1d5b507b4907bdc2",
+      "categories/9/rules/2/text": "0b16f3281b0accfe",
+      "categories/9/rules/3/text": "b6262e9eec8d3529",
+      "categories/9/rules/4/text": "86e8c246bf9b32a7"
+    },
+    "lang": "am",
+    "model": "gpt-5"
+  }
+}

@@ -12,7 +12,7 @@
       "items": [
         {
           "icon": "⬇️",
-          "text": "ከላይ ወደ ታች ጀምሪ፡ ትቢያ መጀመሪያ፣ ከዚያ ገጽታዎች፣ መጨረሻ መሬት.",
+          "text": "ከላይ ወደ ታች ጀምሪ፡ ትቢያን መጀመሪያ፣ ከዚያ ላይኛ ቦታዎችን፣ መጨረሻ መሬትን.",
           "why": "ትቢያ በአንቺ ያጽዳሽው ቦታ ላይ እንዳይወድቅ."
         },
         {
@@ -27,7 +27,7 @@
         },
         {
           "icon": "💧",
-          "text": "ውሃን በቀጥታ በየቤት ዕቃዎች ላይ ወይም በዕንጨት ወይም በኤሌክትሪክ ላይ አትፈስሪ። ጨርቁን እርጥቢ አድርጊ፣ ከዚያ ቦታውን ንጹር አድርጊ."
+          "text": "ውሃን በቀጥታ በየቤት ዕቃዎች ላይ ወይም በዕንጨት ወይም በኤሌክትሪክ ላይ አትፈስሪ። ጨርቁን እርጥቢ አድርጊ፣ ከዚያ ንጽጽሪ."
         },
         {
           "icon": "🧴",
@@ -35,7 +35,7 @@
         },
         {
           "icon": "🪟",
-          "text": "መስኮቶችን በየጠዋቱ 10 ደቂቃ ክፈቺ አየር ለመቀየር."
+          "text": "በየጠዋቱ ለ10 ደቂቃ መስኮቶቹን ክፈቺ አየሩን ለመቀየር."
         }
       ]
     },
@@ -46,7 +46,7 @@
       "items": [
         {
           "icon": "1️⃣",
-          "text": "ቆሻሻ ያላቸውን ሳህኖች ሰብስቢ በትኩስ ውሃ እና ሳሙና አጠብቺ። ከዚያ አድርቂ አቸው እና ወደ ቦታቸው መልሺ."
+          "text": "ቆሻሻ ያሉትን ሳህኖች ሰብስቢ በትኩስ ውሃ እና ሳሙና አጠብቺ፤ ከዚያ አድርቃቸው እና ወደ ቦታቸው መልሻቸው አስቀምጪ."
         },
         {
           "icon": "2️⃣",
@@ -58,7 +58,7 @@
         },
         {
           "icon": "4️⃣",
-          "text": "ሳንካውን በማጽጃ ንጽጽሪ። ጎኑን አረጪ። የፍሳሽ መውረድ ቀዳዳውን ንጽጽሪ."
+          "text": "ሳንካውን በማጽጃ ንጽጽሪ። ዙሪያውን አረጪ። የፍሳሽ መውረድ ቀዳዳውን ንጽጽሪ."
         },
         {
           "icon": "5️⃣",
@@ -66,7 +66,7 @@
         },
         {
           "icon": "6️⃣",
-          "text": "መሬቱን መጀመሪያ ሸረቢ። ከዚያ በውሃ እና የመሬት ማጽጃ በሞፕ አብስሪ። አድርቂ."
+          "text": "መሬቱን መጀመሪያ ሸረቢ። ከዚያ በውሃ እና የመሬት ማጽጃ በሞፕ አረጪ። አድርቂ."
         },
         {
           "icon": "7️⃣",
@@ -81,7 +81,7 @@
       "items": [
         {
           "icon": "🧊",
-          "text": "ፍሪጅ: አሮጌ ምግብ አውጪ (ምንም ነገር ሳትጣለው በፊት ጠይቂ)፣ ሬኮቹን በውሃ እና በቀለል የተቀላቀለ ቪኔጋር አብሪ."
+          "text": "ፍሪጅ: አሮጌ ምግብ አውጪ (ምንም ነገር ከመጣል በፊት ጠይቂ)፣ ሬኮቹን በውሃ እና በተዳለ ቪኔጋር አረጪ."
         },
         {
           "icon": "🔥",
@@ -89,7 +89,7 @@
         },
         {
           "icon": "🌀",
-          "text": "ማይክሮዌቭ ከውስጥ: ውሃና ሎሚ ያለው ሳህን 2 ደቂቃ አስሞቂ፣ ከዚያ አብሪ."
+          "text": "ማይክሮዌቭ ከውስጥ: ውሃና ሎሚ ያለው ሳህን ሁለት ደቂቃ አሞቂ፣ ከዚያ አረጪ."
         },
         {
           "icon": "🗄️",
@@ -109,7 +109,7 @@
       "items": [
         {
           "icon": "1️⃣",
-          "text": "የመሽናት ቤት ማጽጃን በሽንት መጸዳጃው ውስጥ አፍስሺ እና 5 ደቂቃ አስቀምጪ. ከዚያ ውስጡን በብሩሽ አስረጪ፣ መቀመጫውን፣ ክዳኑንና ውጪውን ደርቢ."
+          "text": "የመጸዳጃ ቤት ማጽጃን በሽንት መጸዳጃው ውስጥ አፍስሺ እና 5 ደቂቃ አስቀምጪ። ከዚያ ውስጡን በብሩሽ አስረጪ፣ መቀመጫውን፣ ክዳኑንና ውጪውን ደርቢ."
         },
         {
           "icon": "2️⃣",
@@ -117,7 +117,7 @@
         },
         {
           "icon": "3️⃣",
-          "text": "መታጠቢያው መሬትንና የዱሽ ግድግዳዎችን ከተከማቸ ሳሙን አጽጺ."
+          "text": "መታጠቢያው መሬትንና የዱሽ ግድግዳዎችን ከተከማቸው የሳሙን ቅርፊት አጽጺ."
         },
         {
           "icon": "4️⃣",
@@ -129,7 +129,7 @@
         },
         {
           "icon": "⚠️",
-          "text": "አስታውሪ: የመሽናት ቤት ማጽጃን ከክሎሮክስ ቢሊች ጋር በፍፁም አታቀላቀሊ.",
+          "text": "አስታውሺ: የቶይሌት ማጽጃን ከክሎሮክስ ጋር በፍጹም አታቀላቀሊ.",
           "level": "danger"
         }
       ]
@@ -194,23 +194,23 @@
         },
         {
           "icon": "5️⃣",
-          "text": "መሬትን አስረጊ። የቡና እቃዎችና ዳላ (የዓረብ ቡና መያዣ) ንጹሕ መሆናቸውን እና ቦታቸው ላይ መሆናቸውን አረጋግጪ."
+          "text": "መሬትን ጠረጊ። የቡና እቃዎችና ዳላ ንጹህ መሆናቸውን እና ቦታቸው ላይ መሆናቸውን አረጋግጪ።"
         },
         {
           "icon": "🌸",
-          "text": "ቀለል ያለ አየር ማስዋቢያ ስፕሬ አረጊ ወይም ባክሁር (የሽቶ ጭስ እንጨት) አቃጥሪ። የቤቱ ወይዘሮ ከጠየቀች ብቻ."
+          "text": "ቀለል ያለ አየር ማስዋቢያ ስፕሬ ረጪ ወይም ባክሁር አቃጥሪ። የቤቱ ወይዘሮ ከጠየቀች ብቻ።"
         }
       ]
     },
     {
       "id": "floors",
       "type": "rules",
-      "title": "የመሬት እና የላይኛ ስፍር አይነቶች",
+      "title": "የመሬትና የላይኛ ስፍራዎች አይነቶች",
       "items": [
         {
           "icon": "⬜",
           "text": "ማርበል: ውሃ + የማርበል ማጽጃ ወይም ቀላል ሳቦን ብቻ. ቪኒጋር አታጠቀሚ، ሎሚ አታጠቀሚ، ክሎሮክስ ቢሊች አታጠቀሚ.",
-          "why": "አሲድ ያለው ነገር ማርበልን ይበላ እና ያልሚወጡ ነካካዎችን ያቀርባል.",
+          "why": "አሲዳማ ነገር ማርበልን ይበላ እና አይወጡም የሚሉ ነካካዎችን ይተው።",
           "level": "warn"
         },
         {
@@ -248,11 +248,11 @@
         },
         {
           "icon": "❄️",
-          "text": "የኤሲ ማጣሪያዎች: በውሃ አጠቢ አቸው እና ደርቺ አቸው."
+          "text": "የኤሲ ማጣሪያዎችን በውሃ አጠብሺ እና ደርቺ."
         },
         {
           "icon": "🪟",
-          "text": "መስኮቶች ከውስጥና ከውጭ (ደህና የሚሆኑትን ብቻ፣ ከፍተኛ መስኮት አትውጪ).",
+          "text": "መስኮቶች ከውስጥም ከውጭም (ደህንነት ያላቸውን ብቻ፣ ከፍተኛ መስኮት አትውጪ).",
           "level": "danger"
         },
         {
@@ -261,7 +261,7 @@
         },
         {
           "icon": "🧱",
-          "text": "ግድግዳዎችን ከነቀል በእርጥብ ጨርቅ."
+          "text": "ግድግዳዎች ላይ ያለ ነቀልን በእርጥብ ጨርቅ አስወግዲ."
         },
         {
           "icon": "🌀",
@@ -269,7 +269,7 @@
         },
         {
           "icon": "🛋️",
-          "text": "ከሶፋዎች፣ ከአልጋዎችና ከሰገጣ ስር."
+          "text": "ከሶፋዎች፣ ከአልጋዎችና ከሰገጣዎች ስር."
         }
       ]
     }
@@ -279,6 +279,75 @@
     "lang": "am",
     "model": "gpt-5",
     "tokens": 64655,
-    "generated": "2026-09-30"
+    "generated": "2026-09-30",
+    "qa_fixed": 19,
+    "src": {
+      "title": "f5db56573c2214ff",
+      "subtitle": "c0d5904577643cbc",
+      "sections/0/title": "06a34df781e07a52",
+      "sections/0/items/0/text": "68824d98ab6274c0",
+      "sections/0/items/0/why": "08b7abcb816c9fec",
+      "sections/0/items/1/text": "59aaf3235d1578b2",
+      "sections/0/items/2/text": "1aaa699eaaeb8071",
+      "sections/0/items/2/why": "562af5b3eb2506a1",
+      "sections/0/items/3/text": "e05301fe56565178",
+      "sections/0/items/4/text": "05bd678d2c898a3f",
+      "sections/0/items/5/text": "6908bbb0c8204a12",
+      "sections/1/title": "751c09ff3d1107df",
+      "sections/1/items/0/text": "d3e69e1fea3328a3",
+      "sections/1/items/1/text": "de28703e9e3bd897",
+      "sections/1/items/2/text": "7c61afd89f32d631",
+      "sections/1/items/3/text": "a28d97356c0c97cc",
+      "sections/1/items/4/text": "7771f7dc6f360fe5",
+      "sections/1/items/5/text": "0fb5960f44f67290",
+      "sections/1/items/6/text": "80aa621412296ac4",
+      "sections/2/title": "7ec733c8a6d09388",
+      "sections/2/items/0/text": "d8914bf1bf156ca9",
+      "sections/2/items/1/text": "1ccffbfdb68866a1",
+      "sections/2/items/2/text": "4e50cf098ee1d0f0",
+      "sections/2/items/3/text": "215a99b58a429535",
+      "sections/2/items/4/text": "009ef401573af586",
+      "sections/3/title": "eb62fcc71de59e94",
+      "sections/3/text": "cb349ce9092dcfe0",
+      "sections/3/items/0/text": "1278ecadeea6bb1f",
+      "sections/3/items/1/text": "d6cdde634a5f3254",
+      "sections/3/items/2/text": "da7a8dac2ec4d250",
+      "sections/3/items/3/text": "4175045b31a7bac5",
+      "sections/3/items/4/text": "b82467f27f1617be",
+      "sections/3/items/5/text": "db7052de4d1cf3c0",
+      "sections/4/title": "f4aa2bc8b315137c",
+      "sections/4/items/0/text": "677e9bb8cd770691",
+      "sections/4/items/1/text": "1a0350b97a5cb619",
+      "sections/4/items/2/text": "deea24ed87fb72f7",
+      "sections/4/items/3/text": "5d02a63c3472eaa5",
+      "sections/4/items/4/text": "8ec0245fac6a7d00",
+      "sections/4/items/5/text": "f3af1d33d2c82619",
+      "sections/4/items/6/text": "8b113e3e984d6290",
+      "sections/5/title": "41453bdf9c4cf722",
+      "sections/5/text": "6a9e9fb334599f38",
+      "sections/5/items/0/text": "d0ecf7f3896eece0",
+      "sections/5/items/1/text": "451f3a1f4a21d819",
+      "sections/5/items/2/text": "aff63c60e2fca33e",
+      "sections/5/items/3/text": "02d09bae0fdbf8fc",
+      "sections/5/items/4/text": "92ea3a28f0654409",
+      "sections/5/items/5/text": "7dc308ff993cfb61",
+      "sections/6/title": "77844b6820f80aa3",
+      "sections/6/items/0/text": "1912821ec6293bdd",
+      "sections/6/items/0/why": "51d5680c41d2140f",
+      "sections/6/items/1/text": "2c1cb6e17a4a1f76",
+      "sections/6/items/2/text": "39f614e5f0f0b056",
+      "sections/6/items/3/text": "1efca44fd48545be",
+      "sections/6/items/4/text": "73724955ffa77f34",
+      "sections/6/items/4/why": "6c07469b5834f447",
+      "sections/6/items/5/text": "3546b0f38822f125",
+      "sections/7/title": "2a242e6697745316",
+      "sections/7/items/0/text": "cc86e079450b24f5",
+      "sections/7/items/1/text": "16f735704938d9e9",
+      "sections/7/items/2/text": "46e2fa4b8632c4c0",
+      "sections/7/items/3/text": "fe53bc80455f7866",
+      "sections/7/items/4/text": "0783d59600909467",
+      "sections/7/items/5/text": "ef01697bd032f6e9",
+      "sections/7/items/6/text": "eb3c4faba0a048f6"
+    }
   }
 }

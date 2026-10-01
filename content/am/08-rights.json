@@ -17,7 +17,7 @@
       "items": [
         {
           "icon": "💰",
-          "text": "ደመወዝሽ ሙሉ በሙሉ በየወሩ መጨረሻ ይከፈላል። በውሉ የተጻፈውን መንገድ መሠረት ላይ።"
+          "text": "ደመወዝሽ ሙሉ በሙሉ በየወሩ መጨረሻ እንደ በውሉ የተጻፈ መንገድ ይከፈላል።"
         },
         {
           "icon": "⏰",
@@ -33,11 +33,11 @@
         },
         {
           "icon": "📅",
-          "text": "በየሳምንቱ አንድ ሙሉ የዕረፍት ቀን አለሽ (24 ቀጣይ ሰዓት)። በሙሉ ይከፈላል።"
+          "text": "በየሳምንቱ አንድ ሙሉ የእረፍት ቀን አለሽ (24 ሰዓት በተከታታይ). በሙሉ ደመወዝ ይከፈላል. እሱን ቀን ካሰራሽ፣ ሌላ የእረፍት ቀን ወይም ክፍያ ታገኚ."
         },
         {
           "icon": "🏖️",
-          "text": "ከ2 ዓመት ሥራ በኋላ፡ 30 ቀን የተከፈለ እረፍት ወይም መተካት ገንዘብ።"
+          "text": "ከ2 ዓመት ሥራ በኋላ፡ 30 ቀን የተከፈለ እረፍት ወይም ለዚያ ገንዘብ ይሰጥልሻል።"
         },
         {
           "icon": "🤒",
@@ -89,7 +89,7 @@
         },
         {
           "icon": "🚫",
-          "text": "ለሌላ ሰው አትሰሪ። መቅረት ወይም መሸሽ አታድሪ.",
+          "text": "ለሌላ ሰው አትሰሪ። መጥፋት ወይም መሸሽ አታድሪ።",
           "why": "መሸሽ ቅጣት ያስመጣልብሽ፣ ከአገር ያስወግዱሻል፣ መመለስም ይከለክሉሻል."
         },
         {
@@ -110,7 +110,11 @@
         },
         {
           "icon": "☎️",
-          "text": "የሰው ሀብት ሚኒስቴር አንድ ቁጥር: 19911"
+          "text": "የሰብአዊ ሀብት ሚኒስቴር ስልክ ቁጥር፡ 19911"
+        },
+        {
+          "icon": "☎️",
+          "text": "ሙሳኔድ መድረክ (የቤት ሥራ ሰራተኞች): 920002866"
         },
         {
           "icon": "🚨",
@@ -118,7 +122,7 @@
         },
         {
           "icon": "🏛️",
-          "text": "የአገርሽ ኤምባሲ በሪያድ ወይም ኮንሱሌት በጄዳ."
+          "text": "የአገርሽ ኤምባሲ በሪያድ ወይም የአገርሽ ኮንሱሌት በጁዳ."
         }
       ]
     },
@@ -134,6 +138,42 @@
     "lang": "am",
     "model": "gpt-5",
     "tokens": 25121,
-    "generated": "2026-09-30"
+    "generated": "2026-09-30",
+    "qa_fixed": 4,
+    "src": {
+      "title": "61230b1353665871",
+      "subtitle": "f118abaa6fee9dd0",
+      "sections/0/text": "d58b7d9f5ce79cb2",
+      "sections/1/title": "1a4fac388c478b49",
+      "sections/1/items/0/text": "b2851bbc4c45d7a5",
+      "sections/1/items/1/text": "117b43268c0c68bf",
+      "sections/1/items/2/text": "4208d6429cee9aa2",
+      "sections/1/items/3/text": "655f04adac9fe3ff",
+      "sections/1/items/4/text": "ea19cacca7ec96c5",
+      "sections/1/items/5/text": "6c1ffe2c35cf3a77",
+      "sections/1/items/6/text": "d2f2fe65d7987d34",
+      "sections/1/items/7/text": "f125ac871332d016",
+      "sections/1/items/8/text": "5fe649a2e8a2ac5f",
+      "sections/1/items/9/text": "616b10d8e5c5037f",
+      "sections/1/items/10/text": "9d6528707d2b2663",
+      "sections/1/items/11/text": "b1754dc90c15fe7b",
+      "sections/1/items/12/text": "ce1a5c9453abd192",
+      "sections/2/title": "14d9d8f72bdf9d70",
+      "sections/2/items/0/text": "c4ee2ab264d78c60",
+      "sections/2/items/1/text": "5e3281e99a45fc3c",
+      "sections/2/items/2/text": "d5bf651f3584b768",
+      "sections/2/items/3/text": "a6b33c900b6266d7",
+      "sections/2/items/3/why": "ca5e25889fa22dd2",
+      "sections/2/items/4/text": "65eda94d461ca716",
+      "sections/3/title": "9d49e129ec981904",
+      "sections/3/text": "c85bbd2e778c9643",
+      "sections/3/items/0/text": "3b8c295acc02bdee",
+      "sections/3/items/1/text": "44ed32e55736a2e0",
+      "sections/3/items/2/text": "ed1bbd1e47860728",
+      "sections/3/items/3/text": "fc61ea31d3e9ed1a",
+      "sections/4/title": "2b3d545de8e93189",
+      "sections/4/text": "e965327edb15e222",
+      "sections/3/items/4/text": "9862b27204599679"
+    }
   }
 }

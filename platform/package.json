@@ -1,0 +1,30 @@
+{
+  "name": "ghaida-platform",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "core": "node ../book/core/make-esm.mjs",
+    "dev": "npm run core && wrangler dev --local --port 8787 --ip 0.0.0.0",
+    "seed:local": "bash seed.sh --local",
+    "seed:remote": "bash seed.sh --remote",
+    "gen:qr": "node scripts_gen.mjs",
+    "test": "cd .. && python3 tests/e2e_platform.py http://localhost:8787 $ADMIN_TOKEN"
+  },
+  "dependencies": {
+    "hono": "^4.13.12",
+    "qrcode-generator": "^2.0.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261001.1",
+    "wrangler": "^4.0.0"
+  },
+  "version": "1.0.0",
+  "description": "منصة بيع «كتاب البيت» — Cloudflare Workers + D1 + R2",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

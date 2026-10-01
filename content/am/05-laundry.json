@@ -21,7 +21,7 @@
         },
         {
           "icon": "⚫",
-          "text": "ጥቁር እና ጥቅጥቅ ቀለሞች ብቻ (ጥቁር አባያ [የሴቶች ረጅም ልብስ] እና ጥቁር ቶብ [የወንዶች ረጅም ልብስ])."
+          "text": "ጥቁር እና ጨለማ ቀለሞች ብቻ (ጥቁር አባያ [የሴቶች ረጅም ልብስ] እና ጥቁር ቶብ [የወንዶች ረጅም ልብስ])."
         },
         {
           "icon": "🌈",
@@ -41,7 +41,7 @@
         },
         {
           "icon": "👜",
-          "text": "ኪሶቹን አፍርጂ። አዝራሮቹንና ዚፐሮቹን ክፈቺ። ጥቅጥቅ ልብሶችን ወደ ውስጥ አድርጊ."
+          "text": "ኪሶቹን አፍርጂ። አዝራሮቹንና ዚፐሮቹን ክፈቺ። ጨለማ ቀለም ያላቸው ልብሶችን ወደ ውስጥ አድርጊ."
         }
       ]
     },
@@ -163,6 +163,45 @@
     "lang": "am",
     "model": "gpt-5",
     "tokens": 43598,
-    "generated": "2026-09-30"
+    "generated": "2026-09-30",
+    "qa_fixed": 2,
+    "src": {
+      "title": "4fb60d2886245b68",
+      "subtitle": "0c6b35dfa728af6d",
+      "sections/0/text": "591bd8532b8cf5c9",
+      "sections/1/title": "b1bc110909b9758d",
+      "sections/1/items/0/text": "c75fff2ab0fac6ec",
+      "sections/1/items/1/text": "6b67015553fe6aae",
+      "sections/1/items/2/text": "aaac6d335ee522a7",
+      "sections/1/items/3/text": "cf47317f27901761",
+      "sections/1/items/4/text": "d91e62399c518b61",
+      "sections/1/items/5/text": "54e4d72785f29d44",
+      "sections/1/items/6/text": "f59bb2d884ac6c72",
+      "sections/2/title": "528125ae3c8b2371",
+      "sections/2/items/0/text": "16d65a841775aad6",
+      "sections/2/items/1/text": "025ad4ece96336d5",
+      "sections/2/items/2/text": "a76bdfd5d20d1c26",
+      "sections/2/items/3/text": "7dbd5a3030803850",
+      "sections/2/items/4/text": "807264442dd357fc",
+      "sections/2/items/5/text": "7524cfb289e3d5dd",
+      "sections/3/title": "c8aeb0e8f0a16b41",
+      "sections/3/items/0/text": "e0c347be9b77e3e9",
+      "sections/3/items/0/why": "24f2e7f0de12efd5",
+      "sections/3/items/1/text": "86057ae49bc8c398",
+      "sections/3/items/2/text": "4b6c90e15fa373a2",
+      "sections/4/title": "76c7c9af9cab754d",
+      "sections/4/items/0/text": "fc98110e59b63699",
+      "sections/4/items/1/text": "24f373aa43aa2057",
+      "sections/4/items/2/text": "51421838eefb47fe",
+      "sections/4/items/3/text": "a8d70596f6e1fae2",
+      "sections/4/items/4/text": "f2c5252b7e8d8457",
+      "sections/5/title": "0a5806cb32e6bede",
+      "sections/5/items/0/text": "81940654a74fd2db",
+      "sections/5/items/1/text": "3ff7fc55c6dcf90c",
+      "sections/5/items/2/text": "0fa752d08fdaca69",
+      "sections/5/items/3/text": "e824c3cac58819c2",
+      "sections/5/items/4/text": "180ea69a531b62e4",
+      "sections/5/items/5/text": "bd3bd34567f8eb21"
+    }
   }
 }
