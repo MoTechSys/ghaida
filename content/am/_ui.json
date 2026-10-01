@@ -1,0 +1,323 @@
+{
+  "id": "ui",
+  "version": 1,
+  "strings": {
+    "welcome": {
+      "t": "እንኳን በደህና መጣሽ ወደ ቤታችን።",
+      "audio": true
+    },
+    "welcome_sub": {
+      "t": "ይህ መጽሐፍሽ ነው። የምትፈልጊው ሁሉ አለበት። በቋንቋሽ እና በድምፅ።",
+      "audio": true
+    },
+    "start": {
+      "t": "ጀምሪ"
+    },
+    "listen": {
+      "t": "ስሚ"
+    },
+    "home": {
+      "t": "መነሻ"
+    },
+    "book": {
+      "t": "መጽሐፍ"
+    },
+    "book_sub": {
+      "t": "ሁሉም ትምህርቶች"
+    },
+    "today": {
+      "t": "ቀኔ"
+    },
+    "today_sub": {
+      "t": "መርሀግብር እና ሥራዎች"
+    },
+    "replies": {
+      "t": "መልሶቼ"
+    },
+    "replies_sub": {
+      "t": "ጫኚ፣ የቤቱ ወይዘሮ በዓረብኛ ትሰማለች።"
+    },
+    "replies_hint": {
+      "t": "ማንኛውንም ሐረግ ጫኚ፣ በዙሪያሽ ያሉ ሰዎች በዓረብኛ በታላቅ ድምፅ ይሰሙታል።",
+      "audio": true
+    },
+    "emergency": {
+      "t": "አስቸኳይ"
+    },
+    "emergency_sub": {
+      "t": "ቁጥሮች እና ፈጣን እርምጃዎች"
+    },
+    "house_rules": {
+      "t": "የቤታችን ደንቦች"
+    },
+    "house_rules_sub": {
+      "t": "የቤቱ ወይዘሮ ለአንቺ መረጣቸው።"
+    },
+    "schedule": {
+      "t": "የቀናችን መርሀግብር"
+    },
+    "rest_day": {
+      "t": "የሳምንት እረፍት ቀንሽ"
+    },
+    "work_hours": {
+      "t": "ዛሬ የሥራ ሰዓት"
+    },
+    "rest_hours": {
+      "t": "እረፍትሽ ያልተቋረጠ"
+    },
+    "hours": {
+      "t": "ሰዓት"
+    },
+    "copy_of": {
+      "t": "የተለየ ቅጂ ለ"
+    },
+    "unlock_title": {
+      "t": "የመጽሐፉን ኮድ አስገባ",
+      "audio": true
+    },
+    "unlock_hint": {
+      "t": "ኮዱ ከቤት ባለቤት ሴት ይገኛል. አንድ ጊዜ ብቻ ያስፈልግሻል.",
+      "audio": true
+    },
+    "unlock_btn": {
+      "t": "መጽሐፉን ክፈት"
+    },
+    "wrong_code": {
+      "t": "ኮዱ ትክክል አይደለም. እንደገና ሞክሪ."
+    },
+    "install_title": {
+      "t": "መጽሐፉን በስልክሽ ማያ ላይ አቁሚ",
+      "audio": true
+    },
+    "ios_1": {
+      "t": "ሊንኩን በሳፋሪ ክፈት.",
+      "audio": true
+    },
+    "ios_2": {
+      "t": "በማያው ታች ያለው የመካፈል አዝራር ጫኒ.",
+      "audio": true
+    },
+    "ios_3": {
+      "t": "አምሪ: ወደ መነሻ ማያ መጨመር፣ ከዚያ ጫኒ: መጨመር.",
+      "audio": true
+    },
+    "and_1": {
+      "t": "ሊንኩን በክሮም ክፈት.",
+      "audio": true
+    },
+    "and_2": {
+      "t": "በማያው ከላይ ያለውን ሶስት ነጥቦች ጫኒ.",
+      "audio": true
+    },
+    "and_3": {
+      "t": "አምሪ: ወደ መነሻ ማያ መጨመር፣ ወይም: መጫን.",
+      "audio": true
+    },
+    "inapp_warn": {
+      "t": "አንቺ በዋትስአፕ ውስጥ ነሽ. መጀመሪያ ሊንኩን በአሳሽ ክፈት.",
+      "audio": true
+    },
+    "offline_ready": {
+      "t": "መጽሐፉ አሁን ያለ ኢንተርኔት ይሰራል."
+    },
+    "read_all": {
+      "t": "ሁሉን ስማ"
+    },
+    "stop": {
+      "t": "አቁም"
+    },
+    "done": {
+      "t": "ተጠናቀቀ"
+    },
+    "next": {
+      "t": "ቀጣይ"
+    },
+    "prev": {
+      "t": "የቀድሞው"
+    },
+    "chapter_done": {
+      "t": "ጥሩ ሰራሽ! ይህን ትምህርት ጨርሰሽ.",
+      "audio": true
+    },
+    "progress": {
+      "t": "ጨርሰሽ"
+    },
+    "danger_word": {
+      "t": "አደጋ"
+    },
+    "warn_word": {
+      "t": "ተጠንቀቂ"
+    },
+    "ok_word": {
+      "t": "ትክክል"
+    },
+    "call_madam": {
+      "t": "ለቤቱ ወይዘሮ ደውል"
+    },
+    "call_911": {
+      "t": "ድንገተኛ: ፖሊስ, አምቡላንስ, እሳት"
+    },
+    "call_hrsd": {
+      "t": "የሰው ሀብት ሚኒስቴር — ለእገዛ እና ለቅሬታ"
+    },
+    "call_musaned": {
+      "t": "ሙሳነድ — የቤት ሰራተኞች አገልግሎት"
+    },
+    "say_arabic": {
+      "t": "በአረብኛ ተናገሪ"
+    },
+    "mode_both": {
+      "t": "ሁለት ቋንቋ"
+    },
+    "mode_l": {
+      "t": "ቋንቋዬ"
+    },
+    "mode_ar": {
+      "t": "አረብኛ"
+    },
+    "sched_start": {
+      "t": "ሥራ ጀምሪ",
+      "audio": true
+    },
+    "sched_break": {
+      "t": "ዕረፍት አድርጊ",
+      "audio": true
+    },
+    "sched_meal": {
+      "t": "ምሳና ዕረፍት",
+      "audio": true
+    },
+    "sched_end": {
+      "t": "ሥራ ጨርሺ",
+      "audio": true
+    },
+    "sched_note": {
+      "t": "የዕረፍት ጊዜ ከሥራ ሰዓቶች ውስጥ አይቈጠርም.",
+      "audio": true
+    },
+    "day_0": {
+      "t": "እሑድ"
+    },
+    "day_1": {
+      "t": "ሰኞ"
+    },
+    "day_2": {
+      "t": "ማክሰኞ"
+    },
+    "day_3": {
+      "t": "ረቡዕ"
+    },
+    "day_4": {
+      "t": "ሐሙስ"
+    },
+    "day_5": {
+      "t": "ዓርብ"
+    },
+    "day_6": {
+      "t": "ቅዳሜ"
+    },
+    "for_madam": {
+      "t": "ለቤት ሠራተኛሽ ተናጪ"
+    },
+    "for_madam_sub": {
+      "t": "በአረብኛ ጠቅ አድርጊ፤ እሷ በቋንቋዋ ትሰማ."
+    },
+    "hello_name": {
+      "t": "እንኳን ደህና መጣሽ"
+    },
+    "made_for": {
+      "t": "ለቤት ልዩ መፅሐፍ"
+    },
+    "license": {
+      "t": "ለዚህ ቤት ብቻ የተፈቀደ ቅጂ ነው። መሸጥ ወይም ማካፈል የተከለከለ ነው."
+    },
+    "chapters_count": {
+      "t": "ትምህርቶች"
+    },
+    "audio_loading": {
+      "t": "ትንሽ ቆዪ…"
+    },
+    "machine_tr": {
+      "t": "ራስ-ሰር ትርጉም"
+    }
+  },
+  "_meta": {
+    "src": {
+      "strings/welcome/t": "16cdc08c571b9f17",
+      "strings/welcome_sub/t": "959e61c298d1c4a1",
+      "strings/start/t": "44035c3549ba34af",
+      "strings/listen/t": "be8d4c18a4baf0b4",
+      "strings/home/t": "b986d8fb163cffad",
+      "strings/book/t": "bf38825a12e936c5",
+      "strings/book_sub/t": "3554714659387487",
+      "strings/today/t": "71f84fd265ec1a50",
+      "strings/today_sub/t": "abb0bcb34976188b",
+      "strings/replies/t": "e5926393766a4cdc",
+      "strings/replies_sub/t": "f89e0f1ad73ad777",
+      "strings/replies_hint/t": "08f7d49bf3307773",
+      "strings/emergency/t": "2db7b18e56c7131a",
+      "strings/emergency_sub/t": "31210c8e7cf3db9b",
+      "strings/house_rules/t": "227947171f1e52cd",
+      "strings/house_rules_sub/t": "7cef7e702f4169f5",
+      "strings/schedule/t": "63a6b83255650901",
+      "strings/rest_day/t": "7227f15a698f3f18",
+      "strings/work_hours/t": "42aa140b828cd427",
+      "strings/rest_hours/t": "cb27cdc8b855a055",
+      "strings/hours/t": "62c3bc6f614729b3",
+      "strings/copy_of/t": "cbcc493de5f3ba88",
+      "strings/unlock_title/t": "e3e8dfdd56969055",
+      "strings/unlock_hint/t": "fdac02e32e6a517c",
+      "strings/unlock_btn/t": "fa9adc75d95c258b",
+      "strings/wrong_code/t": "d7d8ccac1a67f8da",
+      "strings/install_title/t": "a77e6892e6799659",
+      "strings/ios_1/t": "ecfddc8de53d5414",
+      "strings/ios_2/t": "e228496c3597a863",
+      "strings/ios_3/t": "bf43fe1e7c638b1a",
+      "strings/and_1/t": "d2bad370255905ab",
+      "strings/and_2/t": "aa13ba73161f6a27",
+      "strings/and_3/t": "9962d24c371a7e92",
+      "strings/inapp_warn/t": "b82d20deec71f74f",
+      "strings/offline_ready/t": "90fe05c4fa63fb40",
+      "strings/read_all/t": "a3dd23ce079a3eb2",
+      "strings/stop/t": "0a390cb74aa0969f",
+      "strings/done/t": "940efd24f1d82c70",
+      "strings/next/t": "2fa619787bcb9b59",
+      "strings/prev/t": "f533ebab64f46f69",
+      "strings/chapter_done/t": "625f2bd82328132b",
+      "strings/progress/t": "7fad6bb83884fc92",
+      "strings/danger_word/t": "5349080f8ba16322",
+      "strings/warn_word/t": "722782b57cb56c28",
+      "strings/ok_word/t": "2308366900eafedc",
+      "strings/call_madam/t": "9d19d88d8b427bdc",
+      "strings/call_911/t": "86e756df29fb7e06",
+      "strings/call_hrsd/t": "9039eedc22aaaf60",
+      "strings/call_musaned/t": "d478af7596e3a822",
+      "strings/say_arabic/t": "e12f4267a31ab954",
+      "strings/mode_both/t": "2fc9ac1203a04c8d",
+      "strings/mode_l/t": "2abf78c131fa4e58",
+      "strings/mode_ar/t": "404841693fc24f3a",
+      "strings/sched_start/t": "88358ba146733a5d",
+      "strings/sched_break/t": "c3f2fec66222c7ab",
+      "strings/sched_meal/t": "0a6a92c60a4b8bb2",
+      "strings/sched_end/t": "f1917a519c0a4de1",
+      "strings/sched_note/t": "40ff955c672ab9d6",
+      "strings/day_0/t": "85c4f658c93c24a0",
+      "strings/day_1/t": "73b68f7e0de0d5a9",
+      "strings/day_2/t": "5965d7956e019942",
+      "strings/day_3/t": "70eb29842743c529",
+      "strings/day_4/t": "ea7bf454d273d99c",
+      "strings/day_5/t": "8d067a376a65fb2b",
+      "strings/day_6/t": "c7e6b0c840ed84f8",
+      "strings/for_madam/t": "4a33ea8cc4264e61",
+      "strings/for_madam_sub/t": "c3e1714615957103",
+      "strings/hello_name/t": "99b8a50201518767",
+      "strings/made_for/t": "6837c74463d1daf5",
+      "strings/license/t": "21221ff22e978d9c",
+      "strings/chapters_count/t": "185f7e8de18f62d6",
+      "strings/audio_loading/t": "331740cdbb38c793",
+      "strings/machine_tr/t": "1fadef8ba4b81cd9"
+    },
+    "lang": "am",
+    "model": "gpt-5"
+  }
+}

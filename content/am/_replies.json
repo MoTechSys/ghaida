@@ -1,0 +1,122 @@
+{
+  "id": "replies",
+  "version": 1,
+  "replies": [
+    {
+      "id": "ok",
+      "icon": "✅",
+      "text": "ተረዳሁ. አሁን እሰራለሁ."
+    },
+    {
+      "id": "again",
+      "icon": "🔁",
+      "text": "አልገባኝም. እባክሽ እንደገና ቀስ ብለሽ ተናገሪልኝ."
+    },
+    {
+      "id": "show",
+      "icon": "👉",
+      "text": "እባክሽ እንዴት እንደሚደረግ አሳዪኝ?"
+    },
+    {
+      "id": "done",
+      "icon": "🎉",
+      "text": "ስራውን ጨርሻለሁ."
+    },
+    {
+      "id": "next",
+      "icon": "❓",
+      "text": "አሁን ምን እሰራ?"
+    },
+    {
+      "id": "cook",
+      "icon": "🍲",
+      "text": "ዛሬ ምን እበስል?"
+    },
+    {
+      "id": "empty",
+      "icon": "🧴",
+      "text": "ሳሙና አልቀረም. መግዛት እንፈልጋለን."
+    },
+    {
+      "id": "food",
+      "icon": "🥛",
+      "text": "ወተት ወይም ምግብ እየበቃ ነው."
+    },
+    {
+      "id": "broke",
+      "icon": "💔",
+      "text": "በስህተት ነገር ተሰበረ. ይቅርታ."
+    },
+    {
+      "id": "door",
+      "icon": "🚪",
+      "text": "በበር ላይ ሰው አለ."
+    },
+    {
+      "id": "baby",
+      "icon": "👶",
+      "text": "ህፃኑ እያለቀሰ ነው. አይዝም."
+    },
+    {
+      "id": "sick",
+      "icon": "🤒",
+      "text": "ህመም አለብኝ. እረፍት እፈልጋለሁ ወይም ዶክተር ልሄድ እፈልጋለሁ."
+    },
+    {
+      "id": "tired",
+      "icon": "😓",
+      "text": "ደክሜ ነኝ. እባክሽ ትንሽ እረፍት ልው?"
+    },
+    {
+      "id": "pray",
+      "icon": "🤲",
+      "text": "እባክሽ አሁን እጸልይ?"
+    },
+    {
+      "id": "family",
+      "icon": "📞",
+      "text": "እባክሽ ዛሬ ከቤተሰብዬ ጋር ልናገር?"
+    },
+    {
+      "id": "help",
+      "icon": "🙋",
+      "text": "እርዳታ ያስፈልገኛል. እባክሽ."
+    },
+    {
+      "id": "danger",
+      "icon": "🚨",
+      "text": "አደጋ አለ! በፍጥነት ና!",
+      "level": "danger"
+    },
+    {
+      "id": "gas",
+      "icon": "🔥",
+      "text": "ጋዝ ሽታ እሰማ!",
+      "level": "danger"
+    }
+  ],
+  "_meta": {
+    "src": {
+      "replies/0/text": "115e6697341489fb",
+      "replies/1/text": "f02db9520116777b",
+      "replies/2/text": "81afd7599d69b38a",
+      "replies/3/text": "1f8fa255a241dd65",
+      "replies/4/text": "87e8d733a98992d8",
+      "replies/5/text": "03e6a690b3d46ef0",
+      "replies/6/text": "c8f26ee1b0d3c1eb",
+      "replies/7/text": "934829714f53e204",
+      "replies/8/text": "1f21144bf1288c96",
+      "replies/9/text": "78e26cee6c22d165",
+      "replies/10/text": "f230dd72a0e68667",
+      "replies/11/text": "c07a9a31a5d1bc62",
+      "replies/12/text": "bef8944f15e0b16d",
+      "replies/13/text": "89a77fa1c296577d",
+      "replies/14/text": "a125bf86083dfeb0",
+      "replies/15/text": "07c03906e22f3e9f",
+      "replies/16/text": "0adfe4882c411372",
+      "replies/17/text": "9fb48c023637058c"
+    },
+    "lang": "am",
+    "model": "gpt-5"
+  }
+}

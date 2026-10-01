@@ -61,7 +61,7 @@
         },
         {
           "icon": "😔",
-          "text": "አዝናለሁ / እሺ ችግኝ የለም"
+          "text": "ይቅር በለኝ / ምንም ችግር የለም"
         }
       ]
     },
@@ -92,15 +92,15 @@
         },
         {
           "icon": "🧺",
-          "text": "ልብሶችን ታጠቢ"
+          "text": "ልብሶችን አጥቢ"
         },
         {
           "icon": "👕",
-          "text": "ቶብ (የወንድ ረጅም ልብስ)ን አይረኪ"
+          "text": "ቶብ (የወንድ ረጅም ልብስ)ን ደረድሪ"
         },
         {
           "icon": "🍽️",
-          "text": "ሳህኖችን ታጠቢ"
+          "text": "ሳህኖችን አጥቢ"
         },
         {
           "icon": "🗑️",
@@ -128,7 +128,7 @@
         },
         {
           "icon": "👶",
-          "text": "ቢቢን ጠብቂ (ህፃኑን አይኪ)"
+          "text": "ሕፃኑን ጠብቂ (ሕፃኑን አይኪ)"
         },
         {
           "icon": "🚪",
@@ -164,7 +164,7 @@
         },
         {
           "icon": "📍",
-          "text": "እዚህ / እዛ"
+          "text": "እዚህ / እዚያ"
         }
       ]
     },
@@ -227,7 +227,7 @@
         },
         {
           "icon": "🚽",
-          "text": "ሽንት ቤት / መታጠቢያ ቤት"
+          "text": "መታጠቢያ ቤት / ሽንት ቤት"
         },
         {
           "icon": "🛏️",
@@ -239,7 +239,7 @@
         },
         {
           "icon": "🌴",
-          "text": "ዴትስ / ዳቦ / ሩዝ / ስጋ / ዶሮ"
+          "text": "ተምር / ዳቦ / ሩዝ / ስጋ / ዶሮ"
         },
         {
           "icon": "🧴",
@@ -270,11 +270,11 @@
         },
         {
           "icon": "👵",
-          "text": "ጃዳ / ኡሚ (አሮጌ እናት)"
+          "text": "አያት / “እናቴ” (አሮጌ እናት)"
         },
         {
           "icon": "👴",
-          "text": "ጃድ / አቦዬ"
+          "text": "አያት / አቦዬ"
         },
         {
           "icon": "👥",
@@ -305,7 +305,7 @@
         },
         {
           "icon": "❓",
-          "text": "ይህን የት አኖር? (ይህን የት እንደማስቀምጥ?)"
+          "text": "ይህን የት አስቀምጥ? (ይህን የት እንደማስቀምጥ?)"
         },
         {
           "icon": "💔",
@@ -348,7 +348,7 @@
         },
         {
           "icon": "🌅",
-          "text": "ጠዋት / ቀትር / ከቀትር በኋላ / ማታ / ሌሊት"
+          "text": "ጠዋት / ቀትር / ማታ ቀድሞ / ማታ / ሌሊት"
         },
         {
           "icon": "📅",
@@ -356,7 +356,7 @@
         },
         {
           "icon": "📆",
-          "text": "ቅዳሜ፣ እሁድ፣ ሰኞ፣ ማክሰኞ፣ ዕሮብ፣ ሐሙስ፣ ዓርብ"
+          "text": "ቅዳሜ፣ እሁድ፣ ሰኞ፣ ማክሰኞ፣ ረቡዕ፣ ሐሙስ፣ ዓርብ"
         }
       ]
     }
@@ -366,6 +366,95 @@
     "lang": "am",
     "model": "gpt-5",
     "tokens": 41614,
-    "generated": "2026-09-30"
+    "generated": "2026-09-30",
+    "qa_fixed": 13,
+    "src": {
+      "title": "810b061b75088cdf",
+      "subtitle": "e10533502419b35b",
+      "sections/0/text": "de8705ed69c3e37d",
+      "sections/1/title": "26954fa397502cc7",
+      "sections/1/items/0/text": "43f86f326497c8d4",
+      "sections/1/items/1/text": "5561c3919d1e6268",
+      "sections/1/items/2/text": "ddc849160b94bc97",
+      "sections/1/items/3/text": "961285a80aa61730",
+      "sections/1/items/4/text": "43309f8b8202610f",
+      "sections/1/items/5/text": "d045bef8e536d9f3",
+      "sections/1/items/6/text": "5c528d9fa3965f3a",
+      "sections/1/items/7/text": "65787e4330bb2eae",
+      "sections/1/items/8/text": "721623881edc14a7",
+      "sections/1/items/9/text": "b93b25241cdf7d76",
+      "sections/1/items/10/text": "d6caf3adec119f86",
+      "sections/1/items/11/text": "27f05160abbaf02a",
+      "sections/2/title": "45f0fe29941f2bc7",
+      "sections/2/items/0/text": "e6a8b2300b2ff7ef",
+      "sections/2/items/1/text": "ffd1714d8970af05",
+      "sections/2/items/2/text": "0a7f06c49424ec5e",
+      "sections/2/items/3/text": "007253a59057a88f",
+      "sections/2/items/4/text": "97fed9eca008d318",
+      "sections/2/items/5/text": "0b983f94bb34042f",
+      "sections/2/items/6/text": "5a8b96a64ba80a8d",
+      "sections/2/items/7/text": "cb09ec31786e9f78",
+      "sections/2/items/8/text": "911e443453582984",
+      "sections/2/items/9/text": "77ccff4efda441cc",
+      "sections/2/items/10/text": "f3b80b68fc01ae9f",
+      "sections/2/items/11/text": "18ba6e8861214212",
+      "sections/2/items/12/text": "105088dd0767051f",
+      "sections/2/items/13/text": "dde32c134988d9ce",
+      "sections/2/items/14/text": "a2cd5574b373420a",
+      "sections/2/items/15/text": "8bbad781d7b97119",
+      "sections/2/items/16/text": "59fcdef543f8326a",
+      "sections/2/items/17/text": "258084c8c0b21fb8",
+      "sections/2/items/18/text": "fa40cafe39bd98f6",
+      "sections/2/items/19/text": "34377990731b8fdb",
+      "sections/2/items/20/text": "490c3a3ed0ba7d41",
+      "sections/2/items/21/text": "0500349ba6e9a3b2",
+      "sections/2/items/22/text": "f0b19b7a0a810313",
+      "sections/2/items/23/text": "35614a3b9ea0ffcf",
+      "sections/3/title": "4a0d0ad6f357c26f",
+      "sections/3/items/0/text": "9bf67454741698a4",
+      "sections/3/items/1/text": "bd749eecb9e840e6",
+      "sections/3/items/2/text": "cdf39dd41c19f003",
+      "sections/3/items/3/text": "3bafedad175e6f95",
+      "sections/3/items/4/text": "f13c6d89f948da15",
+      "sections/3/items/5/text": "0146d37047e30d60",
+      "sections/3/items/6/text": "6ac97ae3815452d6",
+      "sections/3/items/7/text": "e5e89b82394a3922",
+      "sections/3/items/8/text": "1d1e84ad82ffb2f9",
+      "sections/3/items/9/text": "beec7b5fef6fc5b3",
+      "sections/3/items/10/text": "4fba314a90df5d30",
+      "sections/3/items/11/text": "5b11ea78ef0ee4f3",
+      "sections/3/items/12/text": "81b4b38ff171d7fa",
+      "sections/3/items/13/text": "54b1060b22b317d6",
+      "sections/3/items/14/text": "d444002b23806965",
+      "sections/3/items/15/text": "c324070551c21e64",
+      "sections/3/items/16/text": "46a9259e4f0ffd00",
+      "sections/3/items/17/text": "411170fba363496b",
+      "sections/4/title": "71e942eb6ebfd2a3",
+      "sections/4/items/0/text": "eef396056c1f9d6c",
+      "sections/4/items/1/text": "65626a89077fc674",
+      "sections/4/items/2/text": "4c9d84133b9be5e7",
+      "sections/4/items/3/text": "2bb225f7cb55b393",
+      "sections/4/items/4/text": "0743d30771d67522",
+      "sections/4/items/5/text": "3c1a650e32033579",
+      "sections/4/items/6/text": "414c03d8c986e3db",
+      "sections/5/title": "eac7b576baae3949",
+      "sections/5/items/0/text": "0b538320ce95355d",
+      "sections/5/items/1/text": "4859d7f3f33d678e",
+      "sections/5/items/2/text": "4563150568cf1255",
+      "sections/5/items/3/text": "f550d1f5b7a0e307",
+      "sections/5/items/4/text": "e1d2f789c55d46c6",
+      "sections/5/items/5/text": "c5b8f74277c72061",
+      "sections/5/items/6/text": "5f1d199e4a73c79f",
+      "sections/5/items/7/text": "2da579c7dd4d62bd",
+      "sections/5/items/8/text": "7b26ca6d163f0e99",
+      "sections/5/items/9/text": "66da8618ba36eb42",
+      "sections/6/title": "5c9f5819a1ea0379",
+      "sections/6/items/0/text": "6fcc0c2be29f46a9",
+      "sections/6/items/1/text": "94a398ed87e28119",
+      "sections/6/items/2/text": "12e2fbee6ae0afa1",
+      "sections/6/items/3/text": "10c6558a9061cb30",
+      "sections/6/items/4/text": "adf147936712bcbc",
+      "sections/6/items/5/text": "2cf023139858ff0b"
+    }
   }
 }

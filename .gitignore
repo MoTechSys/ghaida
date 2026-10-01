@@ -11,3 +11,12 @@ node_modules/
 .DS_Store
 audio/
 dist/
+__pycache__/
+orders/
+platform/packs/
+platform/public/samples/
+platform/node_modules/
+platform/.wrangler/
+dist/
+tests/*.e2e.json
+platform/.keys/

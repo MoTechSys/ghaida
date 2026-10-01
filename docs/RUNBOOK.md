@@ -54,3 +54,50 @@ tar -czf ghaida_audio_$(date +%F).tar.gz audio/ && cp ghaida_audio_*.tar.gz /mnt
 | `TTS failed` | حد معدل أو نص طويل | السكربت يعيد 3 مرات؛ شغّله مجدداً لاحقاً (الكاش يحفظ التقدم) |
 | صوت `na` (باهت) في الكتاب | الجملة بلا mp3 | شغّل `tts.py` للغة وأعد البناء |
 | خط غريب للأمهرية | جهاز بلا خط Ethiopic | أندرويد/iOS الحديثة تحوي Noto؛ خيار مستقبلي: تضمين خط WOFF2 (~200KB) |
+
+
+---
+# v2 — الكتاب الشخصي والمنصة (الجلسة 3)
+
+## خط إنتاج لغة جديدة (كامل)
+```bash
+python3 engine/sync_translate.py tl            # يترجم الفصول + المكتبة + الواجهة + الردود (التزايدي)
+python3 engine/qa_translate.py tl --fix        # بوابة الجودة (الفصول)
+python3 engine/tts.py ar && python3 engine/tts.py tl
+python3 engine/export_pack.py tl               # → platform/packs/tl/
+cd platform && bash seed.sh --local            # أو --remote للإنتاج
+```
+ثم في `platform/packs/catalog.json` تصبح اللغة `ready:true` تلقائياً إن لم ينقصها صوت.
+
+## كتاب لطلب يدوي (بدون المنصة)
+```bash
+python3 engine/build_book2.py am --order orders/GH-1234.json          # ملف واحد مشفّر — يطبع الرمز
+python3 engine/build_book2.py am --order orders/GH-1234.json --pwa    # + مجلد PWA
+python3 engine/build_book2.py am                                       # معاينة مكشوفة (بيت تجريبي)
+```
+
+## المنصة محلياً
+```bash
+cd platform && npm i && npm run core
+printf "ADMIN_TOKEN=...\nOPENAI_API_KEY=$OPENAI_API_KEY\nOPENAI_BASE_URL=$OPENAI_BASE_URL\n" > .dev.vars
+bash seed.sh --local && npm run dev        # http://localhost:8787  ·  /order  ·  /admin
+```
+
+## الاختبارات
+```bash
+python3 tests/e2e_book.py dist/book-am-demo.html --shots dist/shots
+python3 tests/e2e_book.py dist/book-am-GH-TEST.html --code ABCD-2345
+python3 tests/attack_test.py dist/book-am-GH-TEST.html ABCD2345
+python3 tests/e2e_platform.py http://localhost:8787 <ADMIN_TOKEN>
+python3 tests/e2e_pwa_offline.py http://localhost:8787 <ADMIN_TOKEN>
+```
+(مرة واحدة: `pip install playwright && python3 -m playwright install --with-deps chromium`)
+
+## النشر (Hosted — حساب Genspark)
+1. اضبط في `platform/wrangler.jsonc → vars`: `PAY_IBAN`, `PAY_NAME`, `PAY_BANK`, `WHATSAPP` (بصيغة 9665xxxxxxxx), الأسعار.
+2. `gsk hosted deploy` (موافقة) ← `gsk hosted secret_put --name ADMIN_TOKEN --value "$T"` (+ OPENAI_API_KEY, OPENAI_BASE_URL).
+3. ارفع الحزم: `bash seed.sh --remote` أو `gsk hosted r2_put` لكل ملف (≤5MB لكل ملف — الحزم مقسّمة فصولاً فتناسب).
+4. `AUTO_APPROVE=on` فقط بعد ثقة كافية بالتحقق الآلي.
+
+## تتبّع نسخة مسرّبة
+لوحة الإدارة ← «تتبّع نسخة مسرّبة» ← الصق أي فقرة منسوخة من الكتاب المنتشر → رقم الطلب والمشترية.

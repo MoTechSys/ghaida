@@ -31,7 +31,11 @@ VOICE = {
 
 
 def sentences_of(lang, chapter_filter=None):
-    """كل الجمل القابلة للنطق في فصول لغة: title, subtitle, section title/text, item text/why."""
+    """كل الجمل القابلة للنطق: الفصول + (بدون --chapter) مكتبة القواعد وردود العاملة ونصوص الواجهة الصوتية."""
+    if not chapter_filter:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from common import audio_texts
+        return audio_texts(lang)
     out = []
     for f in sorted(glob.glob(os.path.join(ROOT, "content", lang, "[0-9]*.json"))):
         if chapter_filter and not os.path.basename(f).startswith(chapter_filter):

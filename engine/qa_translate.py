@@ -73,10 +73,11 @@ def qa_chapter(lang, ar_path, fix=False):
         return {"chapter": ar["id"], "verdict": "FAIL", "summary": f"عدد الجمل مختلف {len(ra)} vs {len(rt)}", "bad": len(ra)}
     pairs = [{"i": i, "ar": a[1], "tr": t[1]} for i, (a, t) in enumerate(zip(ra, rt))]
     sysmsg = SYSTEM.format(lang=LANGS[lang]["tts_lang"].split(" (")[0])
-    # دفعات من 40 جملة
+    # دفعات صغيرة (QA_BATCH، افتراضي 20) — 40 كانت تعطي 524 على الفصول الكبيرة
     results, bad = [], 0
-    for k in range(0, len(pairs), 40):
-        res = chat([{"role": "system", "content": sysmsg}, {"role": "user", "content": json.dumps(pairs[k:k + 40], ensure_ascii=False)}])
+    B = int(os.environ.get("QA_BATCH", "20"))
+    for k in range(0, len(pairs), B):
+        res = chat([{"role": "system", "content": sysmsg}, {"role": "user", "content": json.dumps(pairs[k:k + B], ensure_ascii=False)}])
         results += res.get("items", [])
     for r in results:
         if not r.get("ok", True):
@@ -107,7 +108,15 @@ def main():
         for iss in r.get("issues", [])[:8]:
             print(f"     • {iss['ar'][:45]} | {iss['issue']}")
     rp = os.path.join(ROOT, "content", lang, "_qa_report.json")
-    json.dump({"lang": lang, "model": MODEL, "date": time.strftime("%Y-%m-%d %H:%M"), "chapters": report}, open(rp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    # دمج لا استبدال: تقرير كل فصل يبقى حتى يُعاد فحص ذلك الفصل نفسه (كان التقرير يُمسح في كل تشغيل جزئي)
+    old = {}
+    if os.path.exists(rp):
+        try: old = {c["chapter"]: c for c in json.load(open(rp, encoding="utf-8")).get("chapters", [])}
+        except Exception: old = {}
+    stamp = time.strftime("%Y-%m-%d %H:%M")
+    for r in report: r["date"] = stamp; old[r["chapter"]] = r
+    merged = [old[k] for k in sorted(old)]
+    json.dump({"lang": lang, "model": MODEL, "date": stamp, "chapters": merged}, open(rp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"report -> {rp}")
     if any(r["verdict"] == "FAIL" for r in report): sys.exit(2)
 

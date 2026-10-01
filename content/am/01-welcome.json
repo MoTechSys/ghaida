@@ -99,6 +99,33 @@
     "model": "gpt-5",
     "tokens": 11025,
     "generated": "2026-09-30",
-    "qa_fixed": 4
+    "qa_fixed": 4,
+    "src": {
+      "title": "c19b276d6fdd9133",
+      "subtitle": "dffc0092695a86e3",
+      "sections/0/text": "58ee2e6026b64aa2",
+      "sections/1/title": "aa4a15918526a795",
+      "sections/1/text": "7e9b52f68158b083",
+      "sections/2/title": "40e43fed6ca71116",
+      "sections/2/items/0/text": "d6b0f953dcf30cfc",
+      "sections/2/items/0/why": "2488f093c96ccbb0",
+      "sections/2/items/1/text": "59130aad69d676c3",
+      "sections/2/items/1/why": "545106e0bb32cbdf",
+      "sections/2/items/2/text": "578e8fde7992a5a4",
+      "sections/2/items/3/text": "b2d0fc1b108ba994",
+      "sections/2/items/4/text": "8e23e6f4e582a293",
+      "sections/3/title": "557a65bb5dd68bbf",
+      "sections/3/text": "dc4d55b36dbc1e6e",
+      "sections/3/items/0/text": "69ba12aaba28fffe",
+      "sections/3/items/1/text": "bbc15c464648b658",
+      "sections/3/items/2/text": "150d87b1260100ad",
+      "sections/4/title": "5310e7e4a6b7e250",
+      "sections/4/items/0/text": "8db3d71c5cb4df12",
+      "sections/4/items/0/why": "477fc197b589e4c8",
+      "sections/4/items/1/text": "0064808d4a19761f",
+      "sections/4/items/2/text": "44cb9ca2d3ec724f",
+      "sections/5/title": "0c73cf5277f43520",
+      "sections/5/text": "b3ad018fd6b5be70"
+    }
   }
 }

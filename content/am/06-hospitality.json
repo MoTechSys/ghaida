@@ -50,7 +50,7 @@
         },
         {
           "icon": "🥄",
-          "text": "ፊንጃሉን እርብ ብቻ ሙሊ. ሙሉ አታድርጊ.",
+          "text": "ፊንጃሉን ሩብ ብቻ ሙሊ. ሙሉ አታድርጊ.",
           "why": "ፊንጃሉ ሙሉ ሲሆን ማለት: ‘እኛ አንስተናግድሽም’ ማለት ነው."
         },
         {
@@ -63,7 +63,7 @@
         },
         {
           "icon": "🌴",
-          "text": "ከቡና ጋር ሁልጊዜ ሙር ወይም ጣፋጭ ነገር ወይም ቾኮሌት አቀርቢ. ቡናን ብቻውን አታቀርቢ."
+          "text": "ከቡና ጋር ሁልጊዜ ተምር ወይም ጣፋጭ ነገር ወይም ቾኮሌት አቀርቢ. ቡናን ብቻውን አታቀርቢ."
         },
         {
           "icon": "🫖",
@@ -175,7 +175,7 @@
         },
         {
           "icon": "👅",
-          "text": "ምግብን በማንኪያ አትሞኪ እና ያንን ማንኪያ ወደ ድስት አታመለሺ። ሁል ጊዜ ንጹህ ማንኪያ ተጠቀሚ."
+          "text": "ምግብን በማንኪያ አትጣ እና ያንን ማንኪያ ወደ ድስት አታመለሺ። ሁል ጊዜ ንጹህ ማንኪያ ተጠቀሚ."
         }
       ]
     },
@@ -183,7 +183,7 @@
       "id": "ramadan",
       "type": "rules",
       "title": "ረመዳን",
-      "text": "የጾም ወር: ቤተሰቡ ከፈጅር እስከ ምሽት ሰዓት ድረስ አይበሉም አይጠጡም. ሰዓታት ሙሉ በሙሉ ይቀየራሉ.",
+      "text": "የጾም ወር: ቤተሰቡ ከፈጅር ጀምሮ እስከ ማግሪብ ጊዜ አይበሉም አይጠጡም። ሰዓታት ሙሉ በሙሉ ይቀየራሉ.",
       "items": [
         {
           "icon": "🌙",
@@ -203,7 +203,7 @@
         },
         {
           "icon": "🧼",
-          "text": "በረመዳን ምግብ ቤት ከሌሎች ቀናት ይበዛ ይሠራ. ትልቅ ማጽዳት ከኢፍጣር በኋላ እና ከሱሁር በፊት ይደረጋል."
+          "text": "በረመዳን ምግብ ቤት ሥራ ይበዛል። ትልቅ ማጽዳት ከኢፍጣር በኋላ እና ከሱሁር በፊት ይደረጋል."
         }
       ]
     }
@@ -213,6 +213,60 @@
     "lang": "am",
     "model": "gpt-5",
     "tokens": 62294,
-    "generated": "2026-09-30"
+    "generated": "2026-09-30",
+    "qa_fixed": 5,
+    "src": {
+      "title": "bc0f346d87502145",
+      "subtitle": "f374db676c69a453",
+      "sections/0/text": "c8a5963a2332b108",
+      "sections/1/title": "49dc06b658fcb75e",
+      "sections/1/text": "1abcfc5f4eec13b2",
+      "sections/1/items/0/text": "cd7cdc79fd26d124",
+      "sections/1/items/1/text": "1255aa6a023120de",
+      "sections/1/items/2/text": "1f9ae4a327cefbab",
+      "sections/1/items/3/text": "33e5f5e071258533",
+      "sections/1/items/4/text": "ca0a203817de0769",
+      "sections/2/title": "d5ea4014c0d47702",
+      "sections/2/items/0/text": "de4d9e051cca75fb",
+      "sections/2/items/0/why": "48a1594a1353de84",
+      "sections/2/items/1/text": "4024dc04f4bad0ae",
+      "sections/2/items/1/why": "c66bcd5786112cd8",
+      "sections/2/items/2/text": "2b4f5a48e91d9268",
+      "sections/2/items/3/text": "dedaf81600bfbffe",
+      "sections/2/items/4/text": "4143ea7deeae49c9",
+      "sections/2/items/5/text": "27dff2cc2f2ed516",
+      "sections/2/items/6/text": "e5fd4c85c7f6ec76",
+      "sections/3/title": "4c222e83ea45a97e",
+      "sections/3/items/0/text": "dd3bdf1e65b71c00",
+      "sections/3/items/1/text": "0be46e2ecb84b633",
+      "sections/3/items/2/text": "582e3dea46c457f3",
+      "sections/3/items/3/text": "4baf10a40206ed72",
+      "sections/3/items/4/text": "dedb7d05c734ed30",
+      "sections/3/items/5/text": "34cddee7de5fb8fa",
+      "sections/3/items/6/text": "5653a9d84cea9e77",
+      "sections/4/title": "8d26db4bea9eca56",
+      "sections/4/text": "5f079057cf553a09",
+      "sections/4/items/0/text": "55a292a1f5b4bc5c",
+      "sections/4/items/1/text": "2f714fbbf7e6e253",
+      "sections/4/items/2/text": "931027a7acae7205",
+      "sections/4/items/3/text": "6c91a957cc0d4c3b",
+      "sections/4/items/4/text": "2f2aa038e8f34082",
+      "sections/4/items/5/text": "1a373dfa10c376e1",
+      "sections/4/items/6/text": "07eb169719deb33d",
+      "sections/5/title": "7a7ca021873f8a61",
+      "sections/5/items/0/text": "59bffe727774cab8",
+      "sections/5/items/1/text": "07224e5f3f643a0d",
+      "sections/5/items/2/text": "4d954c69ad04ef20",
+      "sections/5/items/3/text": "dcd3879d180dbbdc",
+      "sections/5/items/4/text": "230c016684406986",
+      "sections/5/items/5/text": "8f989509c2f51c5a",
+      "sections/6/title": "8b6c945cd4f9bc39",
+      "sections/6/text": "32a27d26f8d10a9d",
+      "sections/6/items/0/text": "b48465cdab31fe42",
+      "sections/6/items/1/text": "41a22078f558c870",
+      "sections/6/items/2/text": "e4daa549bc372201",
+      "sections/6/items/3/text": "b1108e2e6e4a30a7",
+      "sections/6/items/4/text": "ac9e454f7cd9a1ac"
+    }
   }
 }
